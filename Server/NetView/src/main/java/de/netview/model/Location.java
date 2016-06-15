@@ -13,18 +13,18 @@ public class Location {
 	@Id
 	@GeneratedValue
 	@Column(name = "lid")
-	private int lid;
+	private Long lid;
 	private String company;
 	private String street;
 	private String plz;
 	private String city;
 	private String description;
 
-	public int getLid() {
+	public Long getLid() {
 		return lid;
 	}
 
-	public void setLid(int lid) {
+	public void setLid(Long lid) {
 		this.lid = lid;
 	}
 

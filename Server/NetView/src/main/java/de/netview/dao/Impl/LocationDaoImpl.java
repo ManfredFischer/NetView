@@ -2,6 +2,8 @@ package de.netview.dao.Impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,26 +26,41 @@ public class LocationDaoImpl implements LocationDao {
 		this.sessionFactory = sessionFactory;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<Location> list() {
-		// TODO Auto-generated method stub
+		@SuppressWarnings("unchecked")
+		List<Location> listLocation = (List<Location>) sessionFactory.getCurrentSession().createCriteria(Location.class)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+
+		return listLocation;
+	}
+
+	@Transactional(readOnly = true)
+	public Location get(Long lid) {
+		String hql = "from Location where id=" + lid;
+		Query query = sessionFactory.getCurrentSession().createQuery(hql);
+
+		@SuppressWarnings("unchecked")
+		List<Location> listUser = (List<Location>) query.list();
+
+		if (listUser != null && !listUser.isEmpty()) {
+			return listUser.get(0);
+		}
+
 		return null;
 	}
 
-	@Transactional
-	public Location get(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = false)
+	public Location saveOrUpdate(Location location) {
+		sessionFactory.getCurrentSession().saveOrUpdate(location);
+		return location;
 	}
 
-	@Transactional
-	public void saveOrUpdate(Location location) {
-		// TODO Auto-generated method stub
-
-	}
-
-	public void delete(int id) {
-		// TODO Auto-generated method stub
+	@Transactional(readOnly = false)
+	public void delete(Long lid) {
+		Location locationToDelete = new Location();
+		locationToDelete.setLid(lid);
+		sessionFactory.getCurrentSession().delete(locationToDelete);
 
 	}
 

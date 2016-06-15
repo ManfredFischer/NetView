@@ -35,7 +35,7 @@ public class ApplicationContextConfig {
 	public DataSource getDataSource() {
 		BasicDataSource dataSource = new BasicDataSource();
 		dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-		dataSource.setUrl("jdbc:mysql://192.168.0.145:3306/netview");
+		dataSource.setUrl("jdbc:mysql://172.23.195.106:3306/netview");
 		dataSource.setUsername("root");
 		dataSource.setPassword("stern");
 
@@ -55,6 +55,7 @@ public class ApplicationContextConfig {
 		Properties properties = new Properties();
 		properties.put("hibernate.show_sql", "true");
 		properties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
+		properties.put("hibernate.hbm2ddl.auto", "update");
 		return properties;
 	}
 
@@ -62,12 +63,11 @@ public class ApplicationContextConfig {
 	@Bean(name = "transactionManager")
 	public HibernateTransactionManager getTransactionManager(SessionFactory sessionFactory) {
 		HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
-
 		return transactionManager;
 	}
 
 	@Autowired
-	@Bean(name = "LocationDao")
+	@Bean(name = "locationDao")
 	public LocationDao getLocationDao(SessionFactory sessionFactory) {
 		return new LocationDaoImpl(sessionFactory);
 	}

@@ -7,9 +7,9 @@ import de.netview.model.Location;
 public interface LocationDao {
 	public List<Location> list();
 
-	public Location get(int id);
+	public Location get(Long id);
 
-	public void saveOrUpdate(Location location);
+	public Location saveOrUpdate(Location location);
 
-	public void delete(int id);
+	public void delete(Long id);
 }
