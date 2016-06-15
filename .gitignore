@@ -1,4 +1,5 @@
 Server/NetWork/.classpath
 Server/NetWork/.project
 Server/NetWork/.settings
-Server/NetWork/target/
+Server/NetWork/target
+View/node_modules
