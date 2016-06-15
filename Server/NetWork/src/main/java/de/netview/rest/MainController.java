@@ -2,13 +2,14 @@ package de.netview.rest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-@RequestMapping("/")
 public class MainController {
-
-	public String getLogin() {
-		return "index";
+	
+	@RequestMapping("/")
+	public@ResponseBody String getLogin() {
+		return "login";
 	}
 
 }
