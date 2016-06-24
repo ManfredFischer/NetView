@@ -29,6 +29,7 @@ class JSPanel extends React.Component {
                     }
                 },
                 view: {
+                    position: 'absolute',
                     margin: 0,
                     padding: 0,
                     zIndex: 99,
@@ -88,7 +89,6 @@ class JSPanel extends React.Component {
         this.onViewUpView = this.onViewUpView.bind(this);
         this.onCollapsView = this.onCollapsView.bind(this);
         this.onMaximiseView = this.onMaximiseView.bind(this);
-        this.sendInformation = this.sendInformation.bind(this);
     }
 
 
@@ -187,7 +187,7 @@ class JSPanel extends React.Component {
                     </Row>
                 </div>
                 <div style={this.state.css.toolbar}>{this.props.toolsIcons}
-                    <Glyphicon style={this.state.css.button.toolbar} onClick={this.sendInformation} glyph="floppy-disk"/>
+                    <Glyphicon style={this.state.css.button.toolbar} onClick={this.props.actionSEND.bind(this,this.props.actionSENDKey)} glyph="floppy-disk"/>
                     <Glyphicon style={this.state.css.button.toolbar} glyph="floppy-remove"/>
                 </div>
                 <div style={this.state.css.body}>

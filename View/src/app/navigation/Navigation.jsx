@@ -11,10 +11,46 @@ import User from '../../app/view/settings/User.jsx';
 import Setting from '../../app/view/settings/Setting.jsx';
 
 
+import request from "../util/FetchFactory";
+import requestData from '../util/RequestParam';
+
 export default class extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: {}
+        }
+        this.setJSONData = this.setJSONData.bind(this);
+    }
+
+    setJSONData(keyInfo, data) {
+        if (this.state.data[keyInfo] == null) {
+            this.state.data[keyInfo] = {}
+        }
+        this.state.data[keyInfo][Object.getOwnPropertyNames(data)[0]] = data[Object.getOwnPropertyNames(data)[0]];
+
+        this.setState({
+            data: this.state.data
+        })
+    }
 
     addChild(component) {
         var bodyInfo, viewTitle;
+        var me = this;
+        var referenz = Date.now();
+
+        var sendInfo = function (keyInfo) {
+            debugger
+            if (me.state.data[keyInfo] != null) {
+                if (Object.keys(me.state.data[keyInfo]).length != '') {
+                    request("/componente/location", requestData.POST, requestData.CONTENT_JSON, JSON.stringify(me.state.data[keyInfo]))
+                        .then(token => {
+
+                        }).catch(err => console.log(err))
+                }
+            }
+        }
         var viewConfig = {
             view: {
                 window: {}
@@ -37,7 +73,7 @@ export default class extends React.Component {
                 viewTitle = Translation.Location.createTitle;
                 viewConfig.view.window.width = 600;
                 viewConfig.view.window.height = 400;
-                bodyInfo = <Location />;
+                bodyInfo = <Location keyInfo={referenz} setJSONData={this.setJSONData}/>;
                 break;
             case 'network':
                 viewTitle = Translation.Network.createTitle;
@@ -54,8 +90,9 @@ export default class extends React.Component {
 
         }
 
-        debugger
-        this.props.addComponentToView(<JSPanel jsonData={this.state.data} config={viewConfig} title={viewTitle} bodyInfo={bodyInfo}/>);
+        this.props.addComponentToView(<JSPanel actionSENDKey={referenz} actionSEND={sendInfo} config={viewConfig}
+                                               title={viewTitle}
+                                               bodyInfo={bodyInfo}/>);
     }
 
     searchChild() {

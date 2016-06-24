@@ -35,12 +35,9 @@ class FormComponentText extends React.Component {
     }
 
     setText() {
-        debugger
-        var referenz = this.props.referenz;
-        var data = {
-            referenz : this.refs.input.value
-        }
-        this.props.addInformation(data)
+        var temp = {};
+        temp[this.props.referenz] = this.refs.input.value;
+        this.props.setJSONData(this.props.keyInfo, temp);
     }
 
     render() {
