@@ -7,15 +7,13 @@ class JSPanel extends React.Component {
         super(props);
 
         this.state = {
+            data : [],
             showImage: true,
             data: {
                 header: {
                     resize: "resize-full",
-
                     close: "remove-circle",
-
                     collapse: "collapse-up",
-
                     view: "menu-up",
                 }
             },
@@ -41,10 +39,10 @@ class JSPanel extends React.Component {
                     top: props.config.view.window.top != null ? props.config.view.window.top : 60,
                 },
                 header: {
-                    WebkitUserSelect : 'none',
-                    MozUserSelect : 'none',
-                    userSelect : 'none',
-                    msUserSelect : 'none',
+                    WebkitUserSelect: 'none',
+                    MozUserSelect: 'none',
+                    userSelect: 'none',
+                    msUserSelect: 'none',
                     cursor: 'default',
                     textAlign: 'left',
                     boxShadow: '5px 5px',
@@ -60,7 +58,7 @@ class JSPanel extends React.Component {
                     borderStyle: 'hidden hidden hidden hidden'
                 },
                 toolbar: {
-                    display : props.config.toolBar == 'false' ? 'none' : 'visible',
+                    display: props.config.toolBar == 'false' ? 'none' : 'visible',
                     boxShadow: '5px 5px',
                     backgroundColor: 'silver',
                     borderRadius: 0,
@@ -90,7 +88,11 @@ class JSPanel extends React.Component {
         this.onViewUpView = this.onViewUpView.bind(this);
         this.onCollapsView = this.onCollapsView.bind(this);
         this.onMaximiseView = this.onMaximiseView.bind(this);
+        this.sendInformation = this.sendInformation.bind(this);
     }
+
+
+
 
     onDragStart(event) {
         if (!this.pX) {
@@ -108,6 +110,8 @@ class JSPanel extends React.Component {
             this.py = event.pageY;
         }
     }
+
+
 
     onCloseView() {
         this.state.showImage = false;
@@ -169,7 +173,8 @@ class JSPanel extends React.Component {
                      onDrag={this.onDrag}
                      style={this.state.css.header}>
                     <Row>
-                        <Col xs={6} md={4} style={{width:"50%"}}>{this.props.title != null ? this.props.title : 'new JSPanel'}</Col>
+                        <Col xs={6} md={4}
+                             style={{width:"50%"}}>{this.props.title != null ? this.props.title : 'new JSPanel'}</Col>
                         <Col xs={6} md={4} style={{width:"50%",textAlign:'right'}}>
                             <Glyphicon style={this.state.css.button.header} onClick={this.onViewUpView}
                                        glyph={this.state.data.header.view}/>
@@ -182,7 +187,7 @@ class JSPanel extends React.Component {
                     </Row>
                 </div>
                 <div style={this.state.css.toolbar}>{this.props.toolsIcons}
-                    <Glyphicon style={this.state.css.button.toolbar} glyph="floppy-disk"/>
+                    <Glyphicon style={this.state.css.button.toolbar} onClick={this.sendInformation} glyph="floppy-disk"/>
                     <Glyphicon style={this.state.css.button.toolbar} glyph="floppy-remove"/>
                 </div>
                 <div style={this.state.css.body}>
@@ -191,7 +196,8 @@ class JSPanel extends React.Component {
             </div>
         ) : (<div></div>)
     }
-};
+}
+;
 
 
 export default JSPanel;

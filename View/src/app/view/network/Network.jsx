@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { FormGroup,FormControl,Col,ControlLabel } from 'react-bootstrap';
-import Translation from '../../../data/Translation/Translation.js';
+import Translation from '../../../data/translation/Translation.js';
 
 const cssStyle = {
     bodyStyle: {

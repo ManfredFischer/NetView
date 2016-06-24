@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row,Col,code,Navbar,Nav,NavItem,NavDropdown,MenuItem,Glyphicon,FormGroup,FormControl,Button } from 'react-bootstrap';
 import JSPanel from '../../app/jspanel/JSPanel.jsx';
-import Translation from '../../data/Translation/Translation.js';
+import Translation from '../../data/translation/Translation.js';
 
 // Default BodyInfo
 import Location from '../../app/view/location/Location.jsx';
@@ -54,7 +54,8 @@ export default class extends React.Component {
 
         }
 
-        this.props.addComponentToView(<JSPanel config={viewConfig} title={viewTitle} bodyInfo={bodyInfo}/>);
+        debugger
+        this.props.addComponentToView(<JSPanel jsonData={this.state.data} config={viewConfig} title={viewTitle} bodyInfo={bodyInfo}/>);
     }
 
     searchChild() {

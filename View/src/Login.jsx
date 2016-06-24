@@ -2,7 +2,7 @@
  * Created by mf on 05.06.2016.
  */
 import React from 'react';
-import Translation from '../src/data/Translation/Translation.js';
+import Translation from '../src/data/translation/Translation.js';
 
 const cssStyle = {
 

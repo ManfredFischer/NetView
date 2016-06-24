@@ -21,12 +21,12 @@ export default class extends React.Component {
 
     render() {
         return (
-            <div style={{backgroundColor:'silver'}}>
+            <div>
+
                 <Navigation addComponentToView={this.addComponentToView}/>
-                <Body addComponentToView={this.addComponentToView}/>
-                <div>
-                    {this.state.childs}
-                </div>
+                <Body/>
+
+                {this.state.childs}
             </div>
         )
     }

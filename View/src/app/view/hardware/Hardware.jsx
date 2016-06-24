@@ -2,8 +2,8 @@
  * Created by mf on 05.06.2016.
  */
 import React from 'react';
-import Translation from '../../../data/Translation/Translation.js';
-import {FormComponentText, FormComponentArea,FormComponentButton,FormComponentCombobox} from '../../../data/Form/FormComponent.jsx';
+import Translation from '../../../data/translation/Translation.js';
+import {FormComponentText, FormComponentArea,FormComponentButton,FormComponentCombobox} from '../../form/FormComponent.jsx';
 
 
 export default class Hardware extends React.Component {
@@ -203,7 +203,7 @@ export default class Hardware extends React.Component {
 
     render() {
         return (
-            <div style={this.state.bodyStyle}>
+            <div >
                 <div style={this.state.menueDiv}>
                     <div onMouseOver={this.onMouseOverMenue.bind(this,'default')}
                          onClick={this.onClickNav.bind(this,'default')}

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Translation from './src/data/Translation/Translation.js';
+import Translation from './src/data/translation/Translation.js';
 import Main from './src/Main.jsx';
 
 
