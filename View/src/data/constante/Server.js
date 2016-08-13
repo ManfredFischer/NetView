@@ -1,5 +1,5 @@
 export default {
-    HOST : '',
+    HOST : 'http://localhost:8080/',
     REST: '',
 
     getUrl(path){

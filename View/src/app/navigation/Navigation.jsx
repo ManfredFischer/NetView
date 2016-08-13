@@ -41,10 +41,9 @@ export default class extends React.Component {
         var referenz = Date.now();
 
         var sendInfo = function (keyInfo) {
-            debugger
             if (me.state.data[keyInfo] != null) {
                 if (Object.keys(me.state.data[keyInfo]).length != '') {
-                    request("/componente/location", requestData.POST, requestData.CONTENT_JSON, JSON.stringify(me.state.data[keyInfo]))
+                    request("component/location", requestData.POST, requestData.CONTENT_JSON, JSON.stringify(me.state.data[keyInfo]))
                         .then(token => {
 
                         }).catch(err => console.log(err))

@@ -62,6 +62,8 @@ class FormComponentArea extends React.Component {
             multipikator = parseInt(props.rows);
         }
 
+        this.setText = this.setText.bind(this);
+
         this.state = {
             css: {
                 width: props.width != null ? props.width : "100%",
@@ -89,9 +91,10 @@ class FormComponentArea extends React.Component {
         this.setState(this.state.css);
     }
 
-
-    getText() {
-        return this.refs.textarea.value;
+    setText() {
+        var temp = {};
+        temp[this.props.referenz] = this.refs.textarea.value;
+        this.props.setJSONData(this.props.keyInfo, temp);
     }
 
     render() {
@@ -99,6 +102,7 @@ class FormComponentArea extends React.Component {
             <textarea onFocus={this.onFocusOrLostFocus.bind(this,false)}
                       onLostFocus={this.onFocusOrLostFocus.bind(this,true)}
                       style={this.state.css}
+                      onChange={this.setText}
                       ref="textarea"
                       placeholder={this.props.placeholder}>{this.props.value}</textarea>
         )
