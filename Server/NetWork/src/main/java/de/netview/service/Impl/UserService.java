@@ -1,6 +1,7 @@
 package de.netview.service.Impl;
 
 import de.netview.dao.Impl.UserDao;
+import de.netview.model.Groups;
 import de.netview.model.User;
 import de.netview.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +19,14 @@ public class UserService implements IUserService {
     @Autowired
     private UserDao userDao;
 
+
     @Override
     public void createUser(User user) {
-        userDao.persist(user);
+        Groups userInfo = new Groups();
+        userInfo.setName("info");
+
+        user.getGroups().add(userInfo);
+
+        userDao.save(user);
     }
 }

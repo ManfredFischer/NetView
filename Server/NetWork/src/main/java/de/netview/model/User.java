@@ -1,11 +1,8 @@
 package de.netview.model;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "User")
@@ -23,7 +20,7 @@ public class User {
     private String fax;
     private String department;
     private String email;
-    private List<Group> group = new ArrayList<Group>();
+    private Set<Groups> groups = new HashSet<Groups>();
 
     @Id
     @GeneratedValue
@@ -109,22 +106,24 @@ public class User {
         this.email = email;
     }
 
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(name="GroupUser", joinColumns=@JoinColumn(name="uid"), inverseJoinColumns=@JoinColumn(name="gid"))
-    public List<Group> getGroup() {
-        return group;
-    }
-
-    public void setGroup(List<Group> group) {
-        this.group = group;
-    }
-
-    @Column(name = "username", nullable = false)
+    @Column(name="username", nullable = false)
     public String getUsername() {
         return username;
     }
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name="GroupUser",
+            joinColumns={@JoinColumn(name="uid")},
+            inverseJoinColumns={@JoinColumn(name="gid")})
+    public Set<Groups> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Groups> groups) {
+        this.groups = groups;
     }
 }

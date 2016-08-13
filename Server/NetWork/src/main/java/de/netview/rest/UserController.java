@@ -1,6 +1,7 @@
 package de.netview.rest;
 
 import de.netview.model.User;
+import de.netview.service.IUserService;
 import de.netview.service.Impl.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by mf on 25.06.2016.
  */
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/user**")
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private IUserService userService;
 
     @RequestMapping(method = RequestMethod.GET)
     public@ResponseBody String addUser() {
