@@ -11,16 +11,20 @@ public class User {
 
     private Long uid;
     private String username;
+    private String password;
     private String lastname;
     private String firstname;
-    private String personalNr;
+    private String personalnr;
     private String function;
     private String phone;
     private String handy;
     private String fax;
     private String department;
     private String email;
-    private Set<Groups> groups = new HashSet<Groups>();
+    private Long lastlogin;
+    private Integer state;
+    private boolean active;
+    private Set<Profile> profiles = new HashSet<Profile>();
 
     @Id
     @GeneratedValue
@@ -48,14 +52,6 @@ public class User {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
-    }
-
-    public String getPersonalNr() {
-        return personalNr;
-    }
-
-    public void setPersonalNr(String personalNr) {
-        this.personalNr = personalNr;
     }
 
     public String getFunction() {
@@ -106,7 +102,7 @@ public class User {
         this.email = email;
     }
 
-    @Column(name="username", nullable = false)
+    @Column(name = "username", nullable = false)
     public String getUsername() {
         return username;
     }
@@ -115,15 +111,58 @@ public class User {
         this.username = username;
     }
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name="GroupUser",
-            joinColumns={@JoinColumn(name="uid")},
-            inverseJoinColumns={@JoinColumn(name="gid")})
-    public Set<Groups> getGroups() {
-        return groups;
+
+
+
+    public Long getLastlogin() {
+        return lastlogin;
     }
 
-    public void setGroups(Set<Groups> groups) {
-        this.groups = groups;
+    public void setLastlogin(Long lastlogin) {
+        this.lastlogin = lastlogin;
+    }
+
+    public Integer getState() {
+        return state;
+    }
+
+    public void setState(Integer state) {
+        this.state = state;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public String getPersonalnr() {
+        return personalnr;
+    }
+
+    public void setPersonalnr(String personalnr) {
+        this.personalnr = personalnr;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "ProfileUser",
+            joinColumns = {@JoinColumn(name = "uid")},
+            inverseJoinColumns = {@JoinColumn(name = "pid")})
+    public Set<Profile> getProfiles() {
+        return profiles;
+    }
+
+    public void setProfiles(Set<Profile> profiles) {
+        this.profiles = profiles;
     }
 }

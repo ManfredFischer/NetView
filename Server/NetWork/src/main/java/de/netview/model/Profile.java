@@ -5,25 +5,26 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "Groups")
-public class Groups {
+@Table(name = "Profile")
+public class Profile {
 
 
-    private Long gid;
+    private Long pid;
     private String name;
     private String value;
 
 
     @Id
     @GeneratedValue
-    @Column(name = "gid", nullable = false)
-    public Long getGid() {
-        return gid;
+    @Column(name = "pid", nullable = false)
+    public Long getPid() {
+        return pid;
     }
 
-    public void setGid(Long gid) {
-        this.gid = gid;
+    public void setPid(Long pid) {
+        this.pid = pid;
     }
+
 
     public String getValue() {
         return value;
@@ -41,5 +42,6 @@ public class Groups {
     public void setName(String name) {
         this.name = name;
     }
+
 
 }

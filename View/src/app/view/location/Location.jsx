@@ -8,17 +8,7 @@ import Translation from '../../../data/translation/Translation.js';
 const cssStyle = {
     bodyStyle: {
         padding: 10
-    },
-    textfield: {
-        marginBottom: 5
-    }, textfieldPLZ: {
-        width: '20%',
-        float: 'left'
-    }, textfieldOrt: {
-        width: '79%',
-        marginBottom: 5,
-        float: 'right',
-    }, formGroup: {
+    },formGroup: {
         margin: 5
     }
 }

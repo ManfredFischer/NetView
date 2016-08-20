@@ -1,6 +1,6 @@
 import React from 'react';
-import Navigation from '../src/app/navigation/Navigation.jsx';
-import Body from "../src/app/main/Body.jsx";
+import Navigation from './navigation/Navigation.jsx';
+import Body from "./main/Body.jsx";
 
 export default class extends React.Component {
 

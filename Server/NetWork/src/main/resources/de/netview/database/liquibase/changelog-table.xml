@@ -11,24 +11,32 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="varchar(50)"  >
                 <constraints nullable="false"/>
             </column>
             <column name="lastname" type="varchar(50)"/>
             <column name="firstname" type="varchar(50)"/>
-            <column name="personalNr" type="varchar(50)"/>
+            <column name="personalnr" type="varchar(50)"/>
             <column name="function" type="varchar(50)"/>
             <column name="phone" type="varchar(50)"/>
             <column name="handy" type="varchar(50)"/>
             <column name="fax" type="varchar(50)"/>
             <column name="department" type="varchar(50)"/>
             <column name="email" type="varchar(50)"/>
-            <column name="active" type="boolean" defaultValueBoolean="true"/>
+            <column name="lastlogin" type="BIGINT" />
+            <column name="state" type="INT" defaultValueNumeric="1">
+                <constraints nullable="false"/>
+            </column>
+            <column name="active" type="boolean" defaultValueBoolean="false"/>
+
         </createTable>
     </changeSet>
 
     <changeSet id="2" author="mafischer">
-        <createTable tableName="Groups">
-            <column name="gid" type="BIGINT" autoIncrement="true">
+        <createTable tableName="Profile">
+            <column name="pid" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="varchar(50)">
@@ -39,12 +47,12 @@
     </changeSet>
 
     <changeSet id="3" author="mafischer">
-        <createTable tableName="GroupUser">
+        <createTable tableName="ProfileUser">
             <column name="uid" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_user_group" references="User(uid)"/>
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_user_profile" references="User(uid)"/>
             </column>
-            <column name="gid" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_group_user" references="Groups(gid)"/>
+            <column name="pid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_profile_user" references="Profile(pid)"/>
             </column>
         </createTable>
     </changeSet>

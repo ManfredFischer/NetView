@@ -7,4 +7,6 @@ import de.netview.model.User;
  */
 public interface IUserService {
     public void createUser(User user);
+    public User getUserByUsername(String username);
+    public void prepareUser(User user);
 }

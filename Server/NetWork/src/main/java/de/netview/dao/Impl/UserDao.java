@@ -13,7 +13,21 @@ import java.util.List;
 @Repository("userDao")
 public class UserDao extends AbstractDao<User> implements IUserDao {
 
-    public List getAll(){
+    public List getAll() {
         return getSession().createQuery("select u from User u").list();
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        List<User> userList = getSession().createQuery("select u from User u where username = :username").setParameter("username", username).list();
+        if (userList == null) {
+            return null;
+        } else {
+            if (userList.isEmpty()) {
+                return null;
+            } else {
+                return userList.get(0);
+            }
+        }
     }
 }

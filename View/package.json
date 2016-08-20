@@ -21,6 +21,8 @@
     "superagent": "^2.0.0",
     "webpack": "^1.13.1",
     "webpack-dev-server": "^1.14.1",
-    "isomorphic-fetch": "^2.2.1"
+    "isomorphic-fetch": "^2.2.1",
+    "react-dnd" : "latest",
+    "react-dnd-html5-backend" : "latest"
   }
 }

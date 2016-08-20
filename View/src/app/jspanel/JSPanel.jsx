@@ -35,7 +35,6 @@ class JSPanel extends React.Component {
                     zIndex: 99,
                     height: props.config.view.window.height != null ? props.config.view.window.height : 600,
                     width: props.config.view.window.width != null ? props.config.view.window.width : 300,
-                    position: 'relative',
                     left: props.config.view.window.left != null ? props.config.view.window.left : 20,
                     top: props.config.view.window.top != null ? props.config.view.window.top : 60,
                 },

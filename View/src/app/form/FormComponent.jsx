@@ -129,8 +129,9 @@ class FormComponentButton extends React.Component {
                 borderColor: '#c1c1c1',
                 margin: props.margin != null ? props.margin : "0 5 0 0",
                 boxShadow: '',
+                float : props.float,
                 WebkitBoxShadow: '',
-                padding: props.padding != null ? props.padding : "12px 20px",
+                padding: props.padding != null ? props.padding : "0",
             }
         }
     }
@@ -149,10 +150,10 @@ class FormComponentButton extends React.Component {
 
     render() {
         return (
-            <input type="button" onFocus={this.onFocusOrLostFocus.bind(this,false)}
+            <input type="button"  onFocus={this.onFocusOrLostFocus.bind(this,false)}
                    onLostFocus={this.onFocusOrLostFocus.bind(this,true)}
                    style={this.state.css}
-                   placeholder={this.props.placeholder}>{this.props.value}</input>
+                   value={this.props.value}></input>
         )
     }
 }

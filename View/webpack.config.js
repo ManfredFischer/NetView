@@ -1,9 +1,13 @@
 var config = {
-    entry: ['./main.js'],
+    entry : {
+        index : './src/js/index.js',
+        main : './src/js/main.js'
+    },
 
+    // send to distribution
     output: {
-        path:'./',
-        filename: 'index.js',
+        path: './',
+        filename: '[name].js'
     },
 
     devServer: {

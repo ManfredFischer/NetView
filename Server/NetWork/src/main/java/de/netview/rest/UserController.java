@@ -13,17 +13,31 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created by mf on 25.06.2016.
  */
 @Controller
-@RequestMapping("/user**")
+@RequestMapping("/user")
 public class UserController {
 
     @Autowired
     private IUserService userService;
 
-    @RequestMapping(method = RequestMethod.GET)
-    public@ResponseBody String addUser() {
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public@ResponseBody String addUser02() {
         User user = new User();
-        user.setUsername("mafischer");
+        user.setUsername("mafischer@test.de");
+        user.setPassword("stern");
+        user.setState(1);
         userService.createUser(user);
         return "login";
     }
+
+    @RequestMapping(value = "/regist", method = RequestMethod.GET)
+    public@ResponseBody String addUser() {
+        User user = new User();
+        user.setUsername("mafischer");
+        user.setPassword("stern");
+        user.setState(1);
+        userService.createUser(user);
+        return "login";
+    }
+
+
 }
