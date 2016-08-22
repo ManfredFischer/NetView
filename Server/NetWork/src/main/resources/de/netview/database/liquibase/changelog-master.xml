@@ -6,6 +6,6 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <include file="de/netview/database/liquibase/changelog-table.xml"/>
-
+    <include file="de/netview/database/liquibase/changelog-table-foreign.xml"/>
 
 </databaseChangeLog>

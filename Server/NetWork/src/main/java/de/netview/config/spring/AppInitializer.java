@@ -1,4 +1,4 @@
-package de.netview.config;
+package de.netview.config.spring;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;

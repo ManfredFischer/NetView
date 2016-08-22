@@ -1,4 +1,4 @@
-package de.netview.config;
+package de.netview.config.database;
 
 import java.util.Properties;
 

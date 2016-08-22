@@ -47,13 +47,69 @@
     </changeSet>
 
     <changeSet id="3" author="mafischer">
-        <createTable tableName="ProfileUser">
-            <column name="uid" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_user_profile" references="User(uid)"/>
+        <createTable tableName="Location">
+            <column name="lid" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="pid" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_profile_user" references="Profile(pid)"/>
+            <column name="company" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
             </column>
+            <column name="street" type="varchar(50)" />
+            <column name="plz" type="varchar(50)"/>
+            <column name="city" type="varchar(50)"/>
+            <column name="description" type="varchar(50)"/>
+            <column name="removed" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="4" author="mafischer">
+        <createTable tableName="Network">
+            <column name="nid" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="subnetz" type="varchar(50)" />
+            <column name="mask" type="varchar(50)"/>
+            <column name="route" type="varchar(50)"/>
+            <column name="description" type="varchar(50)"/>
+            <column name="removed" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="5" author="mafischer">
+        <createTable tableName="Hardware">
+            <column name="hid" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(50)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="connectionid" type="varchar(50)" />
+            <column name="lastlogin" type="varchar(50)"/>
+            <column name="lastlogout" type="varchar(50)"/>
+            <column name="group" type="varchar(50)"/>
+            <column name="inventurnr" type="varchar(50)"/>
+            <column name="leasingende" type="varchar(50)"/>
+            <column name="type" type="varchar(50)"/>
+            <column name="function" type="varchar(50)"/>
+            <column name="seriennr" type="varchar(50)"/>
+            <column name="costcenter" type="varchar(50)"/>
+            <column name="description" type="varchar(50)"/>
+            <column name="removed" type="boolean" defaultValueBoolean="false"/>
+        </createTable>
+    </changeSet>
+
+
+    <changeSet id="6" author="mafischer">
+        <createTable tableName="Protokoll">
+            <column name="pid" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="created" type="BIGINT" />
+            <column name="description" type="varchar(50)"/>
+            <column name="removed" type="boolean" defaultValueBoolean="false"/>
         </createTable>
     </changeSet>
 

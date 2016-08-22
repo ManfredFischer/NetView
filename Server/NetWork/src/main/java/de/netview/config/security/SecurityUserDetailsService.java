@@ -1,4 +1,4 @@
-package de.netview.config;
+package de.netview.config.security;
 
 import de.netview.model.Profile;
 import de.netview.model.User;

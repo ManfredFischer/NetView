@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="7" author="mafischer">
+        <createTable tableName="NetworkLocation">
+            <column name="lid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Network_Location"
+                             references="Location(lid)"/>
+            </column>
+            <column name="nid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Location_Network"
+                             references="Network(nid)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="8" author="mafischer">
+        <createTable tableName="ProfileUser">
+            <column name="uid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_user_profile"
+                             references="User(uid)"/>
+            </column>
+            <column name="pid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_profile_user"
+                             references="Profile(pid)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="9" author="mafischer">
+        <createTable tableName="LocationUser">
+            <column name="uid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_user_location"
+                             references="User(uid)"/>
+            </column>
+            <column name="lid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_location_user"
+                             references="Location(lid)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Protokoll -->
+
+    <changeSet id="10" author="mafischer">
+        <createTable tableName="UserProtokoll">
+            <column name="uid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_user_Protokoll"
+                             references="User(uid)"/>
+            </column>
+            <column name="pid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Protokoll_user"
+                             references="Protokoll(pid)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="11" author="mafischer">
+        <createTable tableName="LocationProtokoll">
+            <column name="pid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Protokoll_location"
+                             references="Protokoll(pid)"/>
+            </column>
+            <column name="lid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_location_Protokoll"
+                             references="Location(lid)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="12" author="mafischer">
+        <createTable tableName="NetworkProtokoll">
+            <column name="pid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Network_Protokoll"
+                             references="Protokoll(pid)"/>
+            </column>
+            <column name="nid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Protokoll_Network"
+                             references="Network(nid)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="13" author="mafischer">
+        <createTable tableName="HardwareProtokoll">
+            <column name="pid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Hardware_Protokoll"
+                             references="Protokoll(pid)"/>
+            </column>
+            <column name="hid" type="BIGINT">
+                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_Protokoll_Hardware"
+                             references="Hardware(hid)"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

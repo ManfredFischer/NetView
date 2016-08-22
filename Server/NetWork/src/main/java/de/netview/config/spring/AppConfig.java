@@ -1,4 +1,4 @@
-package de.netview.config;
+package de.netview.config.spring;
 
 /**
  * Created by mf on 13.08.2016.

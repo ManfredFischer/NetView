@@ -24,7 +24,12 @@ public class User {
     private Long lastlogin;
     private Integer state;
     private boolean active;
+
+
     private Set<Profile> profiles = new HashSet<Profile>();
+    private Set<Location> locations = new HashSet<Location>();
+    private Set<Protokoll> protokolls = new HashSet<>();
+    private Set<Hardware> hardwares = new HashSet<>();
 
     @Id
     @GeneratedValue
@@ -111,9 +116,6 @@ public class User {
         this.username = username;
     }
 
-
-
-
     public Long getLastlogin() {
         return lastlogin;
     }
@@ -165,4 +167,53 @@ public class User {
     public void setProfiles(Set<Profile> profiles) {
         this.profiles = profiles;
     }
+
+    public void addProfile(Profile profile){
+      this.profiles.add(profile);
+    }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "LocationUser",
+            joinColumns = {@JoinColumn(name = "uid")},
+            inverseJoinColumns = {@JoinColumn(name = "lid")})
+    public Set<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Set<Location> locations) {
+        this.locations = locations;
+    }
+
+    public void addLocation(Location location){
+        this.locations.add(location);
+    }
+
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(name = "UserProtokoll",
+            joinColumns = {@JoinColumn(name = "uid")},
+            inverseJoinColumns = {@JoinColumn(name = "pid")})
+    public Set<Protokoll> getProtokolls() {
+        return protokolls;
+    }
+
+    public void setProtokolls(Set<Protokoll> protokolls) {
+        this.protokolls = protokolls;
+    }
+
+    public void addProtokoll(Protokoll protokoll){
+        this.protokolls.add(protokoll);
+    }
+    @OneToMany(cascade = {CascadeType.ALL},mappedBy = "admin")
+    public Set<Hardware> getHardwares() {
+        return hardwares;
+    }
+
+    public void setHardwares(Set<Hardware> hardwares) {
+        this.hardwares = hardwares;
+    }
+
+    public void addHardware(Hardware hardware){
+        this.hardwares.add(hardware);
+    }
+
 }
