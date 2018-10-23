@@ -6,55 +6,96 @@
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="1" author="mafischer">
-        <createTable tableName="User">
+        <createTable tableName="SYSTEMUSER">
             <column name="uid" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="username" type="varchar(50)">
-                <constraints nullable="false" unique="true"/>
-            </column>
-            <column name="password" type="varchar(50)"  >
-                <constraints nullable="false"/>
-            </column>
-            <column name="lastname" type="varchar(50)"/>
-            <column name="firstname" type="varchar(50)"/>
-            <column name="personalnr" type="varchar(50)"/>
-            <column name="function" type="varchar(50)"/>
-            <column name="phone" type="varchar(50)"/>
-            <column name="handy" type="varchar(50)"/>
-            <column name="fax" type="varchar(50)"/>
-            <column name="department" type="varchar(50)"/>
-            <column name="email" type="varchar(50)"/>
-            <column name="lastlogin" type="BIGINT" />
-            <column name="state" type="INT" defaultValueNumeric="1">
-                <constraints nullable="false"/>
-            </column>
-            <column name="active" type="boolean" defaultValueBoolean="false"/>
-
+            <column name="username" type="varchar(50)" />
+            <column name="password" type="varchar(1020)"/>
         </createTable>
-    </changeSet>
-
-    <changeSet id="2" author="mafischer">
-        <createTable tableName="Profile">
-            <column name="pid" type="BIGINT" autoIncrement="true">
+        
+        <createTable tableName="LOCATION">
+            <column name="lid" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="name" type="varchar(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="value" type="varchar(50)"/>
+            <column name="displayname" type="varchar(200)" />
+            <column name="street" type="varchar(200)" />
+            <column name="plz" type="varchar(200)"/>
+            <column name="city" type="varchar(200)"/>
+            <column name="country" type="varchar(200)"/>
         </createTable>
-    </changeSet>
-
-    <changeSet id="3" author="mafischer">
-        <createTable tableName="ProfileUser">
-            <column name="uid" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_user_profile" references="User(uid)"/>
+        
+        <createTable tableName="HARDWARE">
+            <column name="hid" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="pid" type="BIGINT">
-                <constraints primaryKey="true" nullable="false" foreignKeyName="fk_profile_user" references="Profile(pid)"/>
+            <column name="hostname" type="varchar(200)">
+                <constraints unique="true" nullable="false"/>
             </column>
+            <column name="owner" type="varchar(200)" />
+            <column name="aktivusername" type="varchar(200)" />
+            <column name="aktivdate" type="varchar(200)" />
+            <column name="model" type="varchar(200)" />
+            <column name="bs" type="varchar(200)"/>
+            <column name="cpu" type="varchar(200)"/>
+            <column name="ram" type="varchar(200)"/>
+            <column name="sn" type="varchar(200)"/>
         </createTable>
+        
+        <createTable tableName="HARDWARELOG">
+            <column name="hpid" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="eventId" type="varchar(200)" />
+            <column name="category" type="varchar(200)" />
+            <column name="message" type="varchar(200)"/>
+            <column name="source" type="varchar(200)"/>
+            <column name="timegenerated" type="varchar(200)"/>
+            <column name="timewritten" type="varchar(200)"/>
+            <column name="username" type="varchar(200)"/>
+            <column name="hostname" type="varchar(200)"/>
+        </createTable> 
+        
     </changeSet>
+    
+    <changeSet author="MaFischer" id="1423057244463-109">
+		<createTable tableName="LIZENZ">
+			<column name="lizenzkey" type="VARCHAR(1020)" />
+			<column name="lizenz" type="VARCHAR(1020)" />
+			<column name="message" type="VARCHAR(1020)" />
+			<column name="lid" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+    
+    <changeSet author="MaFischer" id="1423057244463-110">
+		<createTable tableName="SOFTWARE">
+			<column name="name" type="VARCHAR(1020)">
+				<constraints unique="true"/>
+			</column>
+			<column name="sid" type="BIGINT" autoIncrement="true">
+				<constraints unique="true" nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-111">
+		<createTable tableName="HARDWARE_SOFTWARE">
+			<column name="hid" type="BIGINT"/>
+			<column name="sid" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-112">
+		<createTable tableName="HARDWARE_LIZENZ">
+			<column name="hid" type="BIGINT"/>
+			<column name="lid" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	
+	
+	
+	
 
 </databaseChangeLog>

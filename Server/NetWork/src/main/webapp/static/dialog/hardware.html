@@ -1,0 +1,202 @@
+<div style="min-width:600px;">
+    <div ng-show="hardwareActiv" layout-gt-sm="row" style="background: green;padding: 10px;height: 80px">
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Hostname (Teamviewer)</label>
+            <input readonly ng-model="hardwareInformation.hostname" />
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>angemeldeter User</label>
+            <input readonly ng-model="hardwareInformation.aktivUsername" />
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>angemeldet seit</label>
+            <input readonly ng-model="hardwareInformation.aktivDate" />
+        </md-input-container>
+    </div>
+
+
+    <md-tabs md-dynamic-height="" md-dynamic-width="" md-border-bottom="">
+        <md-tab ng-if="showUserDetails" label="{{ titleUserOwner }}">
+            <div style="background: white;padding: 10px">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>First name</label>
+                        <input readonly ng-model="userInformation.firstname">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Last name</label>
+                        <input readonly ng-model="userInformation.lastname">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Department</label>
+                        <input readonly ng-model="userInformation.department">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Position</label>
+                        <input readonly ng-model="userInformation.title">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Telefon</label>
+                        <input readonly ng-model="userInformation.telephoneNumber">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Mobile</label>
+                        <input readonly ng-model="userInformation.mobile">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container style="width: 100%">
+                        <label>Standort</label>
+                        <md-select ng-Model="userInformation.lid" name="favoriteColor" ng-model="favoriteColor">
+                            <md-option readonly ng-repeat="location in LocationList" value="{{ location.lid }}">{{ location.displayname }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-tab>
+
+        <md-tab ng-if="showEnabledUserDetails" label="{{titleUserAktiv}}">
+            <div style="background: white;padding: 10px">
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>First name</label>
+                        <input readonly ng-model="userInformationAktiv.firstname">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Last name</label>
+                        <input readonly ng-model="userInformationAktiv.lastname">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Department</label>
+                        <input readonly ng-model="userInformationAktiv.department">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Position</label>
+                        <input readonly ng-model="userInformationAktiv.title">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Telefon</label>
+                        <input readonly ng-model="userInformationAktiv.telephoneNumber">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Mobile</label>
+                        <input readonly ng-model="userInformationAktiv.mobile">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container style="width: 100%">
+                        <label>Standort</label>
+                        <md-select ng-Model="userInformationAktiv.lid" name="favoriteColor" ng-model="favoriteColor">
+                            <md-option readonly ng-repeat="location in LocationList" value="{{ location.lid }}">{{ location.displayname }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+            </div>
+        </md-tab>
+
+        <md-tab ng-if="showHardwareOwnerDetails" label="{{titleHardwareOwner}}">
+            <div style="background: white;padding: 10px">
+
+                <md-input-container ng-show="!hardwareActiv" class="md-block" flex-gt-sm>
+                    <label>Hostname (Teamviewer)</label>
+                    <input readonly ng-model="hardwareInformationOwner.hostname" />
+                </md-input-container>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Model</label>
+                        <input readonly ng-model="hardwareInformationOwner.model">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Seriennummer</label>
+                        <input readonly ng-model="hardwareInformationOwner.sn">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>CPU</label>
+                        <input readonly ng-model="hardwareInformationOwner.cpu">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>RAM</label>
+                        <input readonly ng-model="hardwareInformationOwner.ram">
+                    </md-input-container>
+                </div>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Besitzer</label>
+                        <input readonly ng-model="hardwareInformationOwner.owner">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>aktiver User</label>
+                        <input readonly ng-model="hardwareInformationOwner.aktivUsername">
+                    </md-input-container>
+                </div>
+
+
+
+                <md-button ng-click="removeHardware()" type="submit" class="md-raised">Delete</md-button>
+            </div>
+        </md-tab>
+
+        <md-tab ng-if="showHardwareDetails" label="{{titleHardware}}">
+            <div style="background: white;padding: 10px">
+
+                <md-input-container ng-show="!hardwareActiv" class="md-block" flex-gt-sm>
+                    <label>Hostname (Teamviewer)</label>
+                    <input readonly ng-model="hardwareInformation.hostname" />
+                </md-input-container>
+
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Model</label>
+                        <input readonly ng-model="hardwareInformation.model">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Seriennummer</label>
+                        <input readonly ng-model="hardwareInformation.sn">
+                    </md-input-container>
+                </div>
+                <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>CPU</label>
+                        <input readonly ng-model="hardwareInformation.cpu">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>RAM</label>
+                        <input readonly ng-model="hardwareInformation.ram">
+                    </md-input-container>
+                </div>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Besitzer</label>
+                    <input readonly ng-model="hardwareInformation.owner">
+                </md-input-container>
+            </div>
+        </md-tab>
+    </md-tabs>
+
+
+</div>

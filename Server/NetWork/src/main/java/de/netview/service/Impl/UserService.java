@@ -1,19 +1,17 @@
 package de.netview.service.Impl;
 
 import de.netview.dao.Impl.UserDao;
-import de.netview.model.Profile;
-import de.netview.model.User;
+import de.netview.model.Systemuser;
 import de.netview.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Date;
 
 /**
  * Created by mf on 13.08.2016.
  */
-@Service("userService")
+@Service
 @Transactional
 public class UserService implements IUserService {
 
@@ -22,24 +20,13 @@ public class UserService implements IUserService {
 
 
     @Override
-    public void createUser(User user) {
-        Profile userInfo = new Profile();
-        userInfo.setName("user");
-
-        user.getProfiles().add(userInfo);
-
-        userDao.save(user);
+    public void createUser(Systemuser systemuser) {
+        userDao.save(systemuser);
     }
 
     @Override
-    public User getUserByUsername(String username) {
+    public Systemuser getUserByUsername(String username) {
         return userDao.getUserByUsername(username);
     }
 
-    @Override
-    public void prepareUser(User user) {
-        user.setActive(true);
-        user.setLastlogin(new Date().getTime());
-        userDao.save(user);
-    }
 }
