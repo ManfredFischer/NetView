@@ -35,6 +35,7 @@
             <column name="owner" type="varchar(200)" />
             <column name="aktivusername" type="varchar(200)" />
             <column name="aktivdate" type="varchar(200)" />
+            <column name="lastlogin" type="varchar(200)" />
             <column name="model" type="varchar(200)" />
             <column name="bs" type="varchar(200)"/>
             <column name="cpu" type="varchar(200)"/>
@@ -68,6 +69,21 @@
 			</column>
 		</createTable>
 	</changeSet>
+
+    <changeSet author="MaFischer" id="1423057244463-121">
+		<createTable tableName="Vorlagen">
+			<column name="vid" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="name" type="VARCHAR(1020)" />
+			<column name="department" type="VARCHAR(1020)" />
+			<column name="monitorCount" type="INTEGER" />
+			<column name="laptopID" type="INTEGER" />
+			<column name="handyID" type="INTEGER" />
+            <column name="telephone" type="BOOLEAN" />
+			<column name="pc" type="BOOLEAN" />			
+		</createTable>
+	</changeSet>
     
     <changeSet author="MaFischer" id="1423057244463-110">
 		<createTable tableName="SOFTWARE">
@@ -94,8 +110,45 @@
 		</createTable>
 	</changeSet>
 	
-	
-	
-	
+    <changeSet author="MaFischer" id="1423057244463-113">
+		<createTable tableName="ADSETTING">
+			<column name="sid" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="server" type="varchar(200)" />
+            <column name="port" type="INTEGER" />
+            <column name="ssl" type="BOOLEAN" />
+            <column name="domaine" type="varchar(200)" />
+            <column name="binduser" type="varchar(200)"/>
+            <column name="password" type="varchar(200)"/>
+            <column name="binduserou" type="varchar(200)"/>
+            <column name="interneuserou" type="varchar(200)"/>
+            <column name="internegroupou" type="varchar(200)"/>
+            <column name="internehardwareou" type="varchar(200)"/>
+            <column name="interneserverou" type="varchar(200)"/>
+		</createTable>
+	</changeSet>
+
+    <changeSet author="MaFischer" id="1423057244463-126">
+		<createTable tableName="Handy">
+			<column name="tid" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="name" type="VARCHAR(1020)" />
+			<column name="model" type="VARCHAR(1020)" />
+			<column name="farbe" type="VARCHAR(1020)" />			
+		</createTable>
+	</changeSet>
+
+    <changeSet author="MaFischer" id="1423057244463-1254">
+		<createTable tableName="Department">
+			<column name="did" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="name" type="VARCHAR(1020)" />
+			<column name="departmanet" type="VARCHAR(1020)" />
+			<column name="position" type="VARCHAR(1020)" />			
+		</createTable>
+	</changeSet>
 
 </databaseChangeLog>

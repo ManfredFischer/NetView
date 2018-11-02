@@ -1,42 +1,30 @@
 <div class="dialog">
     <md-toolbar style="color:'green'">
         <div class="md-toolbar-tools">
-            <h2 class="md-flex">Hardware hinzuf�gen</h2>
+            <h2 class="md-flex">Abteilung hinzuf�gen</h2>
         </div>
     </md-toolbar>
     <div style="padding:5px">
         <div layout-gt-sm="row" layout-align="space-between center">
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>Name</label>
-                <input ng-model="userInformation.firstname">
+            <md-input-container style="width: 80%">
+                <label>Abteilung</label>
+                <md-select ng-Model="laptop.lid">
+                    <md-option ng-repeat="laptop in departmentList" value="{{ laptop.id }}">{{laptop.model }}</md-option>
+                </md-select>
             </md-input-container>
             <md-button type="submit" class="md-raised">Speichern</md-button>
         </div>
-
         <md-input-container class="md-block" flex-gt-sm>
-            <label>Model</label>
+            <label>Name</label>
             <input ng-model="userInformation.firstname">
         </md-input-container>
-
         <md-input-container class="md-block" flex-gt-sm>
-            <label>Funktion</label>
+            <label>Abteilung</label>
             <input ng-model="userInformation.firstname">
         </md-input-container>
-
         <md-input-container class="md-block" flex-gt-sm>
-            <label>IP</label>
+            <label>Possition</label>
             <input ng-model="userInformation.firstname">
         </md-input-container>
-
-        <div layout-gt-sm="row" layout-align="space-between center">
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>CPU</label>
-                <input ng-model="userInformation.firstname">
-            </md-input-container>
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>Ram</label>
-                <input ng-model="userInformation.firstname">
-            </md-input-container>
-        </div>
     </div>
 </div>

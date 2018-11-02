@@ -1,43 +1,108 @@
-<div>
+<div style="min-width:600px;">
+    <md-toolbar style="color:'green'">
+        <div class="md-toolbar-tools">
+            <h2 class="md-flex">Settings</h2>
+        </div>
+    </md-toolbar>
     <md-content>
-        <md-tabs md-dynamic-height="" md-border-bottom="">
-            <md-tab label="Activ Directory">
+        <md-tabs style="padding:5px" md-dynamic-height="" md-dynamic-width="" md-border-bottom="">
+            <md-tab label="Active Directory Settings">
                 <md-content class="md-padding">
-                    <div>
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Host</label>
-                            <input ng-model="getSelectedHardwareInformation.hostname" />
-                        </md-input-container>
-
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>SSL</label>
-                            <md-switch class="md-secondary" ng-model="config.create"> Aktiv </md-switch>
-                        </md-input-container>
-
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Bind User</label>
-                            <input ng-model="getSelectedHardwareInformation.sn">
-                        </md-input-container>
-
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Bind PW</label>
-                            <input ng-model="getSelectedHardwareInformation.cpu">
-                        </md-input-container>
-
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Interne User</label>
-                            <input ng-model="getSelectedHardwareInformation.ram">
-                        </md-input-container>
-
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Interne Gruppen</label>
-                            <input ng-model="getSelectedHardwareInformation.ram">
-                        </md-input-container>
-
+                    <div layout-gt-sm="row" layout-align="space-between center">
+                        <div class="my-lg-0">
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Host</label>
+                                <input ng-model="settings.ad.server" />
+                            </md-input-container>
+                        </div>
+                        <div class="my-lg-0">
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Port</label>
+                                <input ng-model="settings.ad.port" />
+                            </md-input-container>
+                        </div>
+                        <div class="my-lg-0">
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <md-switch class="md-secondary" ng-model="settings.ad.ssl"> SSL </md-switch>
+                            </md-input-container>
+                        </div>
                     </div>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Dom�ne</label>
+                        <input ng-model="settings.ad.domaine">
+                    </md-input-container>
+
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Bind User</label>
+                        <input ng-model="settings.ad.binduser">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Bind PW</label>
+                        <input type="password" ng-model="settings.ad.password">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Bind OU</label>
+                        <input ng-model="settings.ad.binduserou">
+                    </md-input-container>
                 </md-content>
             </md-tab>
+
+            <md-tab label="Active Directory Zugriff">
+                <div style="background: white;padding: 5px;">
+                    <md-content class="md-padding">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Interne User Organisation</label>
+                            <input ng-model="settings.ad.interneuserou">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Interne Gruppen Organisation</label>
+                            <input ng-model="settings.ad.internegroupou">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Interne Hardware Organisation</label>
+                            <input ng-model="settings.ad.internehardwareou">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Interne Server Organisation</label>
+                            <input ng-model="settings.ad.interneserverou">
+                        </md-input-container>
+                    </md-content>
+                </div>
+            </md-tab>
+
+            <md-tab label="Mail">
+                <div style="background: white;padding: 5px;">
+                    <md-content class="md-padding">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Server</label>
+                            <input ng-model="settings.ad.interneuserou">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Port</label>
+                            <input ng-model="settings.ad.internegroupou">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Username</label>
+                            <input ng-model="settings.ad.internehardwareou">
+                        </md-input-container>
+
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Password</label>
+                            <input ng-model="settings.ad.interneserverou">
+                        </md-input-container>
+                    </md-content>
+                </div>
+            </md-tab>
+            
         </md-tabs>
-        <md-button class="md-raised" md-colors="{color: 'green', 'border-color': 'primary-600'}">Save</md-button>
+
+        <md-button ng-click="updateSettings()" class="md-raised" md-colors="{color: 'green', 'border-color': 'primary-600'}">Save</md-button>
     </md-content>
 </div>

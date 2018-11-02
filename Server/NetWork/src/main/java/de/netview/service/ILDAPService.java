@@ -12,7 +12,6 @@ public interface ILDAPService {
 
     List getUsers();
     void createNewUser(ADUserUpdateData adUserUpdateData);
-    void createCloneUser(String username, String surname, String givenName);
     void updateUser(ADUserUpdateData adUserUpdateData) throws Exception;
     void updateUserPassword(String username, String password);
     Attributes getUserAttributes(String username);

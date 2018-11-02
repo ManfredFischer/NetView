@@ -61,4 +61,20 @@
         </insert>
     </changeSet>
 
+    <changeSet id="99" author="mafischer">
+        <insert tableName="ADSETTING">
+            <column name="server" value="10.128.0.5" />
+            <column name="port" value="389" />
+            <column name="ssl" value="false" />
+            <column name="domaine" value="reservix" />
+            <column name="binduser" value="Service LDAP IT"/>
+            <column name="password" value="Smoke185+big"/>
+            <column name="binduserou" value="OU=service,OU=Users,OU=Reservix,DC=rsvx,DC=it"/>
+            <column name="interneuserou" value="OU=intern,OU=Users,OU=Reservix,DC=rsvx,DC=it"/>
+            <column name="internegroupou" value="OU=group,OU=Reservix,DC=rsvx,DC=it"/>
+            <column name="internehardwareou" value="OU=hardware,OU=Reservix,DC=rsvx,DC=it"/>
+            <column name="interneserverou" value="OU=server,OU=Reservix,DC=rsvx,DC=it"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

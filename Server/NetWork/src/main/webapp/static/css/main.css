@@ -1,10 +1,7 @@
-.listdemoListControls md-divider {
-    margin-top: 0;
-    margin-bottom: 0;
-}
 
-.listdemoListControls md-list {
-    padding-top: 0;
+body,
+html {
+    height: 100%;
 }
 
 .listdemoListControls md-list-item>p,
@@ -22,7 +19,7 @@
 }
 
 .page-container {
-    padding: 16px;
+    height: 100%;
     background: rgba(226, 226, 226, 1);
     background: -moz-linear-gradient(top, rgba(226, 226, 226, 1) 0%, rgba(219, 219, 219, 1) 22%, rgba(209, 209, 209, 1) 44%, rgba(254, 254, 254, 1) 100%);
     background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(226, 226, 226, 1)), color-stop(22%, rgba(219, 219, 219, 1)), color-stop(44%, rgba(209, 209, 209, 1)), color-stop(100%, rgba(254, 254, 254, 1)));
@@ -33,30 +30,16 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=0);
 }
 
-.body {
-    background: rgba(226, 226, 226, 1);
-    background: -moz-linear-gradient(top, rgba(226, 226, 226, 1) 0%, rgba(219, 219, 219, 1) 22%, rgba(209, 209, 209, 1) 44%, rgba(254, 254, 254, 1) 100%);
-    background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(226, 226, 226, 1)), color-stop(22%, rgba(219, 219, 219, 1)), color-stop(44%, rgba(209, 209, 209, 1)), color-stop(100%, rgba(254, 254, 254, 1)));
-    background: -webkit-linear-gradient(top, rgba(226, 226, 226, 1) 0%, rgba(219, 219, 219, 1) 22%, rgba(209, 209, 209, 1) 44%, rgba(254, 254, 254, 1) 100%);
-    background: -o-linear-gradient(top, rgba(226, 226, 226, 1) 0%, rgba(219, 219, 219, 1) 22%, rgba(209, 209, 209, 1) 44%, rgba(254, 254, 254, 1) 100%);
-    background: -ms-linear-gradient(top, rgba(226, 226, 226, 1) 0%, rgba(219, 219, 219, 1) 22%, rgba(209, 209, 209, 1) 44%, rgba(254, 254, 254, 1) 100%);
-    background: linear-gradient(to bottom, rgba(226, 226, 226, 1) 0%, rgba(219, 219, 219, 1) 22%, rgba(209, 209, 209, 1) 44%, rgba(254, 254, 254, 1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=0);
-}
-
-.page-container-tab {
-    padding: 24px;
+.dialog {
+    width: 500px;
 }
 
 .page {
-    margin: 0 auto;
-    padding: 6px;
-    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.25);
+    margin: 10px;
 }
 
 .page-tab {
     border-radius: 10px;
-    margin: 0 auto;
     padding: 6px;
     max-width: 480px;
     box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.25);
@@ -89,13 +72,14 @@ li:last-child {
  * The bar:
  */
 
-
 md-switch.md-checked .md-bar {
-    background-color: green; /* set selected bar color */
+    background-color: green;
+    /* set selected bar color */
 }
 
 md-switch[disabled] .md-bar {
-    background-color: green; /* set disabled bar color */
+    background-color: green;
+    /* set disabled bar color */
 }
 
 /* 
@@ -103,21 +87,31 @@ md-switch[disabled] .md-bar {
  */
 
 md-switch.md-checked .md-thumb {
-    background-color: rgb(255,255,255); /* selected switch color */
+    background-color: rgb(255, 255, 255);
+    /* selected switch color */
 }
 
 md-switch[disabled] .md-thumb {
-    background-color: rgb(255,255,255); /* disabled switch color */
+    background-color: rgb(255, 255, 255);
+    /* disabled switch color */
 }
 
 /* 
  * Ripple effect
  */
 
-md-switch .md-ink-ripple { 
-   color: rgb(255,0,0); /* not selected switch ripple color */
-} 
-md-switch.md-checked .md-ink-ripple { 
-   color: rgb(92,184,92); /* selected switch ripple color */ 
+md-switch .md-ink-ripple {
+    color: rgb(255, 0, 0);
+    /* not selected switch ripple color */
 }
 
+md-switch.md-checked .md-ink-ripple {
+    color: rgb(92, 184, 92);
+    /* selected switch ripple color */
+}
+
+#button {
+    position: absolute;
+    bottom: 10;
+    width: 100%;
+}

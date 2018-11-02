@@ -1,0 +1,56 @@
+<div class="dialog">
+    <md-toolbar style="color:'green'">
+        <div class="md-toolbar-tools">
+            <h2 class="md-flex">Vorlage hinzufügen</h2>
+        </div>
+    </md-toolbar>
+    <div style="padding:5px">
+        <div layout-gt-sm="row" layout-align="space-between center">
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Name</label>
+                <input ng-model="userInformation.firstname">
+            </md-input-container>
+            <md-button type="submit" class="md-raised">Speichern</md-button>
+        </div>
+        <md-input-container style="width: 100%">
+            <label>Abteilung Verkn�pfung</label>
+            <md-select ng-Model="laptop.lid">
+                <md-option ng-repeat="laptop in departmentList" value="{{ laptop.id }}">{{laptop.model }}</md-option>
+            </md-select>
+        </md-input-container>
+        <div layout-gt-sm="row">
+            <md-input-container style="width: 100%">
+                <label>Monitor Anzahl</label>
+                <md-select ng-Model="selectedMonitorCount">
+                    <md-option ng-repeat="monitor in monitorCount" value="{{ monitor }}">{{monitor }}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+            <md-input-container style="width: 100%">
+                <label>Laptop</label>
+                <md-select ng-Model="selectedLaptop">
+                    <md-option ng-repeat="laptop in laptopList" value="{{ laptop.id }}">{{laptop.name }}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div layout-gt-sm="row">
+            <md-input-container style="width: 100%">
+                <label>Handy</label>
+                <md-select ng-Model="selectedHandy">
+                    <md-option ng-repeat="handy in HandyList" value="{{ handy.id }}">{{handy.name }}</md-option>
+                </md-select>
+            </md-input-container>
+        </div>
+        <div>
+            <md-checkbox md-no-ink ng-model="selectedPC" class="md-primary">
+                PC
+            </md-checkbox>
+        </div>
+        <div>
+            <md-checkbox md-no-ink ng-model="selectedTelephon" class="md-primary">
+                Telefon
+            </md-checkbox>
+        </div>
+    </div>
+</div>

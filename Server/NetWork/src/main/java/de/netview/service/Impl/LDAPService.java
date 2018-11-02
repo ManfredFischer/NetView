@@ -2,9 +2,12 @@ package de.netview.service.Impl;
 
 import de.netview.data.ADUserData;
 import de.netview.data.ADUserUpdateData;
+import de.netview.data.SettingsData;
+import de.netview.model.ADSetting;
 import de.netview.model.Location;
 import de.netview.service.ILDAPService;
 import de.netview.service.ILocationService;
+import de.netview.service.ISettingService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,28 +26,34 @@ import java.util.Map;
 public class LDAPService implements ILDAPService {
 
 	static String USER_BASE_NAME = "OU=intern,OU=Users,OU=Reservix,DC=rsvx,DC=it";
-	static String SERVER_ADDRESS = "10.128.0.5";
-	static String TEMPLATE_USER = "template";
 	static String DOMAIN_NAME = "test.local";
-	static String SECURITY_PRINCIPAL = "CN=Service LDAP IT,OU=service,OU=Users,OU=Reservix,DC=rsvx,DC=it";
-	static String SECURITY_CREDENTIALS = "Smoke185+big";
-	static String TRUST_STORE = "C:\\Daten\\KeyStore\\store";
 	DirContext ldapContext;
+	
+	public ADSetting adSetting;
+	
+	@Autowired
+	private ISettingService settingService;
 
 	@Autowired
 	private ILocationService locationService;
 
 	private void LDAPConnect() {
 		try {
-			// the keystore that holds trusted root certificates
-			System.setProperty("javax.net.ssl.trustStore", TRUST_STORE);
+			
+			SettingsData settingsData = settingService.getSettings();
+			adSetting = settingsData.getAd();
+			
+			USER_BASE_NAME = adSetting.getInterneuserou();
+			DOMAIN_NAME = adSetting.getDomaine();
+			 
+			//System.setProperty("javax.net.ssl.trustStore", TRUST_STORE);
 			Hashtable<String, String> ldapEnv = new Hashtable<String, String>(11);
 			ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-			ldapEnv.put(Context.PROVIDER_URL, "ldap://" + SERVER_ADDRESS);
+			ldapEnv.put(Context.PROVIDER_URL, "ldap://" + adSetting.getServer());
 			ldapEnv.put(Context.SECURITY_PROTOCOL, "ANY");
 			ldapEnv.put(Context.SECURITY_AUTHENTICATION, "simple");
-			ldapEnv.put(Context.SECURITY_PRINCIPAL, SECURITY_PRINCIPAL);
-			ldapEnv.put(Context.SECURITY_CREDENTIALS, SECURITY_CREDENTIALS);
+			ldapEnv.put(Context.SECURITY_PRINCIPAL, "cn="+adSetting.getBinduser()+","+adSetting.getBinduserou());
+			ldapEnv.put(Context.SECURITY_CREDENTIALS, adSetting.getPassword());
 			ldapContext = new InitialDirContext(ldapEnv);
 		} catch (Exception e) {
 			System.out.println(" bind error: " + e);
@@ -120,40 +129,12 @@ public class LDAPService implements ILDAPService {
 				newAttributes.put(new BasicAttribute(attribute.getKey(), attribute.getValue()));
 			}
 			
-			newAttributes.put(new BasicAttribute("userPrincipalName", username + "@" + SERVER_ADDRESS));
+			newAttributes.put(new BasicAttribute("userPrincipalName", username + "@" + DOMAIN_NAME));
 			newAttributes.put(new BasicAttribute("cn", adUserUpdateData.getFirstname() + " " + adUserUpdateData.getLastname()));
 			ldapContext.createSubcontext("cn=" + adUserUpdateData.getFirstname() + " " + adUserUpdateData.getLastname()
 					+ "," + USER_BASE_NAME, newAttributes);
 		} catch (Exception e) {
 			e.printStackTrace();
-		}
-		try {
-			ldapContext.close();
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public void createCloneUser(String username, String surname, String givenName) {
-		LDAPConnect();
-		try {
-			Attributes modelAttributes = getUserAttributes(TEMPLATE_USER);
-			String distinguishedName = "cn=" + username + USER_BASE_NAME;
-			Attributes newAttributes = new BasicAttributes(true);
-			newAttributes.put(modelAttributes.get("objectclass"));
-			newAttributes.put(modelAttributes.get("userAccountControl"));
-			newAttributes.put(new BasicAttribute("sAMAccountName", username));
-			newAttributes.put(new BasicAttribute("userPrincipalName", username + "@" + DOMAIN_NAME));
-			newAttributes.put(new BasicAttribute("cn", username));
-			newAttributes.put(new BasicAttribute("sn", surname));
-			newAttributes.put(new BasicAttribute("givenName", givenName));
-			newAttributes.put(new BasicAttribute("displayName", givenName + " " + surname));
-			ldapContext.createSubcontext(distinguishedName, newAttributes);
-		} catch (Exception e) {
-			System.out.println("create clone error: " + e);
-			e.printStackTrace();
-			System.exit(-1);
 		}
 		try {
 			ldapContext.close();
@@ -202,7 +183,7 @@ public class LDAPService implements ILDAPService {
 				mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE,
 						new BasicAttribute(attributeName, attributeValue));
 				ldapContext.modifyAttributes(
-						"cn=" + adUserUpdateData.getUid() + ",OU=intern,OU=Users,OU=Reservix,DC=test,DC=local", mods);
+						"cn=" + adUserUpdateData.getUid() + ","+USER_BASE_NAME, mods);
 
 			} catch (Exception e) {
 				System.out.println(" update error: " + attribute.getKey());
@@ -234,7 +215,7 @@ public class LDAPService implements ILDAPService {
 			System.out.println();
 			ModificationItem[] mods = new ModificationItem[1];
 			mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute("UnicodePwd", pwdArray));
-			ldapContext.modifyAttributes("cn=" + username + ",OU=intern,OU=Users,OU=Reservix,DC=test,DC=local", mods);
+			ldapContext.modifyAttributes("cn=" + username + ","+USER_BASE_NAME, mods);
 		} catch (Exception e) {
 			System.out.println("update password error: " + e);
 		}

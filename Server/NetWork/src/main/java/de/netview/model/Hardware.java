@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "HARDWARE")
 public class Hardware {
@@ -24,6 +26,7 @@ public class Hardware {
 	private String owner;
 	private String aktivusername;
 	private String aktivdate;
+	private String lastlogin;
 	private String model;
 	private String bs;
 	private String cpu;
@@ -146,6 +149,14 @@ public class Hardware {
 
 	public void setAktivusername(String aktivusername) {
 		this.aktivusername = aktivusername;
+	}
+
+	public String getLastlogin() {
+		return lastlogin;
+	}
+
+	public void setLastlogin(String lastlogin) {
+		this.lastlogin = lastlogin;
 	}
 
 	

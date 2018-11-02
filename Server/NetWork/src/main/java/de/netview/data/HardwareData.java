@@ -20,6 +20,7 @@ public class HardwareData implements Serializable {
 	private String owner;
 	private String aktivUsername;
 	private String aktivDate;
+	private String lastLogin;
 	private String model;
 	private String bs;
 	private String cpu;
@@ -141,6 +142,15 @@ public class HardwareData implements Serializable {
 		this.setOwner(hardware.getOwner());
 		this.setLizenz(hardware.getLizenz());
 		this.setSoftware(hardware.getSoftware());
+		this.setLastLogin(hardware.getLastlogin());
+	}
+
+	public String getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(String lastLogin) {
+		this.lastLogin = lastLogin;
 	}
 
 }
