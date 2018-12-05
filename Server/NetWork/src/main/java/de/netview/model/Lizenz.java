@@ -21,23 +21,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "LIZENZ")
 public class Lizenz implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8904030561309253406L;
 	private long lid;
-	private String lizenz;
-	private String lizenzkey;
-	private String message;
-	private List<Hardware> hardware = new ArrayList<Hardware>();
-
-	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE }, mappedBy = "lizenz")
-	@JsonIgnore
-	public List<Hardware> getHardware() {
-		return hardware;
-	}
-
-	@JsonIgnore
-	public void setHardware(List<Hardware> hardware) {
-		this.hardware = hardware;
-	}
-
+	private String name;
+	private String key;
+	private int state;
+	private String categorie;
+	
+	private List<Hardware> hardware = new ArrayList<>();
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false, precision = 10)
@@ -49,36 +44,48 @@ public class Lizenz implements Serializable {
 		this.lid = lid;
 	}
 
-	public String getLizenz() {
-		return lizenz;
+	public String getName() {
+		return name;
 	}
 
-	public void setLizenz(String lizenz) {
-		this.lizenz = lizenz;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getLizenzkey() {
-		return lizenzkey;
+	public String getKey() {
+		return key;
 	}
 
-	public void setLizenzkey(String lizenzkey) {
-		this.lizenzkey = lizenzkey;
+	public void setKey(String key) {
+		this.key = key;
+	}
+	
+	public int getState() {
+		return state;
 	}
 
-	public String getMessage() {
-		return message;
+	public void setState(int state) {
+		this.state = state;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public String getCategorie() {
+		return categorie;
 	}
+
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
+
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((lizenz == null) ? 0 : lizenz.hashCode());
-		result = prime * result + ((lizenzkey == null) ? 0 : lizenzkey.hashCode());
+		result = prime * result + ((categorie == null) ? 0 : categorie.hashCode());
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		result = prime * result + (int) (lid ^ (lid >>> 32));
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + (int) (state ^ (state >>> 32));
 		return result;
 	}
 
@@ -91,18 +98,41 @@ public class Lizenz implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Lizenz other = (Lizenz) obj;
-		if (lizenz == null) {
-			if (other.lizenz != null)
+		if (categorie == null) {
+			if (other.categorie != null)
 				return false;
-		} else if (!lizenz.equals(other.lizenz))
+		} else if (!categorie.equals(other.categorie))
 			return false;
-		if (lizenzkey == null) {
-			if (other.lizenzkey != null)
+		if (key == null) {
+			if (other.key != null)
 				return false;
-		} else if (!lizenzkey.equals(other.lizenzkey))
+		} else if (!key.equals(other.key))
+			return false;
+		if (lid != other.lid)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (state != other.state)
 			return false;
 		return true;
 	}
+
+	@ManyToMany(mappedBy = "lizenz")
+	@JsonIgnore
+	public List<Hardware> getHardware() {
+		return hardware;
+	}
+
+	public void setHardware(List<Hardware> hardware) {
+		this.hardware = hardware;
+	}
+
+	
+
+	
 	
 	
 	

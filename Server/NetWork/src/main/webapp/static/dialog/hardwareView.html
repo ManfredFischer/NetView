@@ -1,4 +1,9 @@
 <div style="min-width:600px;">
+    <div ng-show="!hardwareActiv" style="padding:10;font-size:16px;background:#f98e22">
+		<img ng-src="/NetView/static/img/hardware.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> {{hardwareInformation.hostname}} </span>
+    	
+	</div>
+    
     <div ng-show="hardwareActiv" layout-gt-sm="row" style="background: green;padding: 10px;height: 80px">
         <md-input-container class="md-block" flex-gt-sm>
             <label>Hostname (Teamviewer)</label>
@@ -113,11 +118,6 @@
         <md-tab ng-if="showHardwareOwnerDetails" label="{{titleHardwareOwner}}">
             <div style="background: white;padding: 10px">
 
-                <md-input-container ng-show="!hardwareActiv" class="md-block" flex-gt-sm>
-                    <label>Hostname (Teamviewer)</label>
-                    <input readonly ng-model="hardwareInformationOwner.hostname" />
-                </md-input-container>
-
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Model</label>
@@ -162,11 +162,6 @@
         <md-tab ng-if="showHardwareDetails" label="{{titleHardware}}">
             <div style="background: white;padding: 10px">
 
-                <md-input-container ng-show="!hardwareActiv" class="md-block" flex-gt-sm>
-                    <label>Hostname (Teamviewer)</label>
-                    <input readonly ng-model="hardwareInformation.hostname" />
-                </md-input-container>
-
                 <div layout-gt-sm="row">
                     <md-input-container flex class="md-block" flex-gt-sm>
                         <label>Model</label>
@@ -179,12 +174,12 @@
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
-                    <md-input-container flex class="md-block" flex-gt-sm>
+                    <md-input-container flex="70" class="md-block" flex-gt-sm>
                         <label>CPU</label>
                         <input readonly ng-model="hardwareInformation.cpu">
                     </md-input-container>
 
-                    <md-input-container flex class="md-block" flex-gt-sm>
+                    <md-input-container flex="30" class="md-block" flex-gt-sm>
                         <label>RAM</label>
                         <input readonly ng-model="hardwareInformation.ram">
                     </md-input-container>
@@ -196,66 +191,39 @@
                 </md-input-container>
             </div>
         </md-tab>
-        <md-tab label="Log">
-            <div style="background: white;padding: 10px">
-                <div layout="row" layout-wrap>
-                    <div flex="10" class="flex">ID</div>
-                    <div flex="30" class="flex">Name</div>
-                    <div flex="30" class="flex">Status</div>
-                    <div flex="30" class="flex">Datum</div>
-                </div>
-                <hr />
-                <md-list-item ng-repeat="hw in hardware" ng-click="showHardwareInformation(hw)" class="ms-1-line">
-
-                    <div flex="10 " class="flex ">1</div>
-                    <div flex="30 " class="flex ">Name</div>
-                    <div flex="30 " class="flex ">Status</div>
-                    <div flex="30 " class="flex ">Datum</div>
-
-                </md-list-item>
-            </div>
-        </md-tab>
-
-
-        <md-tab label="Software ">
-            <div style="background: white;padding: 10px ">
-                <div>
-                    <div class="ng-scope layout-row " style="padding-left:10px ">
-                        <div flex="20 " class="flex ">ID</div>
-                        <div class="flex ">Software</div>
-                    </div>
-                    <hr />
-                    <md-list ng-controller="ListCtrl " ng-cloak>
-                        <md-list-item ng-repeat="hw in hardware " class="ms-1-line ">
-                            <div flex="20 " class="flex ">
-                                313
-                            </div>
-                            <div class="flex ">
-                                Software name
-                            </div>
-                        </md-list-item>
-                    </md-list>
-
-                </div>
-            </div>
-        </md-tab>
 
         <md-tab label="Lizenzen ">
-            <div style="background: white;padding: 10px ">
+                    <div layout-gt-sm="row" layout-align="space-between center">
+            			<md-input-container style="width: 80%">
+                		 <label>Lizenz</label>
+                		  <md-select ng-Model="laptop.lid">
+                    		<md-option ng-repeat="laptop in departmentList" value="{{ laptop.id }}">{{laptop.model }}</md-option>
+                		  </md-select>
+            			</md-input-container>
+            			<md-button class="md-raised">Hinzufügen</md-button>
+        			</div>
+            	<div style="padding:10px">
                 <div class="ng-scope layout-row " style="padding-left:10px">
-                    <div flex="10 " class="flex ">ID</div>
                     <div flex="30 " class="flex ">Name</div>
                     <div class="flex ">Key</div>
                 </div>
                 <hr />
-                <md-list ng-controller="ListCtrl " ng-cloak>
-                    <md-list-item ng-repeat="hw in hardware " class="ms-1-line ">
-                        <div flex="10 " class="flex "> 313 </div>
-                        <div flex="30 " class="flex "> name </div>
-                        <div class="flex "> key </div>
-                    </md-list-item>
-                </md-list>
-            </div>
+                <md-list ng-controller="ListCtrl" ng-cloak>
+                		<md-list-item ng-repeat="lizenz in hardwareLizenzen" class="md-2-line">                	 
+                    	  <div flex="30" class="md-list-item-text" layout="column">
+                          {{ lizenz.name }}
+                          </div>
+                          <div flex="55" class="md-list-item-text flex" layout="column">
+                           {{ lizenz.key }}
+                          </div> 
+                          <div flex="15" class="md-list-item-text flex" layout="column">
+                          <md-button >
+            				X
+        				  </md-button>
+                          </div>                          
+                  </md-list-item>
+            	</md-list>
+            	</div>
         </md-tab>
     </md-tabs>
 

@@ -10,7 +10,7 @@ import de.netview.model.Lizenz;
 
 public interface IHardwareService {
 
-	public void insertHardware(HardwareInput hardware);
+	public Hardware insertHardware(Hardware hardware);
 	public List<HardwareData> getAllHardware();
 	public void loginHardware(String hostname, String username);
 	public void logoutHardware(String hostname );

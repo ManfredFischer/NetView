@@ -2,7 +2,7 @@
 <%@ page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<html lang="en">
+<html lang="de">
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,12 +13,20 @@
 
 <body class="body" ng-app="MainPage" ng-cloak ng-controller="ListCtrl as ctrl">
     <md-toolbar class="md-menu-toolbar">
-        <div layout="row">
-            <md-menu-bar>
+        <div layout="row" style="background:#151515">
+        	 <md-menu-bar>
+        	 
+        	     <md-menu>
+                    <a href="main" class="menueStart" >
+                        <img src="/NetView/static/img/reservix.jpg" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:5px"></img>
+                    </a>
+                </md-menu>
+        	    
+           
                 <md-menu>
-                    <button ng-click="$mdMenu.open()">
+                    <div ng-click="$mdMenu.open()" class="menue" >
                         Start
-                    </button>
+                    </div>
                     <md-menu-content>
                         <md-menu-item>
                             <md-button ng-click="showSettings()">
@@ -27,71 +35,69 @@
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item>
-                            <form action="logout" method="post">
-                                <md-button type="submit">Logout</md-button>
-                            </form>
+                            <md-button ng-click="logout()">Logout</md-button> 
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
                 <md-menu>
-                    <button ng-click="$mdMenu.open()">
-                        Netzwerk Verwaltung
-                    </button>
+                    <div ng-click="$mdMenu.open()" class="menue">
+                        Netzwerk
+                    </div>
                     <md-menu-content>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('showNetzwerk')">
-                                Anzeigen
+                                <img src="/NetView/static/img/netzwerk.jpg" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Hardware
                             </md-button>
                         </md-menu-item>
 						<md-menu-item>
                            <md-button ng-click="ctrl.selectMenu('showLizenz')">
-                               Lizenz Anzeigen
+                               <img src="/NetView/static/img/lizenz.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Lizenzen
                            </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('serverAdd')">
-                                Server hinzuf�gen
+                                <img src="/NetView/static/img/hardwareadd.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Hardware hinzuf�gen
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('lizenzAdd')">
-                                Lizenz hinzufügen
+                                <img src="/NetView/static/img/lizenzadd.jpg" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Lizenz hinzufügen
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
                 </md-menu>
                 <md-menu>
-                    <button ng-click="$mdMenu.open()">
-                        User Verwaltung
-                    </button>
+                    <div ng-click="$mdMenu.open()" class="menue">
+                        User
+                    </div>
                     <md-menu-content>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('showUser')">
-                                Anzeigen
+                                <img src="/NetView/static/img/user.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Anzeigen
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('showCreateUser')">
-                                User hinzufügen
+                                <img src="/NetView/static/img/adduser.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> User hinzufügen
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('showUpdateUser')">
-                                User aktualisieren
+                                <img src="/NetView/static/img/updateuser.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> User aktualisieren
                             </md-button>
                         </md-menu-item>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('showDeleteUser')">
-                                User entfernen
+                                <img src="/NetView/static/img/deleteUser.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> User entfernen
                             </md-button>
                         </md-menu-item>
                 </md-menu>
-                <md-menu>
-                    <button ng-click="$mdMenu.open()">
-                        Daten Verwalten
-                    </button>
+                <md-menu class="menue">
+                    <div ng-click="$mdMenu.open()" >
+                        Daten
+                    </div>
                     <md-menu-content>
                         <md-menu-item>
                             <md-button ng-click="ctrl.selectMenu('showVorlagen')">
@@ -122,59 +128,68 @@
                 </md-menu>
             </md-menu-bar>
         </div>
+         <div layout-gt-sm="row" style="background:#F2F2F2;padding:20px;font-size:24px;border-bottom: 1px solid #D8D8D8">
+      		<img ng-src={{menueIcon}} width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> {{infoFeld}}</span>
+    	</div>
+        
     </md-toolbar>
     
-    <md-toolbar style="color:'green'">
-     <div class="md-toolbar-tools">
-      <h2 class="md-flex">{{infoFeld}}</h2>
-     </div>
-    </md-toolbar>
+   
     
     <md-content class="md-padding" ng-show="isLizenzVewaltungSelected">
         <div class="page">
-        
-             <form ng-submit="ctrl.selectUpdateUser(ctrl.searchText,$event)">
-               <md-autocomplete md-item-text="item.display" md-search-text="ctrl.searchUserText"
-                  md-items="item in ctrl.querySearch(ctrl.searchUserText)" placeholder="Search...">
-                 <md-item-template>
-                    <span md-highlight-text="ctrl.searchUserText" md-highlight-flags="^i">{{item.display}}</span>
-                 </md-item-template>
-              </md-autocomplete>
-            </form>
+         	 <md-input-container class="md-block" flex-gt-sm>
+            		<label>Search (Kategorie, Name, Key)</label>
+            		<input ng-model="searchLizenz">
+        	</md-input-container>
             
+            <div class="ng-scope layout-row " style="padding-left:10px">
+                    <div flex="10 " class="flex ">Name</div>
+                    <div flex="10 " class="flex ">Kategorie</div>
+                    <div flex="10 " class="flex ">Status</div>
+                    <div class="flex ">Key</div>
+            </div>
+            <hr />
+                
             <md-list ng-controller="ListCtrl" ng-cloak>
-                <md-list-item ng-repeat="hw in hardware" ng-click="showHardwareInformation(hw)" class="md-2-line">
-                    <div flex="10" class="md-list-item-text" layout="column">
-                        <h3>{{ hw.hostname }}</h3>
-                        <h4>{{ hw.aktivUsername }}</h4>
+                <md-list-item ng-repeat="lizenz in ctrl.getLizenz()" class="md-1-line">
+                    <div flex="10" class="md-list-item-text flex" layout="column">
+                        {{ lizenz.name }}
                     </div>
-                    <div flex="30" class="md-list-item-text" layout="column">
-                        <h3>{{ hw.model}}</h3>
-                        <h4>{{ hw.sn }}</h4>
+                    <div flex="10" class="md-list-item-text flex" layout="column">
+                        {{ lizenz.categorie }}
                     </div>
-                    <div class="md-list-item-text" layout="column">
-                        <h3>{{ hw.cpu}}</h3>
-                        <h4>{{ hw.ram }}</h4>
+                    <div flex="10" class="md-list-item-text flex" layout="column">
+                        {{ lizenz.state }}
                     </div>
+                    <div class="md-list-item-text flex" layout="column">
+                        {{ lizenz.key }}
+                    </div>
+                    <div flex="10" class="md-list-item-text flex" layout="column">
+                     <md-button class="md-raised" style="margin-bottom:10px" ng-click="" md-colors="{color: 'red'}">Dell</md-button>
+                    </div> 
                 </md-list-item>
             </md-list>
+             <div ng-show="lizenzViewPages">
+            <hr />
+            <div class="ng-scope layout-row " style="padding-left:10px">
+                    <div flex="10 " class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="" md-colors="{color: 'green'}">Prev</md-button></div>
+                    <div class="flex "></div>
+                    <div flex="10 " class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="" md-colors="{color: 'green'}">Next</md-button></div>
+            </div>
+            </div>
         </div>
     </md-content>
 
-    <md-content class="md-padding" ng-show="isNetzwerkVewaltungSelected">
+    <md-content ng-show="isNetzwerkVewaltungSelected">
         <div class="page">
-        
-             <form ng-submit="ctrl.selectUpdateUser(ctrl.searchText,$event)">
-               <md-autocomplete md-item-text="item.display" md-search-text="ctrl.searchUserText"
-                  md-items="item in ctrl.querySearch(ctrl.searchUserText)" placeholder="Search...">
-                 <md-item-template>
-                    <span md-highlight-text="ctrl.searchUserText" md-highlight-flags="^i">{{item.display}}</span>
-                 </md-item-template>
-              </md-autocomplete>
-            </form>
+            <md-input-container class="md-block" flex-gt-sm>
+            		<label>Search...</label>
+            		<input ng-model="searchHost">
+        	</md-input-container>
             
             <md-list ng-controller="ListCtrl" ng-cloak>
-                <md-list-item ng-repeat="hw in hardware" ng-click="showHardwareInformation(hw)" class="md-2-line">
+                <md-list-item ng-repeat="hw in ctrl.getNetzwerkHost()" ng-click="showHardwareInformation(hw)" class="md-2-line">
                     <div flex="10" class="md-list-item-text" layout="column">
                         <h3>{{ hw.hostname }}</h3>
                         <h4>{{ hw.aktivUsername }}</h4>
@@ -187,14 +202,25 @@
                         <h3>{{ hw.cpu}}</h3>
                         <h4>{{ hw.ram }}</h4>
                     </div>
+                    <div flex="10" class="md-list-item-text" layout="column">
+                     <md-button class="md-raised" style="margin-bottom:10px" ng-click="delHardwareInformation(hw)" md-colors="{color: 'red'}">Dell</md-button>
+                    </div> 
                 </md-list-item>
             </md-list>
+            
+            <div ng-show="hardwareViewPages">
+            <hr />
+            <div class="ng-scope layout-row " style="padding-left:10px">
+                    <div flex="10 " class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="ctrl.prevNetzwerkPage()" md-colors="{color: 'green'}">Prev</md-button></div>
+                    <div class="flex "></div>
+                    <div flex="10 " class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="ctrl.nextNetzwerkPage()" md-colors="{color: 'green'}">Next</md-button></div>
+            </div>
+            </div>
         </div>
     </md-content>
 
     <md-content class="md-padding" ng-show="isUserVerwaltungSelected">
-        <div class="page">
-            <md-content class="page-container-tab">
+       
                 <div layout-gt-sm="row" layout-align="center center">
 
                     <div>
@@ -299,8 +325,6 @@
                         </md-card>
                     </div>
                 </div>
-            </md-content>
-        </div>
     </md-content>
 
 

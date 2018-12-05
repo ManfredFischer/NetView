@@ -61,12 +61,13 @@
     
     <changeSet author="MaFischer" id="1423057244463-109">
 		<createTable tableName="LIZENZ">
-			<column name="lizenzkey" type="VARCHAR(1020)" />
-			<column name="lizenz" type="VARCHAR(1020)" />
-			<column name="message" type="VARCHAR(1020)" />
 			<column name="lid" type="BIGINT" autoIncrement="true">
 				<constraints nullable="false" />
 			</column>
+			<column name="name" type="VARCHAR(1020)" />
+			<column name="key" type="VARCHAR(1020)" />
+			<column name="categorie" type="VARCHAR(1020)" />
+			<column name="state" type="INT" />
 		</createTable>
 	</changeSet>
 
@@ -87,12 +88,10 @@
     
     <changeSet author="MaFischer" id="1423057244463-110">
 		<createTable tableName="SOFTWARE">
-			<column name="name" type="VARCHAR(1020)">
-				<constraints unique="true"/>
-			</column>
 			<column name="sid" type="BIGINT" autoIncrement="true">
 				<constraints unique="true" nullable="false" />
 			</column>
+			<column name="name" type="VARCHAR(1020)"/>
 		</createTable>
 	</changeSet>
 	

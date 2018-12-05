@@ -14,7 +14,8 @@ public class SoftwareDao extends AbstractDao<Software> implements ISoftwareDao {
 
 	@Override
 	public void insertSoftware(Software software) {
-		getSession().saveOrUpdate(software);
+		getSession().persist(software);
+		getSession().flush();
 	}
 
 	@Override

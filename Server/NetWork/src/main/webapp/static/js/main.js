@@ -4,7 +4,7 @@ angular.module('MainPage', ['ngMaterial'])
 		'ListCtrl',
 		function ($scope, $mdDialog, $http, $timeout, $q) {
 			$scope.people = [];
-
+			$scope.menueIcon = "/NetView/static/img/netzwerk.jpg";
 			$scope.doaminSelected = {};
 			$scope.userVerwaltung = {
 				mode: "Update"
@@ -21,7 +21,7 @@ angular.module('MainPage', ['ngMaterial'])
 			$scope.isUserVerwaltungSelected = false;
 			$scope.isUserVerwaltungUpdateSelected = false;
 			$scope.isUserVerwaltungCreateSelected = false;
-			$scope.infoFeld = "Netzwerk Verwaltung";
+			$scope.infoFeld = "Hardware";
 
 			$scope.showUserRefreshButton = false;
 			$scope.showUserCreateButton = false;
@@ -30,6 +30,8 @@ angular.module('MainPage', ['ngMaterial'])
 			$scope.showUserSearch = true;
 			$scope.showUserDisableDate = false;
 			$scope.isUserDisableSelected = false;
+			
+			$scope.valueSearchNetzwerkVerwaltung = "";
 
 
 			$scope.monitorCount = [1, 2, 3, 4];
@@ -44,17 +46,36 @@ angular.module('MainPage', ['ngMaterial'])
 			$scope.departmentList = [];
 			$scope.LocationList = [];
 
+			$scope.hardwareViewPages = [];
+			$scope.netzwerkPage = 1;
 			$scope.settings = {};
 			$scope.hardware = [];
+			$scope.hardwareView = [];
+			$scope.hardwareLizenzen;
 			$scope.selectedUser = "";
 			$scope.searchUpdateName = '';
 			$scope.storeUserInformation = {};
 			$scope.selectedHardware;
+			$scope.searchHost = "";
+			
+			$scope.date = new Date().toString().substr(4,17);
 
 			$scope.hardwareInformationOwner = {};
 			$scope.hardwareInformation = {};
 			$scope.userInformation = {};
 			$scope.userInformationAktiv = {};
+			
+			$scope.hardwareViewPages = false;
+			$scope.lizenzen = [];
+			$scope.lizenz = {
+					name : '',
+					key : '',
+					categorie : ''	
+			};
+			$scope.lizenzViewPages = false;
+			$scope.lizenzPages ={};
+			$scope.lizenzPage = 1;
+			$scope.searchLizenz = '';
 
 			$scope.showHardwareOwnerDetails = false;
 			$scope.showHardwareDetails = false;
@@ -73,7 +94,22 @@ angular.module('MainPage', ['ngMaterial'])
 
 			var self = this;
 
-
+			$scope.addLizenz = function(){
+				$http({
+					method: 'POST',
+					scope: $scope,
+					url: 'lizenz',
+					data : $scope.lizenz,
+				}).then(function successCallback(response) {
+					$scope.lizenz = {
+							name : '',
+							key : '',
+							categorie : ''	
+					}
+				});			
+			}
+			
+			
 			$scope.findUser = function (user) {
 				return $scope.findUserByName(user);
 			}
@@ -115,7 +151,6 @@ angular.module('MainPage', ['ngMaterial'])
 			$http({
 				method: 'GET',
 				scope: $scope,
-				sync: false,
 				url: 'location'
 			}).then(function successCallback(response) {
 					response.data.forEach(function (data) {
@@ -129,6 +164,27 @@ angular.module('MainPage', ['ngMaterial'])
 							'Fehler beim Laden der Daten')
 						.ariaLabel('Error').ok('OK')
 						.targetEvent(event));
+				}
+			);
+			
+			$http({
+				method: 'GET',
+				scope: $scope,
+				url: 'lizenz'
+			}).then(function successCallback(response) {
+					response.data.forEach(function (data) {
+						
+						if (data.state == 0){
+							data.state = "Frei";
+						} else if (data.state == 1){
+							data.state = "in Verwendung"
+						} else if (data.state == 2){
+							data.state = "mehrfach in Verwendung";
+						}
+						response.config.scope.lizenzen.push(data);
+					});
+					debugger
+					$scope.setLizenzViewPages(response.config.scope.lizenzen);
 				}
 			);
 
@@ -178,12 +234,14 @@ angular.module('MainPage', ['ngMaterial'])
 					$scope.isNetzwerkVewaltungSelected = false;
 					$scope.isUserVerwaltungSelected = false;
 					$scope.isLizenzVewaltungSelected = true;
-					$scope.infoFeld = "Lizenz Verwaltung";
+					$scope.menueIcon = "/NetView/static/img/lizenz.png";
+					$scope.infoFeld = "Lizenz";
 				} else if (selectMenue == 'showNetzwerk') {
 					$scope.isNetzwerkVewaltungSelected = true;
 					$scope.isLizenzVewaltungSelected = false;
 					$scope.isUserVerwaltungSelected = false;
-					$scope.infoFeld = "Netzwerk Verwaltung";
+					$scope.infoFeld = "Hardware";
+					$scope.menueIcon = "/NetView/static/img/netzwerk.jpg";
 				} else if (selectMenue == 'showUpdateUser') {
 					$scope.isNetzwerkVewaltungSelected = false;
 					$scope.isUserVerwaltungSelected = true;
@@ -191,6 +249,7 @@ angular.module('MainPage', ['ngMaterial'])
 					$scope.isUserVerwaltungUpdateSelected = true;
 					$scope.isUserVerwaltungCreateSelected = false;
 					$scope.infoFeld = "User Aktualisieren";
+					$scope.menueIcon = "/NetView/static/img/updateuser.png";
 				} else if (selectMenue == 'showCreateUser') {
 					$scope.isNetzwerkVewaltungSelected = false;
 					$scope.isUserVerwaltungSelected = true;
@@ -199,6 +258,7 @@ angular.module('MainPage', ['ngMaterial'])
 					$scope.isUserVerwaltungUpdateSelected = false;
 					$scope.isUserVerwaltungCreateSelected = true;
 					$scope.infoFeld = "User hinzufügen";
+					$scope.menueIcon = "/NetView/static/img/adduser.png";
 				} else if (selectMenue == 'showUser') {
 					$scope.isNetzwerkVewaltungSelected = false;
 					$scope.isUserVerwaltungSelected = true;
@@ -206,6 +266,7 @@ angular.module('MainPage', ['ngMaterial'])
 					$scope.isLizenzVewaltungSelected = false;
 					$scope.isUserVerwaltungCreateSelected = false;
 					$scope.infoFeld = "User";
+					$scope.menueIcon = "/NetView/static/img/user.png";
 				} else if (selectMenue == 'showDeleteUser') {
 					$scope.isNetzwerkVewaltungSelected = false;
 					$scope.isUserVerwaltungSelected = true;
@@ -217,6 +278,7 @@ angular.module('MainPage', ['ngMaterial'])
 					$scope.showUserDisableDate = true;
 					$scope.isUserDisableSelected = true;
 					$scope.infoFeld = "User Austritt";
+					$scope.menueIcon = "/NetView/static/img/deleteUser.png";
 				} else if (selectMenue == 'showVorlagen') {
 					$mdDialog.show({
 							scope: $scope.$new(),
@@ -286,6 +348,21 @@ angular.module('MainPage', ['ngMaterial'])
 				}
 			}
 
+			$scope.delHardwareInformation = function (hardware) {
+				
+			}
+			
+			$scope.logout = function(){
+				$http({
+					method: 'POST',
+					scope: $scope,
+					url: 'logout'
+				}).then(
+						function successCallback(response) {
+							window.location = "NetView/login"
+						});
+			}
+			
 			$scope.showHardwareInformation = function (hardware) {
 				$scope.titleHardware = "Hardware";
 				$scope.hardwareInformation = hardware;
@@ -336,18 +413,15 @@ angular.module('MainPage', ['ngMaterial'])
 					$scope.showEnabledUserDetails = true;
 					$scope.titleUserAktiv = "Aktiver User";
 				}
-
+				
+				
+				$scope.hardwareLizenzen = hardware.lizenz;
 
 				$mdDialog.show({
 						scope: $scope.$new(),
 						templateUrl: 'static/dialog/hardwareView.html',
 						clickOutsideToClose: true,
 						fullscreen: $scope.customFullscreen
-					})
-					.then(function () {
-
-					}, function () {
-
 					});
 			};
 
@@ -364,11 +438,6 @@ angular.module('MainPage', ['ngMaterial'])
 								scope: $scope.$new(),
 								templateUrl: 'static/dialog/settings.html',
 								clickOutsideToClose: true
-							})
-							.then(function () {
-
-							}, function () {
-
 							});
 					});
 			}
@@ -377,15 +446,7 @@ angular.module('MainPage', ['ngMaterial'])
 
 				$http.post("settings", $scope.settings, {
 					'Content-Type': 'application/json'
-				}).then(
-					// @ts-ignore
-					function errorCallback(response) {
-						$mdDialog.show($mdDialog.alert()
-							.title('Fehler').textContent(
-								'Fehler beim Speicher der Daten')
-							.ariaLabel('Error').ok('OK')
-							.targetEvent(event));
-					});
+				});
 			}
 
 			self.showCreateDetails = function () {
@@ -431,6 +492,8 @@ angular.module('MainPage', ['ngMaterial'])
 				});
 			};
 
+			$scope.hardwarePages = {};
+			
 			$http({
 				method: 'GET',
 				scope: $scope,
@@ -439,17 +502,66 @@ angular.module('MainPage', ['ngMaterial'])
 			}).then(function successCallback(response) {
 					response.data.forEach(function (data) {
 						response.config.scope.hardware.push(data);
-						self.stateHardware = loadAllHardware($scope);
 					});
-				},
-				// @ts-ignore
-				function errorCallback(response) {
-					$mdDialog.show($mdDialog.alert()
-						.title('Fehler').textContent(
-							'Fehler beim Laden der Daten')
-						.ariaLabel('Error').ok('OK')
-						.targetEvent(event));
+					
+					response.config.scope.setHardwareViewPages(response.data);
 				});
+			
+			$scope.setHardwareViewPages = function(hardware){
+				
+				var result = {};
+				if (hardware.length >= 11){
+					$scope.hardwareViewPages = true;	
+					var page = [];
+					var pageAmount = 7;
+					var pageSize=1;
+					for (var i=0;i<hardware.length;i++){
+						if (pageAmount > 0){
+							page.push(hardware[i]); 
+							pageAmount--;
+						}else{
+							$scope.hardwarePages[pageSize] = page;
+							pageSize++;
+							pageAmount = 7;
+							var page = [];
+						}
+					}
+					
+					$scope.hardwarePages[pageSize] = page;
+					
+				}else{
+					$scope.hardwareViewPages = false;
+					$scope.hardwarePages[1] = hardware;
+				}
+			}
+			
+			$scope.setLizenzViewPages = function(lizenzen){
+				
+				var result = {};
+				if (lizenzen.length >= 11){
+					$scope.lizenzViewPages = true;	
+					var page = [];
+					var pageAmount = 7;
+					var pageSize=1;
+					for (var i=0;i<lizenzen.length;i++){
+						if (pageAmount > 0){
+							page.push(lizenzen[i]); 
+							pageAmount--;
+						}else{
+							$scope.hardwarePages[pageSize] = page;
+							pageSize++;
+							pageAmount = 7;
+							var page = [];
+						}
+					}
+					
+					$scope.lizenzPages[pageSize] = page;
+					
+				}else{
+					$scope.lizenzViewPages = false;
+					$scope.lizenzPages[1] = lizenzen;
+				}
+			}
 
 			self.updateUserInformation = function () {
 				$http.put("ldap/user", $scope.userInformation, {
@@ -508,9 +620,88 @@ angular.module('MainPage', ['ngMaterial'])
 							.ok('OK').targetEvent(event));
 				}
 			}
-
-
-
+			
+			self.searchNetzwerkHost = function(value){
+				$scope.searchHost = value;
+			}
+			
+			self.nextNetzwerkPage = function(){
+				if (Object.keys($scope.hardwarePages).length > $scope.netzwerkPage){
+					$scope.netzwerkPage++;
+				}
+			}
+			
+			self.prevNetzwerkPage = function(){
+				if (1 < $scope.netzwerkPage){
+					$scope.netzwerkPage--;
+				}
+			}
+			
+			self.nextLizenzPage = function(){
+				if (Object.keys($scope.lizenzPages).length > $scope.lizenzPage){
+					$scope.lizenzPage++;
+				}
+			}
+			
+			self.prevLizenzPage = function(){
+				if (1 < $scope.lizenzPage){
+					$scope.lizenzPage--;
+				}
+			}
+			
+			self.getNetzwerkHost = function(){
+			 var lowerCaseSearchHost = $scope.searchHost.toLowerCase();
+			 if (lowerCaseSearchHost != ''){					
+				var result = new Array();
+				$scope.netzwerkPage = 1;
+				for (var i=0;i<$scope.hardware.length;i++){
+					if ($scope.hardware[i].hostname != null && $scope.hardware[i].hostname.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
+						result.push($scope.hardware[i]);
+					} else if ($scope.hardware[i].owner != null && $scope.hardware[i].owner.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
+						result.push($scope.hardware[i]);
+					} else if ($scope.hardware[i].aktivUsername != null && $scope.hardware[i].aktivUsername.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
+						result.push($scope.hardware[i]);
+					} else if ($scope.hardware[i].sn != null && $scope.hardware[i].sn.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
+						result.push(data);
+					} else if ($scope.hardware[i].model != null && $scope.hardware[i].model.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
+						result.push($scope.hardware[i]);
+					} else if ($scope.hardware[i].ram != null && $scope.hardware[i].ram.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
+						result.push($scope.hardware[i]);
+					}
+				}
+				
+				$scope.setHardwareViewPages(result);
+				return $scope.hardwarePages[$scope.netzwerkPage];	
+			 }else{
+			  $scope.setHardwareViewPages($scope.hardware);
+			  return $scope.hardwarePages[$scope.netzwerkPage];	
+			 }
+			}
+			
+			self.getLizenz = function(){
+				 var lowerCaseSearchLizenz = $scope.searchLizenz.toLowerCase();
+				 if (lowerCaseSearchLizenz != ''){					
+					var result = new Array();
+					$scope.lizenzPage = 1;
+					for (var i=0;i<$scope.lizenzen.length;i++){
+						if ($scope.lizenzen[i].name != null && $scope.lizenzen[i].name.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
+							result.push($scope.lizenzen[i]);
+						} else if ($scope.lizenzen[i].key != null && $scope.lizenzen[i].key.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
+							result.push($scope.lizenzen[i]);
+						} else if ($scope.lizenzen[i].categorie != null && $scope.lizenzen[i].categorie.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
+							result.push($scope.lizenzen[i]);
+						} else if ($scope.lizenzen[i].state != null && $scope.lizenzen[i].state.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
+							result.push($scope.lizenzen[i]);
+						} 
+					}
+					
+					$scope.setLizenzViewPages(result);
+					return $scope.lizenzPages[$scope.lizenzPage];	
+				 }else{
+					$scope.setLizenzViewPages($scope.lizenzen);
+					return $scope.lizenzPages[$scope.lizenzPage];	
+				 }
+			}
 
 			self.querySearch = querySearch;
 
@@ -539,29 +730,7 @@ angular.module('MainPage', ['ngMaterial'])
 					return (stateUser.value.indexOf(lowercaseQuery) > -1);
 				};
 			}
-
-			// @ts-ignore
-			function queryHardwareSearch(query) {
-				var results = query ? self.stateHardware.filter(createHardwareFilterFor(query)) : self.stateHardware,
-					deferred;
-				if (self.simulateQuery) {
-					deferred = $q.defer();
-					$timeout(function () {
-						deferred.resolve(results);
-					}, Math.random() * 1000, false);
-					return deferred.promise;
-				} else {
-					return results;
-				}
-			}
-
-			function createHardwareFilterFor(query) {
-				// @ts-ignore
-				var lowercaseQuery = angular.lowercase(query);
-				return function filterFn(stateHardware) {
-					return (stateHardware.value.indexOf(lowercaseQuery) > -1);
-				};
-			}
+			
 
 			// @ts-ignore
 			function loadAllUser(scope) {
@@ -573,14 +742,6 @@ angular.module('MainPage', ['ngMaterial'])
 				});
 			}
 
-			// @ts-ignore
-			function loadAllHardware(scope) {
-				return $scope.hardware.map(function (hardware) {
-					return {
-						value: hardware.hostname.toLowerCase(),
-						display: hardware.hostname
-					};
-				});
-			}
+			
 
 		});

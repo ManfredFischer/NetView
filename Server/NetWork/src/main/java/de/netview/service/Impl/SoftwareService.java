@@ -10,21 +10,16 @@ import de.netview.model.Software;
 import de.netview.service.ISoftwareService;
 
 @Service
-@Transactional
 public class SoftwareService implements ISoftwareService {
 
 	@Autowired
 	private ISoftwareDao softwareDao;
 
 	@Override
-	public Software insertSoftware(Software software) {
-		Software softwareTemp = softwareDao.getSoftwareByName(software.getName());
-		if (softwareTemp == null) {
-			softwareDao.insertSoftware(software);
-		}else {
-			software = softwareTemp;
-		}
-		return software;				
+	@Transactional
+	public void insertSoftware(Software software) {
+		softwareDao.insertSoftware(software);
+						
 	}
 
 }

@@ -8,6 +8,6 @@ import de.netview.model.Software;
 
 public interface ISoftwareService {
 	
-	public Software insertSoftware(Software software);
+	public void insertSoftware(Software software);
 
 }

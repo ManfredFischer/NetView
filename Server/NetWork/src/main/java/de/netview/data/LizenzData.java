@@ -9,9 +9,10 @@ public class LizenzData implements Serializable{
 	 */
 	private static final long serialVersionUID = -2333159285303268420L;
 	private long lid;
-	private String lizenz;
-	private String lizenzkey;
-	private String message;
+	private String name;
+	private String key;
+	private long state;
+	private String categorie;
 	
 	public long getLid() {
 		return lid;
@@ -19,24 +20,32 @@ public class LizenzData implements Serializable{
 	public void setLid(long lid) {
 		this.lid = lid;
 	}
-	public String getLizenz() {
-		return lizenz;
+	public String getName() {
+		return name;
 	}
-	public void setLizenz(String lizenz) {
-		this.lizenz = lizenz;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getLizenzkey() {
-		return lizenzkey;
+	public String getKey() {
+		return key;
 	}
-	public void setLizenzkey(String lizenzkey) {
-		this.lizenzkey = lizenzkey;
+	public void setKey(String key) {
+		this.key = key;
 	}
-	public String getMessage() {
-		return message;
+	public long getState() {
+		return state;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setState(long state) {
+		this.state = state;
 	}
+	public String getCategorie() {
+		return categorie;
+	}
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
+	
+	
 	
 	
 

@@ -35,7 +35,11 @@ html {
 }
 
 .page {
-    margin: 10px;
+	margin: 20px;
+    padding: 10px;
+    border : 10px;
+    border-radius: 10px;    
+    box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.25);
 }
 
 .page-tab {
@@ -110,8 +114,37 @@ md-switch.md-checked .md-ink-ripple {
     /* selected switch ripple color */
 }
 
+.menue {
+	color: #BDBDBD;
+	margin: 15px;
+	font-size : 20px;
+}
+
+.menueStart {
+	text-align: center;
+	color: f98e22;
+	margin: 15px;
+	font-size : 20px;
+}
+
+.menueStart:hover {
+	text-align: center;
+	cursor:pointer;
+}
+
+.menue:hover {
+	color: white;
+	font-size : 20px;
+	cursor:pointer;
+}
+
+
 #button {
     position: absolute;
     bottom: 10;
     width: 100%;
+}
+
+.md-1-line:hover {
+	background:#F2F2F2;
 }

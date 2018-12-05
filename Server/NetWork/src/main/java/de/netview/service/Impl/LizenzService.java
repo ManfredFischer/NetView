@@ -1,5 +1,7 @@
 package de.netview.service.Impl;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,15 +13,42 @@ import de.netview.model.Lizenz;
 import de.netview.service.ILizenzService;
 
 @Service
-@Transactional
 public class LizenzService implements ILizenzService {
-	
+
 	@Autowired
-	private ILizenzDao hardwareLizenzDao;
+	private ILizenzDao lizenzDao;
 
 	@Override
+	@Transactional
 	public void insertLizenz(Lizenz lizenz) {
-		hardwareLizenzDao.insertLizenz(lizenz);		
+
+		Lizenz aktivLizenz = lizenzDao.getLizenzByName(lizenz.getName(), lizenz.getKey());
+
+		if (aktivLizenz == null) {
+			lizenz.setState(0);
+			lizenzDao.insertLizenz(lizenz);
+		} else {
+			checkLizenz(aktivLizenz);
+			lizenzDao.updateLizenz(aktivLizenz);
+		}
+
+	}
+	
+	@Override
+	public void checkLizenz(Lizenz lizenz) {
+		if (lizenz.getHardware().size() > 1) {
+			lizenz.setState(2);
+		} else if (lizenz.getHardware().size() == 1) {
+			lizenz.setState(1);
+		} else {
+			lizenz.setState(1);
+		}
+	}
+
+	@Override
+	@Transactional
+	public List<Lizenz> getLizenz() {
+		return lizenzDao.getLizenz();
 	}
 
 }

@@ -101,9 +101,10 @@ public class HardwareData implements Serializable {
 		for (Lizenz lizenzInfo : lizenz) {
 			LizenzData lizenzData = new LizenzData();
 			lizenzData.setLid(lizenzInfo.getLid());
-			lizenzData.setLizenz(lizenzInfo.getLizenz());
-			lizenzData.setLizenzkey(lizenzInfo.getLizenzkey());
-			lizenzData.setMessage(lizenzInfo.getMessage());
+			lizenzData.setName(lizenzInfo.getName());
+			lizenzData.setKey(lizenzInfo.getKey());
+			lizenzData.setCategorie(lizenzInfo.getCategorie());
+			lizenzData.setState(lizenzInfo.getState());
 			this.lizenz.add(lizenzData);
 		}
 	}

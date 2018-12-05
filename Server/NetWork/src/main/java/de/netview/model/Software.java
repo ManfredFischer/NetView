@@ -29,53 +29,63 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "SOFTWARE")
 public class Software implements Serializable{
 	
-	private long sid;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5579720199600132350L;
+	private Long sid;
 	private String name;
-	private List<Hardware> hardware = new ArrayList<Hardware>();
-	
-	public Software() {
-		
-	}
-	
-	public Software(String name) {
-		this.name = name;
-	}
-	
-	
-	@ManyToMany(fetch = FetchType.LAZY,
-    cascade = {
-        CascadeType.PERSIST,
-        CascadeType.MERGE
-    },
-    mappedBy = "software")
-	@JsonIgnore
-	public List<Hardware> getHardware() {
-		return hardware;
-	}
-	
-	@JsonIgnore
-	public void setHardware(List<Hardware> hardware) {
-		this.hardware = hardware;
-	}
 	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(unique = true, nullable = false, precision = 10)
-	public long getSid() {
+	public Long getSid() {
 		return sid;
 	}
 	
-	public void setSid(long sid) {
+	public void setSid(Long sid) {
 		this.sid = sid;
 	}
 	
 
-    @Column(unique = true)
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + (int) (sid ^ (sid >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Software other = (Software) obj;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (sid != other.sid)
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Software [sid=" + sid + ", name=" + name + "]";
 	}
 	
 	
