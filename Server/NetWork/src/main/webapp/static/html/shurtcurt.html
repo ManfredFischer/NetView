@@ -1,0 +1,43 @@
+<div layout-gt-sm="row" class="shortcut">
+ 		<div layout-gt-sm="row" style="background-color:#D8D8D8">
+      		<md-button ng-show="{{systemVerwaltung}}" -button title="{{translation.shortcurt.clients}}" ng-click="selectMenu('showClients')">
+                <img src="/NetView/static/img/ClientsIcon.png" width="25px" height="25px" style="vertical-align:middle"></img><span style="font-size: 18px"></span><span style="margin-left:10px;color:{{selectedHardwareColor}}">{{translation.shortcurt.clients}}</span>
+            </md-button>
+      		<md-button ng-click="selectMenu('showServer')">
+               <img  src="/NetView/static/img/server.png" width="25px" height="25px" style="vertical-align:middle"></img> <span style="font-size: 18px"></span><span style="margin-left:10px;color:{{selectedServerColor}}">{{translation.shortcurt.netz}}</span>
+            </md-button>
+      		<md-button  ng-click="selectMenu('showLizenz')">
+               <img src="/NetView/static/img/License.png" width="20px" height="25px" style="vertical-align:middle"></img> <span style="font-size: 18px"></span><span style="margin-left:10px;color:{{selectedLizenzColor}}">{{translation.shortcurt.lizenz}}</span>
+            </md-button>
+            <md-button ng-click="selectMenu('showUser')">
+               <img src="/NetView/static/img/user.png" width="25px" height="25px" style="vertical-align:middle"></img> <span style="font-size: 18px"></span><span style="margin-left:10px;color:{{selectedUserColor}}">{{translation.menue.showUser}}</span>
+            </md-button>
+		</div>
+		<div layout-gt-sm="row" flex style="background-color:#E6E6E6">
+            <div flex></div>
+            <md-button ng-if="false" ng-click="selectMenu('showDeleteUser')">
+                                <img src="/NetView/static/img/DellUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.delUser}}
+                   </md-button>
+                  <md-button ng-if="false" ng-click="selectMenu('showCreateUser')">
+                     <img src="/NetView/static/img/AddUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addUser}}
+                  </md-button>
+                  <md-button ng-if="false" ng-click="selectMenu('showUpdateUser')">
+                     <img src="/NetView/static/img/UpdateUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.refreshUser}}
+                  </md-button>
+                  <md-button ng-if="isNetzwerkVewaltungSelected || isServerVerwaltungSelected" ng-click="selectMenu('serverAdd')">
+                      <img src="/NetView/static/img/AddHardware.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addHardware}}
+                  </md-button>
+                  <md-button ng-if="isLizenzVewaltungSelected" ng-click="selectMenu('lizenzAdd')">
+                     <img src="/NetView/static/img/AddLicense.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addLizenze}}
+                  </md-button>
+            
+            <div flex></div>
+            <md-input-container flex-gt-sm style="max-width:300px" ng-show="{{systemVerwaltung}}" >
+                <label>{{translation.default.location}}</label>
+                <md-select aria-label="ShowHideAccountant" ng-Model="showLocation" ng-change="setLocationPage()">
+                 <md-option ng-repeat="location in LocationList" value="{{ location.lid }}">{{location.displayname }}
+                 </md-option>
+                </md-select>
+            </md-input-container> 
+          </div>
+</div>

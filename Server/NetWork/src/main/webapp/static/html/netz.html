@@ -1,0 +1,54 @@
+<md-content ng-show="isServerVerwaltungSelected">
+        <div class="page">        	
+        	<div layout-gt-sm="row" layout-align="space-between center">
+             
+             <md-input-container class="md-block" flex-gt-sm style="margin-right:25px">
+            		<label>{{translation.default.search}}</label>
+            		<input ng-model="searchHostServer"  ng-change="setHardwarePage()">
+             </md-input-container>
+             
+               <md-checkbox md-no-ink ng-model="showAllServer" ng-change="setHardwarePage()" class="md-primary" style="width:120px" >
+                {{translation.default.showAll}}		
+          	   </md-checkbox>
+              
+        	</div>
+            
+            <div class="ng-scope layout-row " style="padding-left:10px">
+                    <div flex="10 " class="flex ">{{translation.infoTable.hostname}}</div>
+                    <div flex="40">{{translation.infoTable.hardwareInfo}}</div>
+                    <div flex="45">{{translation.infoTable.hardwareDescription}}</div>
+            </div>
+            <hr />
+            
+            <md-list ng-cloak>
+                <md-list-item ng-repeat="hw in ctrl.getNetzwerkHost('server', serverVerwaltungSelectedLocation)"  ng-click="showHardwareInformation(hw.hid)" class="md-2-line">
+                    <div flex="10" class="md-list-item-text" layout="column">
+                        <h3>{{ hw.hostname }}</h3>
+                        <h4>{{ hw.ip }}</h4>
+                    </div>
+                    <div flex="40" class="md-list-item-text" layout="column">
+                        <h3>{{ hw.model}}</h3>
+                        <h4>{{ hw.sn }}</h4>
+                    </div>
+                    <div flex="45" class="md-list-item-text" layout="column">
+                        <h3>{{ hw.description}}</h3>
+                        <h4>{{ hw.bs }}</h4>
+                    </div>
+                    <div flex="5" class="md-list-item-text" layout="column">
+                     <md-button width="25" aria-label="ShowHideAccountant" ng-click="delHardware(hw)" >
+						<img width="15px" heigth="15px" src="/NetView/static/img/DeleteIcon.png"></md-icon>
+					 </md-button>
+                    </div> 
+                </md-list-item>
+            </md-list>
+            
+            <div ng-show="hardwareServerViewPages">
+            <hr />
+            <div class="ng-scope layout-row " style="padding-left:10px">
+                    <div flex="10" ng-show="false" class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="prevPage('hardware')" md-colors="{color: 'green'}">Prev</md-button></div>
+                    <div flex="80" style="vertical-align: middle;text-align:center"><h3>Seite {{hardwarePage}} von {{hardwareMaxPage}}</h3></div>
+                    <div flex="10" class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="nextPage('hardware')" md-colors="{color: 'green'}">Next</md-button></div>
+            </div>
+            </div>
+        </div>
+    </md-content>

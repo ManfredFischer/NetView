@@ -64,12 +64,15 @@ public class LDAPService implements ILDAPService {
 
 	@Override
 	public List getUsers() {
+		return getUserByFilter("(objectClass=*)");
+	}
+	
+	private List<ADUserData> getUserByFilter(String filter) {
 		LDAPConnect();
 		ArrayList<ADUserData> allInternUsers = new ArrayList<>();
 		try {
 			SearchControls searchControls = new SearchControls();
 			searchControls.setSearchScope(SearchControls.ONELEVEL_SCOPE);
-			String filter = "(objectClass=*)";
 			NamingEnumeration values = ldapContext.search(USER_BASE_NAME, filter, searchControls);
 
 			while (values.hasMoreElements()) {
@@ -78,7 +81,8 @@ public class LDAPService implements ILDAPService {
 
 				if (!(attributes.get("name").get().toString().equalsIgnoreCase("intern"))) {
 					ADUserData adUserData = new ADUserData();
-					adUserData.setUid(checkAndConvertObjectAttribute(attributes.get("displayName")));
+					adUserData.setUid(checkAndConvertObjectAttribute(attributes.get("userPrincipalName")).split("@")[0]);
+					adUserData.setMail(checkAndConvertObjectAttribute(attributes.get("mail")));
 					adUserData.setDisplayName(checkAndConvertObjectAttribute(attributes.get("displayName")));
 					adUserData.setFirstname(checkAndConvertObjectAttribute(attributes.get("givenName")));
 					adUserData.setLastname(checkAndConvertObjectAttribute(attributes.get("sn")));
@@ -200,7 +204,6 @@ public class LDAPService implements ILDAPService {
 	public void updateUserPassword(String username, String password) {
 		LDAPConnect();
 		try {
-			System.out.println("updating password...\n");
 			String quotedPassword = "\"" + password + "\"";
 			char unicodePwd[] = quotedPassword.toCharArray();
 			byte pwdArray[] = new byte[unicodePwd.length * 2];
@@ -208,7 +211,6 @@ public class LDAPService implements ILDAPService {
 				pwdArray[i * 2 + 1] = (byte) (unicodePwd[i] >>> 8);
 				pwdArray[i * 2 + 0] = (byte) (unicodePwd[i] & 0xff);
 			}
-			System.out.print("encoded password: ");
 			for (int i = 0; i < pwdArray.length; i++) {
 				System.out.print(pwdArray[i] + " ");
 			}
@@ -217,12 +219,10 @@ public class LDAPService implements ILDAPService {
 			mods[0] = new ModificationItem(DirContext.REPLACE_ATTRIBUTE, new BasicAttribute("UnicodePwd", pwdArray));
 			ldapContext.modifyAttributes("cn=" + username + ","+USER_BASE_NAME, mods);
 		} catch (Exception e) {
-			System.out.println("update password error: " + e);
 		}
 		try {
 			ldapContext.close();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -231,28 +231,43 @@ public class LDAPService implements ILDAPService {
 		LDAPConnect();
 		Attributes attributes = null;
 		try {
-			System.out.println("fetching: " + username);
 			DirContext o = (DirContext) ldapContext.lookup("cn=" + username + USER_BASE_NAME);
-			System.out.println("search done\n");
 			attributes = o.getAttributes("");
 			for (NamingEnumeration<?> ae = attributes.getAll(); ae.hasMoreElements();) {
 				javax.naming.directory.Attribute attr = (Attribute) ae.next();
 				String attrId = attr.getID();
 				for (NamingEnumeration<?> vals = attr.getAll(); vals.hasMore();) {
 					String thing = vals.next().toString();
-					System.out.println(attrId + ": " + thing);
 				}
 			}
 		} catch (Exception e) {
-			System.out.println(" fetch error: " + e);
 		}
 		try {
 			ldapContext.close();
 		} catch (NamingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return attributes;
+	}
+
+	@Override
+	public String getDepartementByName(String name) {
+		List<ADUserData> department = getUserByFilter("(SAMAccountName=" + name + ")");
+		if (department.isEmpty()) {
+			return "";
+		}else {
+			return department.get(0).getDepartment();
+		}
+	}
+	
+	@Override
+	public ADUserData getUserByName(String name) {
+		List<ADUserData> user = getUserByFilter("(SAMAccountName=" + name + ")");
+		if (user.isEmpty()) {
+			return new ADUserData();
+		}else {
+			return user.get(0);
+		}
 	}
 
 }

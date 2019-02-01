@@ -1,66 +1,65 @@
 <div style="min-width:600px;">
     <div ng-show="!hardwareActiv" style="padding:10;font-size:16px;background:#f98e22">
-		<img ng-src="/NetView/static/img/hardware.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> {{hardwareInformation.hostname}} </span>
-    	
+		<img ng-src="/NetView/static/img/ClientsIcon.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> {{hardwareInformation.categorie}} </span>
 	</div>
     
-    <div ng-show="hardwareActiv" layout-gt-sm="row" style="background: green;padding: 10px;height: 80px">
+    <div ng-show="showHardwareActiv" layout-gt-sm="row" style="background: green;padding: 10px;height: 80px">
         <md-input-container class="md-block" flex-gt-sm>
             <label>Hostname (Teamviewer)</label>
-            <input readonly ng-model="hardwareInformation.hostname" />
+            <input readonly ng-model="hardwareAktiv.hostname" />
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm>
             <label>angemeldeter User</label>
-            <input readonly ng-model="hardwareInformation.aktivUsername" />
+            <input readonly ng-model="hardwareAktiv.aktivUsername" />
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm>
             <label>angemeldet seit</label>
-            <input readonly ng-model="hardwareInformation.aktivDate" />
+            <input readonly ng-model="hardwareAktiv.aktivDate" />
         </md-input-container>
     </div>
 
 
     <md-tabs md-dynamic-height="" md-dynamic-width="" md-border-bottom="">
-        <md-tab ng-if="showUserDetails" label="{{ titleUserOwner }}">
+        <md-tab ng-if="showHardwareViewOwner" label="Besitzer">
             <div style="background: white;padding: 10px">
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>First name</label>
-                        <input readonly ng-model="userInformation.firstname">
+                        <input readonly ng-model="hardwareOwner.firstname">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Last name</label>
-                        <input readonly ng-model="userInformation.lastname">
+                        <input readonly ng-model="hardwareOwner.lastname">
                     </md-input-container>
                 </div>
 
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Department</label>
-                        <input readonly ng-model="userInformation.department">
+                        <input readonly ng-model="hardwareOwner.department">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Position</label>
-                        <input readonly ng-model="userInformation.title">
+                        <input readonly ng-model="hardwareOwner.title">
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Telefon</label>
-                        <input readonly ng-model="userInformation.telephoneNumber">
+                        <input readonly ng-model="hardwareOwner.telephoneNumber">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Mobile</label>
-                        <input readonly ng-model="userInformation.mobile">
+                        <input readonly ng-model="hardwareOwner.mobile">
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
                     <md-input-container style="width: 100%">
                         <label>Standort</label>
-                        <md-select ng-Model="userInformation.lid" name="favoriteColor" ng-model="favoriteColor">
+                        <md-select ng-Model="hardwareOwner.lid" name="favoriteColor" ng-model="favoriteColor">
                             <md-option readonly ng-repeat="location in LocationList" value="{{ location.lid }}">{{ location.displayname }}</md-option>
                         </md-select>
                     </md-input-container>
@@ -68,46 +67,46 @@
             </div>
         </md-tab>
 
-        <md-tab ng-if="showEnabledUserDetails" label="{{titleUserAktiv}}">
+        <md-tab ng-if="showHardwareViewUser" label="User">
             <div style="background: white;padding: 10px">
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>First name</label>
-                        <input readonly ng-model="userInformationAktiv.firstname">
+                        <input readonly ng-model="hardwareUser.firstname">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Last name</label>
-                        <input readonly ng-model="userInformationAktiv.lastname">
+                        <input readonly ng-model="hardwareUser.lastname">
                     </md-input-container>
                 </div>
 
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Department</label>
-                        <input readonly ng-model="userInformationAktiv.department">
+                        <input readonly ng-model="hardwareUser.department">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Position</label>
-                        <input readonly ng-model="userInformationAktiv.title">
+                        <input readonly ng-model="hardwareUser.title">
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Telefon</label>
-                        <input readonly ng-model="userInformationAktiv.telephoneNumber">
+                        <input readonly ng-model="hardwareUser.telephoneNumber">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Mobile</label>
-                        <input readonly ng-model="userInformationAktiv.mobile">
+                        <input readonly ng-model="hardwareUser.mobile">
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row">
                     <md-input-container style="width: 100%">
                         <label>Standort</label>
-                        <md-select ng-Model="userInformationAktiv.lid" name="favoriteColor" ng-model="favoriteColor">
+                        <md-select ng-Model="hardwareUser.lid" name="favoriteColor" ng-model="favoriteColor">
                             <md-option readonly ng-repeat="location in LocationList" value="{{ location.lid }}">{{ location.displayname }}</md-option>
                         </md-select>
                     </md-input-container>
@@ -115,52 +114,27 @@
             </div>
         </md-tab>
 
-        <md-tab ng-if="showHardwareOwnerDetails" label="{{titleHardwareOwner}}">
+        <md-tab ng-if="showHardwareViewHardware" label="Hardware">
             <div style="background: white;padding: 10px">
-
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Model</label>
-                        <input readonly ng-model="hardwareInformationOwner.model">
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Seriennummer</label>
-                        <input readonly ng-model="hardwareInformationOwner.sn">
+               <div layout-gt-sm="row" ng-if="showHardwareViewHardwareList">
+                    <md-input-container style="width: 100%">
+                        <label>Hardware</label>
+                        <md-select ng-Model="hardwareUser.lid" name="favoriteColor" ng-model="favoriteColor">
+                            <md-option readonly ng-repeat="location in LocationList" value="{{ location.lid }}">{{ location.displayname }}</md-option>
+                        </md-select>
                     </md-input-container>
                 </div>
-                <div layout-gt-sm="row">
+            	<div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
-                        <label>CPU</label>
-                        <input readonly ng-model="hardwareInformationOwner.cpu">
+                        <label>Hostname</label>
+                        <input readonly ng-model="hardwareInformation.hostname">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
-                        <label>RAM</label>
-                        <input readonly ng-model="hardwareInformationOwner.ram">
-                    </md-input-container>
-                </div>
-
-                <div layout-gt-sm="row">
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>Besitzer</label>
-                        <input readonly ng-model="hardwareInformationOwner.owner">
-                    </md-input-container>
-
-                    <md-input-container class="md-block" flex-gt-sm>
-                        <label>aktiver User</label>
-                        <input readonly ng-model="hardwareInformationOwner.aktivUsername">
+                        <label>IP</label>
+                        <input readonly ng-model="hardwareInformation.ip">
                     </md-input-container>
                 </div>
-
-
-
-                <md-button ng-click="removeHardware()" type="submit" class="md-raised">Delete</md-button>
-            </div>
-        </md-tab>
-
-        <md-tab ng-if="showHardwareDetails" label="{{titleHardware}}">
-            <div style="background: white;padding: 10px">
 
                 <div layout-gt-sm="row">
                     <md-input-container flex class="md-block" flex-gt-sm>
@@ -173,6 +147,19 @@
                         <input readonly ng-model="hardwareInformation.sn">
                     </md-input-container>
                 </div>
+
+				<div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Kategorie</label>
+                        <input readonly ng-model="hardwareInformation.department">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Beschreibung</label>
+                        <input readonly ng-model="hardwareInformation.description">
+                    </md-input-container>
+                </div>
+                
                 <div layout-gt-sm="row">
                     <md-input-container flex="70" class="md-block" flex-gt-sm>
                         <label>CPU</label>
@@ -184,24 +171,43 @@
                         <input readonly ng-model="hardwareInformation.ram">
                     </md-input-container>
                 </div>
+                
+                <div layout-gt-sm="row">
+                    <md-input-container flex="50" class="md-block" flex-gt-sm>
+                        <label>Besitzer</label>
+                        <input readonly ng-model="hardwareInformation.owner">
+                    </md-input-container>
 
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Besitzer</label>
-                    <input readonly ng-model="hardwareInformation.owner">
-                </md-input-container>
+                    <md-input-container flex="50" class="md-block" flex-gt-sm>
+                        <label>Betriebsystem</label>
+                        <input readonly ng-model="hardwareInformation.bs">
+                    </md-input-container>
+                </div>
             </div>
         </md-tab>
 
-        <md-tab label="Lizenzen ">
-                    <div layout-gt-sm="row" layout-align="space-between center">
+        <md-tab ng-if="showLizenzDetails" label="Lizenzen">
+        
+        		<div layout-gt-sm="row" ng-if="showHardwareViewHardwareList">
+                    <md-input-container style="width: 100%">
+                        <label>Hardware</label>
+                        <md-select ng-Model="hardwareUser.lid" name="favoriteColor" ng-model="favoriteColor">
+                            <md-option readonly ng-repeat="location in LocationList" value="{{ location.lid }}">{{ location.displayname }}</md-option>
+                        </md-select>
+                    </md-input-container>
+                </div>
+                
+                <div style="padding:5px" layout-gt-sm="row" layout-align="space-between center">
             			<md-input-container style="width: 80%">
                 		 <label>Lizenz</label>
-                		  <md-select ng-Model="laptop.lid">
-                    		<md-option ng-repeat="laptop in departmentList" value="{{ laptop.id }}">{{laptop.model }}</md-option>
+                		  <md-select ng-Model="selectedHardwareNewLizenz" >
+                    		<md-option ng-repeat="lizenz in lizenzenFrei" value="{{ lizenz }}">{{lizenz.name }}</md-option>
                 		  </md-select>
             			</md-input-container>
-            			<md-button class="md-raised">Hinzufügen</md-button>
-        			</div>
+            			<md-button ng-click="addLizenzToHardware(selectedHardwareNewLizenz, hardwareInformation,hardwareLizenzen, lizenzenFrei)">
+                                <img src="/NetView/static/img/add.png" width="30px" height="30px" style="vertical-align:middle;margin-right:10px"></img> 
+                        </md-button>
+        		</div>
             	<div style="padding:10px">
                 <div class="ng-scope layout-row " style="padding-left:10px">
                     <div flex="30 " class="flex ">Name</div>
@@ -216,11 +222,11 @@
                           <div flex="55" class="md-list-item-text flex" layout="column">
                            {{ lizenz.key }}
                           </div> 
-                          <div flex="15" class="md-list-item-text flex" layout="column">
-                          <md-button >
-            				X
-        				  </md-button>
-                          </div>                          
+                          <div flex="15" class="md-list-item-text" layout="column">
+                     		<md-button ng-click="delHardwareLizenz(lizenz, hardwareInformation)" >
+								<img width="30px" heigth="30px" src="/NetView/static/img/DeleteIcon.png"></md-icon>
+					 		</md-button>
+                    	</div>                          
                   </md-list-item>
             	</md-list>
             	</div>

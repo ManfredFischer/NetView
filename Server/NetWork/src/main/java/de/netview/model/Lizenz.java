@@ -29,6 +29,7 @@ public class Lizenz implements Serializable {
 	private String name;
 	private String key;
 	private int state;
+	private String reserved;
 	private String categorie;
 	
 	private List<Hardware> hardware = new ArrayList<>();
@@ -98,24 +99,15 @@ public class Lizenz implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Lizenz other = (Lizenz) obj;
-		if (categorie == null) {
-			if (other.categorie != null)
-				return false;
-		} else if (!categorie.equals(other.categorie))
-			return false;
 		if (key == null) {
 			if (other.key != null)
 				return false;
 		} else if (!key.equals(other.key))
 			return false;
-		if (lid != other.lid)
-			return false;
 		if (name == null) {
 			if (other.name != null)
 				return false;
 		} else if (!name.equals(other.name))
-			return false;
-		if (state != other.state)
 			return false;
 		return true;
 	}
@@ -128,6 +120,14 @@ public class Lizenz implements Serializable {
 
 	public void setHardware(List<Hardware> hardware) {
 		this.hardware = hardware;
+	}
+
+	public String getReserved() {
+		return reserved;
+	}
+
+	public void setReserved(String reserved) {
+		this.reserved = reserved;
 	}
 
 	

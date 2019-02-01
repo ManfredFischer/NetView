@@ -2,29 +2,29 @@
     <md-toolbar style="color:'green';background:#f98e22">
         <div layout-gt-sm="row" layout-align="space-between center">
              <div layout-gt-sm="row" style="padding:20px;font-size:24px;border-bottom: 1px solid #D8D8D8">
-      			<img ng-src="/NetView/static/img/hardware.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> Abteilung</span>
+      			<span>Abteilung</span>
     		</div> 
-            <md-button type="submit" class="md-raised">Speichern</md-button>
+            <md-button type="submit" ng-click="addOrUpdateDepartment()" class="md-raised">Speichern</md-button>
         </div>
     </md-toolbar>
     <div style="padding:5px">
-            <md-input-container style="width: 80%">
+        <md-input-container style="width:100%">
                 <label>Abteilung</label>
-                <md-select ng-Model="laptop.lid">
-                    <md-option ng-repeat="laptop in departmentList" value="{{ laptop.id }}">{{laptop.model }}</md-option>
+                <md-select ng-Model="departmentValue" >
+                    <md-option ng-repeat="departmentValue in departmentList" ng-click="selectDepartment(departmentValue)" value="{{ departmentValue.id }}">{{departmentValue.displayname}}</md-option>
                 </md-select>
-            </md-input-container>
+        </md-input-container>
         <md-input-container class="md-block" flex-gt-sm>
-            <label>Name</label>
-            <input ng-model="userInformation.firstname">
+            <label>Display Name</label>
+            <input ng-model="department.displayname">
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm>
             <label>Abteilung</label>
-            <input ng-model="userInformation.firstname">
+            <input ng-model="department.name">
         </md-input-container>
         <md-input-container class="md-block" flex-gt-sm>
             <label>Possition</label>
-            <input ng-model="userInformation.firstname">
+            <input ng-model="department.position">
         </md-input-container>
     </div>
 </div>

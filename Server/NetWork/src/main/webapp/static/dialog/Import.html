@@ -1,0 +1,72 @@
+<div class="dialogImport">
+	<md-toolbar style="color:'green';background:#f98e22">
+	<div layout-gt-sm="row" layout-align="space-between center">
+		<div layout-gt-sm="row" style="padding: 20px; font-size: 24px; border-bottom: 1px solid #D8D8D8">
+			<span>Import</span>
+		</div>
+		<div flex></div>
+		<md-button ng-click="sendImport(importHardwareFiles, importLizenzFiles, importMobileFiles)">
+            <img src="/NetView/static/img/ImportIcon.png" width="35px" height="35px"  style="vertical-align:middle"></img>
+        </md-button>
+	</div>
+	</md-toolbar>
+	
+	<md-tabs md-dynamic-height="" md-dynamic-width="" md-border-bottom="">
+        <md-tab label="Hardware" ng-if="false" >
+         <div layout-gt-sm="row" layout-align="space-between center" style="padding:20px">
+	 	   <div>
+	        <div layout-gt-sm="row" layout-align="space-between center">
+		      <div ngf-drop ngf-select ng-model="importHardwareFiles" class="drop-box"
+			      ngf-drag-over-class="'dragover'" ngf-multiple="true"
+			      ngf-allow-dir="true"> 
+			      
+			      Drag & Drop oder Click zum Upload
+			 </div>
+		     <div ngf-no-file-drop></div>
+		     <ul>
+         	  <li ng-repeat="f in importHardwareFiles" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+    	     </ul>
+            </div>
+	       </div>
+	       <div></div>
+	     </div>
+        </md-tab>
+        <md-tab label="Lizenz">
+         <div layout-gt-sm="row" layout-align="space-between center" style="padding:20px">
+	 	   <div>
+	        <div layout-gt-sm="row" layout-align="space-between center">
+		      <div ngf-drop ngf-select ng-model="importLizenzFiles" class="drop-box"
+			      ngf-drag-over-class="'dragover'" ngf-multiple="true"
+			      ngf-allow-dir="true"> 
+			      
+			      Drag & Drop oder Click zum Upload
+			 </div>
+		     <div ngf-no-file-drop></div>
+		     <ul>
+         	  <li ng-repeat="f in importLizenzFiles" style="font:smaller">{{f.name}} {{f.$error}} {{f.$errorParam}}</li>
+    	     </ul>
+            </div>
+	       </div>
+	       <div></div>
+	     </div>
+        </md-tab>
+        <md-tab label="Help">
+         <div layout-gt-sm="row" layout-align="space-between center" style="padding:20px">
+	 	   <div>
+	 	    <h2>Import Hardware:</h2>
+    		<h3>Rechnername;IP;Model;SN;CPU;RAM;Besitzer;Beschreibung;Standort;Kategorie;Betriebsystem</h3>
+			<h2>Import Lizenz</h2>
+			<h3>Name;Key;Kategorie;Status;Reserviert</h3>	
+			
+			<h2>Hinweis:</h2>
+			<ul>
+			  <li>Jeder Hostname/Rechnername/Name mit dem Namen: "Rechnername"/"Name"/"Hostname" wird automatisch entfernt</li>
+			  <li>Ist der Hostname/Rechnername/Lizenz schon vorhanden wird dieser übersprungen!</li>
+			  <li>Standort bitte mittels DisplayName (Anzeige Name im System)</li>
+			</ul>	
+			
+	 	   </div>
+	     </div>
+        </md-tab>
+    </md-tabs>
+</div>

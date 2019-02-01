@@ -2,13 +2,17 @@
     <md-toolbar style="color:'green';background:#f98e22">
         <div layout-gt-sm="row" layout-align="space-between center">
              <div layout-gt-sm="row" style="padding:20px;font-size:24px;border-bottom: 1px solid #D8D8D8">
-      			<img ng-src="/NetView/static/img/lizenz.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> Lizenz</span>
-    		</div> 
-            <md-button ng-click="addLizenz()" class="md-raised">Speichern</md-button>
+      			<img src="/NetView/static/img/License.png" width="20px" height="25px" style="vertical-align:middle"></img> <span style="font-size: 18px"></span><span style="margin-left:10px">{{translation.shortcurt.lizenz}}</span>
+             </div> 
+            <md-button ng-click="addLizenz()">
+              <img src="/NetView/static/img/add.png" width="30px" height="30px" style="vertical-align:middle;margin-right:10px"></img> 
+            </md-button>
         </div>
     </md-toolbar>
     <div style="padding:5px">
-        
+        <md-checkbox md-no-ink ng-model="lizenzState" ng-click="setLizenzState(lizenzState)" class="md-primary">
+                {{translation.default.isInUseSelected}}	
+        </md-checkbox>
         <md-input-container class="md-block" flex-gt-sm>
                 <label>Lizenz</label>
                 <input ng-model="lizenz.name">

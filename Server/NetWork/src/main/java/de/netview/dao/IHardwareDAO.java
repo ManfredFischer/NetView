@@ -8,6 +8,10 @@ public interface IHardwareDAO {
 	
 	public void saveOrUpdateHardware(Hardware hardware);
 	public Hardware getHardwareByName(String hostname);
-	public List<Hardware> getAllHardware();
+	public Hardware getHardwareById(Long hid);
+	public List<Hardware> getAllHardware(String categorie);
+	public void deleteHardware(Hardware hardware);
+	Hardware getHardwareById(long hid);
+	List getHardwareByOwner(String owner);
 
 }

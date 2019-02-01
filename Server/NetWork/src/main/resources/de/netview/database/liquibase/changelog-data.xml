@@ -17,7 +17,7 @@
     <changeSet id="4" author="mafischer">
         <insert tableName="LOCATION">
             <column name="lid" value="1" />
-            <column name="displayname" value="Freiburg im Breisbau" />
+            <column name="displayname" value="Freiburg im Breisgau" />
             <column name="street" value="Humboldtstraße 2" />
             <column name="plz" value="79098"/>
             <column name="city" value="Freiburg im Breisbau"/>
@@ -58,6 +58,24 @@
             <column name="plz" value="A1090"/>
             <column name="city" value="Wien"/>
             <column name="country" value="Österreich"/>
+        </insert>
+        
+        <insert tableName="LOCATION">
+            <column name="lid" value="6" />
+            <column name="displayname" value="Leipzig" />
+            <column name="street" value="Wettiner Straße 21" />
+            <column name="plz" value="04105"/>
+            <column name="city" value="Leipzig"/>
+            <column name="country" value="Deutschland"/>
+        </insert>
+        
+        <insert tableName="LOCATION">
+            <column name="lid" value="7" />
+            <column name="displayname" value="Hamburg" />
+            <column name="street" value="Donnerstraße 20" />
+            <column name="plz" value="22763"/>
+            <column name="city" value="Hamburg"/>
+            <column name="country" value="Deutschland"/>
         </insert>
     </changeSet>
 

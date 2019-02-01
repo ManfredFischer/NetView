@@ -9,6 +9,7 @@ public class ADUserData implements Serializable {
     private String firstname;
     private String lastname;
     private String department;
+    private String mail;
     private String otherTelepone;
     private String telephoneNumber;
     private String title;
@@ -17,6 +18,7 @@ public class ADUserData implements Serializable {
     private String streetAddress;
     private String country;
     private String city;
+    private HardwareInformation hardware;
     private Long lid = -1L;
 
 
@@ -133,4 +135,20 @@ public class ADUserData implements Serializable {
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
+
+	public HardwareInformation getHardware() {
+		return hardware;
+	}
+
+	public void setHardware(HardwareInformation hardware) {
+		this.hardware = hardware;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
 }

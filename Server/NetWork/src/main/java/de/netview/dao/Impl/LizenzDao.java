@@ -18,6 +18,7 @@ public class LizenzDao extends AbstractDao<Lizenz> implements ILizenzDao {
 		getSession().persist(lizenz);		
 		getSession().flush();
 	}
+	
 
 	@Override
 	public Lizenz getLizenzByName(String name, String key) {
@@ -31,8 +32,14 @@ public class LizenzDao extends AbstractDao<Lizenz> implements ILizenzDao {
 	}
 
 	@Override
-	public List<Lizenz> getLizenz() {
-		List<Lizenz> lizenzList = getSession().createQuery("from Lizenz").list();
+	public List<Lizenz> getLizenz(String state) {
+		
+		List<Lizenz> lizenzList;
+		if (state.equals("-1")) {
+		  lizenzList = getSession().createQuery("from Lizenz").list();
+		}else {
+		  lizenzList = getSession().createQuery("from Lizenz where state = :state").setParameter("state", state).list();
+		}
 		if (lizenzList != null) {
 			return lizenzList;
 		}
@@ -55,5 +62,17 @@ public class LizenzDao extends AbstractDao<Lizenz> implements ILizenzDao {
 	public void updateLizenz(Lizenz lizenz) {
 		getSession().update(lizenz);		
 		getSession().flush();
+	}
+
+
+	@Override
+	public void deleteLizenz(Lizenz lizenz) {
+		getSession().delete(lizenz);
+	}
+
+
+	@Override
+	public Lizenz getLizenzById(Long lid) {
+		return (Lizenz) getSession().createQuery("from Lizenz where lid= :lid").setParameter("lid", lid).uniqueResult();
 	}
 }

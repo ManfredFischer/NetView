@@ -29,6 +29,8 @@ public class Hardware implements Serializable {
 	private Long hid;
 	private String hostname;
 	private String owner;
+	private String department;
+	private String ip;
 	private String aktivusername;
 	private String aktivdate;
 	private String lastlogin;
@@ -37,6 +39,9 @@ public class Hardware implements Serializable {
 	private String cpu;
 	private String ram;
 	private String sn;
+	private String description;
+	private String categorie;
+	private int location;
 	private List<Lizenz> lizenz = new ArrayList<Lizenz>();
 	private List<Software> software = new ArrayList<Software>();
 
@@ -44,14 +49,14 @@ public class Hardware implements Serializable {
 		this.software = software;
 	}
 
-	@ManyToMany(cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY)
 	@JoinTable(name = "hardware_software", joinColumns = { @JoinColumn(name = "hid", nullable = false) }, inverseJoinColumns = {
 			@JoinColumn(name = "sid", nullable = false) })
 	public List<Software> getSoftware() {
 		return software;
 	}
 
-	@ManyToMany(cascade=CascadeType.ALL)
+	@ManyToMany(cascade=CascadeType.REFRESH)
 	@JoinTable(name = "hardware_lizenz", joinColumns = { @JoinColumn(name = "hid") }, inverseJoinColumns = {
 			@JoinColumn(name = "lid") })
 	public List<Lizenz> getLizenz() {
@@ -247,6 +252,65 @@ public class Hardware implements Serializable {
 		return "Hardware [hid=" + hid + ", hostname=" + hostname + ", owner=" + owner + ", aktivusername="
 				+ aktivusername + ", aktivdate=" + aktivdate + ", lastlogin=" + lastlogin + ", model=" + model + ", bs="
 				+ bs + ", cpu=" + cpu + ", ram=" + ram + ", sn=" + sn + ", lizenz=" + lizenz + "]";
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getCategorie() {
+		return categorie;
+	}
+
+	public void setCategorie(String categorie) {
+		this.categorie = categorie;
+	}
+
+	public int getLocation() {
+		return location;
+	}
+
+	public void setLocation(int location) {
+		this.location = location;
+	}
+	
+	@JsonIgnore
+	public void wrappeValues(Hardware hardware) {
+		this.aktivdate = hardware.getAktivdate();
+		this.aktivusername = hardware.getAktivusername();
+		this.bs = hardware.getBs();
+		this.categorie = hardware.getCategorie();
+		this.cpu = hardware.getCpu();
+		this.description = hardware.getDescription();
+		this.owner = hardware.getOwner();
+		this.hostname = hardware.getHostname();
+		this.ip = hardware.getIp();
+		this.lastlogin = hardware.getLastlogin();
+		this.location = hardware.getLocation();
+		this.model = hardware.getModel();
+		this.ram = hardware.getRam();
+		this.sn = hardware.getSn();
+		this.department = hardware.department;
+	}
+
+	public String getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 
 }

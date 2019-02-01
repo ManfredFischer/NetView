@@ -4,9 +4,11 @@
 }
 
 body {
-    background-image: url("/NetView/static/img/Logo.png");
+    background-image: url("/NetView/static/img/hintergund.jpeg");
     background-repeat: no-repeat;
     background-color: #ffffff;
+	background-attachment: fixed;
+	background-size: 100% auto;
 }
 
 .page {

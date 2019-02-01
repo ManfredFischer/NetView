@@ -2,40 +2,71 @@
     <md-toolbar style="color:'green';background:#f98e22">
         <div layout-gt-sm="row" layout-align="space-between center">
              <div layout-gt-sm="row" style="padding:20px;font-size:24px;border-bottom: 1px solid #D8D8D8">
-      			<img ng-src="/NetView/static/img/hardware.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> Hardware</span>
+      			<img ng-src="/NetView/static/img/AddHardware.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> Hardware</span>
     		</div> 
-            <md-button type="submit" class="md-raised">Speichern</md-button>
+            <md-button ng-click="addHardware(hardwareInsert)">
+               <img src="/NetView/static/img/add.png" width="30px" height="30px" style="vertical-align:middle;margin-right:10px"></img> 
+            </md-button>
         </div>
     </md-toolbar>
     <div style="padding:5px">
+           
+        <div layout-gt-sm="row" layout-align="space-between center">
             <md-input-container class="md-block" flex-gt-sm>
-                <label>Name</label>
-                <input ng-model="userInformation.firstname">
+                <label>Hostname</label>
+                <input ng-model="hardwareInsert.hostname">
             </md-input-container>
-
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>IP</label>
+                <input ng-model="hardwareInsert.ip">
+            </md-input-container>
+        </div>
+        
+        <div layout-gt-sm="row" layout-align="space-between center">
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Betriebsystem</label>
+                <input ng-model="hardwareInsert.bs">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Funktion</label>
+                <input ng-model="hardwareInsert.description">
+            </md-input-container>
+        </div>
+        
+        <div layout-gt-sm="row" layout-align="space-between center">
         <md-input-container class="md-block" flex-gt-sm>
-            <label>Model</label>
-            <input ng-model="userInformation.firstname">
+            <label>Kategorie</label>
+               <md-select ng-Model="hardwareInsert.categorie">
+               <md-option ng-repeat="categorie in categorien" value="{{ categorie.name }}">{{categorie.name }}</md-option>
+            </md-select>
         </md-input-container>
-
         <md-input-container class="md-block" flex-gt-sm>
-            <label>Funktion</label>
-            <input ng-model="userInformation.firstname">
+            <label>Standort</label>
+            <md-select ng-Model="hardwareInsert.location">
+               <md-option ng-repeat="location in LocationList" value="{{ location.lid }}">{{location.displayname }}</md-option>
+            </md-select>
         </md-input-container>
-
-        <md-input-container class="md-block" flex-gt-sm>
-            <label>IP</label>
-            <input ng-model="userInformation.firstname">
-        </md-input-container>
+        </div>
 
         <div layout-gt-sm="row" layout-align="space-between center">
             <md-input-container class="md-block" flex-gt-sm>
-                <label>CPU</label>
-                <input ng-model="userInformation.firstname">
+                <label>Model</label>
+                <input ng-model="hardwareInsert.model">
             </md-input-container>
             <md-input-container class="md-block" flex-gt-sm>
+                <label>Serienummer</label>
+                <input ng-model="hardwareInsert.sn">
+            </md-input-container>
+        </div>
+
+        <div layout-gt-sm="row" layout-align="space-between center">
+            <md-input-container flex-gt-sm>
+                <label>CPU</label>
+                <input ng-model="hardwareInsert.cpu">
+            </md-input-container>
+            <md-input-container flex-gt-sm>
                 <label>Ram</label>
-                <input ng-model="userInformation.firstname">
+                <input ng-model="hardwareInsert.ram">
             </md-input-container>
         </div>
     </div>

@@ -38,9 +38,13 @@
             <column name="lastlogin" type="varchar(200)" />
             <column name="model" type="varchar(200)" />
             <column name="bs" type="varchar(200)"/>
+            <column name="ip" type="varchar(200)"/>
+            <column name="description" type="varchar(200)"/>
+            <column name="categorie" type="varchar(200)"/>
             <column name="cpu" type="varchar(200)"/>
             <column name="ram" type="varchar(200)"/>
             <column name="sn" type="varchar(200)"/>
+            <column name="location" type="int"/>
         </createTable>
         
         <createTable tableName="HARDWARELOG">
@@ -148,6 +152,18 @@
 			<column name="departmanet" type="VARCHAR(1020)" />
 			<column name="position" type="VARCHAR(1020)" />			
 		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-12556">
+		<addColumn tableName="LIZENZ">
+         <column name="reserved" type="varchar(255)"/>
+    	</addColumn>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-12557">
+		<addColumn tableName="HARDWARE">
+         <column name="department" type="varchar(255)"/>
+    	</addColumn>
 	</changeSet>
 
 </databaseChangeLog>

@@ -2,6 +2,7 @@ package de.netview.service;
 
 import javax.naming.directory.Attributes;
 
+import de.netview.data.ADUserData;
 import de.netview.data.ADUserUpdateData;
 
 import java.util.HashMap;
@@ -15,5 +16,7 @@ public interface ILDAPService {
     void updateUser(ADUserUpdateData adUserUpdateData) throws Exception;
     void updateUserPassword(String username, String password);
     Attributes getUserAttributes(String username);
+    String getDepartementByName(String name);
+	ADUserData getUserByName(String name);
 
 }

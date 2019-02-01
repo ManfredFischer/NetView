@@ -1,0 +1,15 @@
+Import Host:
+
+    Rechnername;IP;Model;SN;CPU;RAM;Besitzer;Beschreibung;Standort;Kategorie;Betriebsystem
+
+Import Lizenz
+
+    Name;Key;Kategorie;Status
+
+
+
+Hinweis:
+	
+ - Jeder Hostname/Rechnername/Name mit dem Namen: "Rechnername"/"Name"/"Hostname" wird automatisch entfernt
+ - Ist der Hostname/Rechnername/Lizenz schon vorhanden wird dieser übersprungen!
+ - Standort bitte mittels DisplayName (Anzeige Name im System)

@@ -14,12 +14,14 @@ import org.springframework.stereotype.Service;
 import de.netview.dao.IHardwareDAO;
 import de.netview.dao.ILizenzDao;
 import de.netview.dao.ISoftwareDao;
+import de.netview.data.ADUserData;
 import de.netview.data.HardwareData;
-import de.netview.data.HardwareInput;
+import de.netview.data.HardwareInformation;
 import de.netview.model.Hardware;
 import de.netview.model.Lizenz;
 import de.netview.model.Software;
 import de.netview.service.IHardwareService;
+import de.netview.service.ILDAPService;
 import de.netview.service.ILizenzService;
 import de.netview.service.ISoftwareService;
 
@@ -30,17 +32,23 @@ public class HardwareService implements IHardwareService {
 	private IHardwareDAO hardwareDao;
 
 	@Autowired
-	private ILizenzDao lizenzDao;
-	
-	@Autowired
 	private ILizenzService lizenzService;
 
 	@Autowired
 	private ISoftwareDao softwareDao;
 
+	@Autowired
+	private ISoftwareService softwareService;
+
+	@Autowired
+	private ILDAPService ldapService;
+
 	@Transactional
 	@Override
 	public Hardware insertHardware(Hardware hardware) {
+
+		if (hardware.getOwner() != null && hardware.getOwner() != "")
+			hardware.setDepartment(ldapService.getDepartementByName(hardware.getOwner()));
 
 		Hardware hardwareInfo = hardwareDao.getHardwareByName(hardware.getHostname());
 
@@ -69,71 +77,126 @@ public class HardwareService implements IHardwareService {
 			for (int i = 0; i < hardware.getLizenz().size(); i++) {
 				boolean insert = true;
 				for (int a = 0; a < hardwareInfo.getLizenz().size(); a++) {
-					if (hardwareInfo.getLizenz().get(a).equals(hardware.getLizenz().get(i).getKey())) {
+					if (hardwareInfo.getLizenz().get(a).equals(hardware.getLizenz().get(i))) {
 						insert = false;
 						break;
 					}
 				}
 
 				if (insert) {
-					Lizenz lizenzTemp = lizenzDao.getLizenzByName(hardware.getLizenz().get(i).getName(),
+					Lizenz lizenzTemp = lizenzService.getLizenzByNameAndKey(hardware.getLizenz().get(i).getName(),
 							hardware.getLizenz().get(i).getKey());
 					if (lizenzTemp == null) {
-						lizenzDao.insertLizenz(hardware.getLizenz().get(i));
+						lizenzService.insertLizenz(hardware.getLizenz().get(i));
+						checkLizenz(hardware.getLizenz().get(i), 2);
 						hardwareInfo.getLizenz().add(hardware.getLizenz().get(i));
 					} else {
-						lizenzService.checkLizenz(lizenzTemp);
+
+						checkLizenz(lizenzTemp, 2);
 						hardwareInfo.getLizenz().add(lizenzTemp);
 					}
 				}
 			}
 
-			hardwareDao.saveOrUpdateHardware(hardwareInfo);
-			return hardwareInfo;
+			for (int i = 0; i < hardwareInfo.getLizenz().size(); i++) {
+				boolean remove = true;
+				for (int a = 0; a < hardware.getLizenz().size(); a++) {
+					if (hardware.getLizenz().get(a).equals(hardwareInfo.getLizenz().get(i))) {
+						remove = false;
+						break;
+					}
+				}
+
+				if (remove && ((hardwareInfo.getLizenz().get(i).getName().contains("Windows 10"))
+						|| (hardwareInfo.getLizenz().get(i).getName().contains("Microsoft Office")))) {
+					Lizenz removeLizenz = hardwareInfo.getLizenz().get(i);
+					if (hardwareInfo.getLizenz().remove(removeLizenz)) {
+						checkLizenz(removeLizenz, 1);
+					}
+				}
+			}
+
+			hardwareInfo.wrappeValues(hardware);
+
+			hardware = hardwareInfo;
 
 		} else {
-			
 			hardware.setHid(null);
-
-			for (int i = 0; i < hardware.getSoftware().size(); i++) {
-				Software softwareTemp = softwareDao.getSoftwareByName(hardware.getSoftware().get(i).getName());
-				if (softwareTemp == null) {
-					softwareDao.insertSoftware(hardware.getSoftware().get(i));
-				} else {
-					hardware.getSoftware().remove(i);
-					hardware.getSoftware().add(softwareTemp);
-				}
-			}
-
-			for (int i = 0; i < hardware.getLizenz().size(); i++) {
-				Lizenz lizenzTemp = lizenzDao.getLizenzByName(hardware.getLizenz().get(i).getName(),
-						hardware.getLizenz().get(i).getKey());
-				if (lizenzTemp == null) {
-					lizenzDao.insertLizenz(hardware.getLizenz().get(i));
-				} else {
-					lizenzService.checkLizenz(lizenzTemp);
-					hardware.getLizenz().remove(i);
-					hardware.getLizenz().add(lizenzTemp);
-				}
-			}
-
-			hardwareDao.saveOrUpdateHardware(hardware);
-			return hardware;
+			insertSoftware(hardware);
+			insertLizenz(hardware);
 		}
 
+		hardwareDao.saveOrUpdateHardware(hardware);
+
+		return hardware;
+
+	}
+
+	public void insertSoftware(Hardware hardware) {
+		List<Software> resultSoftware = new ArrayList<>();
+		for (Software software : hardware.getSoftware()) {
+			Software softwareTemp = softwareDao.getSoftwareByName(software.getName());
+			if (softwareTemp == null) {
+				softwareDao.insertSoftware(software);
+				resultSoftware.add(software);
+			} else {
+				resultSoftware.add(softwareTemp);
+			}
+		}
+
+		hardware.getSoftware().clear();
+		hardware.getSoftware().addAll(resultSoftware);
+	}
+
+	public void insertLizenz(Hardware hardware) {
+		List<Lizenz> resultLizenz = new ArrayList<>();
+		for (int i = 0; i < hardware.getLizenz().size(); i++) {
+			Lizenz lizenzTemp = lizenzService.getLizenzByNameAndKey(hardware.getLizenz().get(i).getName(),
+					hardware.getLizenz().get(i).getKey());
+
+			if (lizenzTemp == null) {
+				hardware.getLizenz().get(i).setState(1);
+				lizenzService.insertLizenz(hardware.getLizenz().get(i));
+				resultLizenz.add(hardware.getLizenz().get(i));
+				checkLizenz(hardware.getLizenz().get(i), 2);
+			} else {
+				resultLizenz.add(lizenzTemp);
+				checkLizenz(lizenzTemp, 2);
+			}
+
+		}
+
+		hardware.getLizenz().clear();
+		hardware.getLizenz().addAll(resultLizenz);
 	}
 
 	@Override
 	@Transactional
-	public List<HardwareData> getAllHardware() {
-		List<HardwareData> hardwareList = new ArrayList<HardwareData>();
-		for (Hardware hardware : hardwareDao.getAllHardware()) {
-			HardwareData hardwareData = new HardwareData();
-			hardwareData.wrapperHardware(hardware);
+	public List<HardwareInformation> getAllHardware(String categorie) {
+		List<HardwareInformation> hardwareList = new ArrayList<>();
+		for (Hardware hardware : hardwareDao.getAllHardware(categorie)) {
+			HardwareInformation hardwareData = new HardwareInformation(hardware);
 			hardwareList.add(hardwareData);
 		}
 
 		return hardwareList;
+	}
+
+	@Override
+	@Transactional
+	public HardwareData getHardwareById(long hid) {
+		Hardware hardware = hardwareDao.getHardwareById(hid);
+		
+		ADUserData userOwner = ldapService.getUserByName(hardware.getOwner());
+		ADUserData userInUse = null;
+		
+		if (hardware.getOwner() != hardware.getAktivusername()) {
+			userInUse = ldapService.getUserByName(hardware.getAktivusername());
+		}
+		
+		HardwareData hardwareData = new HardwareData(userOwner, userInUse);
+		hardwareData.wrapperHardware(hardware);
+		return hardwareData;
 	}
 
 	@Override
@@ -155,6 +218,65 @@ public class HardwareService implements IHardwareService {
 		hardware.setAktivdate("");
 		hardwareDao.saveOrUpdateHardware(hardware);
 
+	}
+
+	@Override
+	@Transactional
+	public void deleteHardware(Long hid) {
+		Hardware hardware = hardwareDao.getHardwareById(hid);
+		for (Lizenz lizenz : hardware.getLizenz()) {
+			checkLizenz(lizenz, 1);
+		}
+		hardwareDao.deleteHardware(hardware);
+	}
+
+	public void checkLizenz(Lizenz lizenz, int mod) {
+		lizenzService.checkLizenz(lizenz, mod);
+		lizenzService.updateLizenz(lizenz);
+	}
+
+	@Override
+	@Transactional
+	public void deleteHardwareLizenz(Long hid, Long lid) {
+		Hardware hardware = hardwareDao.getHardwareById(hid);
+
+		for (int i = 0; i < hardware.getLizenz().size(); i++) {
+			if (hardware.getLizenz().get(i).getLid().longValue() == lid) {
+				checkLizenz(hardware.getLizenz().get(i), 1);
+				hardware.getLizenz().remove(i);
+			}
+		}
+
+		hardwareDao.saveOrUpdateHardware(hardware);
+	}
+
+	@Override
+	@Transactional
+	public void addHardwareLizenz(Long hid, Long lid) {
+		Hardware hardware = hardwareDao.getHardwareById(hid);
+		Lizenz lizenz = lizenzService.getLizenzById(lid);
+		checkLizenz(lizenz, 2);
+		hardware.getLizenz().add(lizenz);
+		hardwareDao.saveOrUpdateHardware(hardware);
+
+	}
+
+	@Override
+	@Transactional
+	public Hardware getHardwareByHostname(String hostname) {
+		return hardwareDao.getHardwareByName(hostname);
+	}
+
+	@Override
+	@Transactional
+	public Hardware getHardwareByOwner(String owner) {
+		List hardwareList = hardwareDao.getHardwareByOwner(owner);
+		if (hardwareList == null || hardwareList.isEmpty()) {
+			return null;
+		}else {
+			return (Hardware) hardwareList.get(0);
+		}
+		
 	}
 
 }

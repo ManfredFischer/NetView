@@ -1,0 +1,90 @@
+{
+	"de": {
+		"default": {
+			"showAll": "Zeige alles",
+			"location": "Standort",
+			"search": "Suche...",
+			"prev": "Zurück",
+			"next": "nächstes",
+			"isInUseSelected" : "in Verwendung"
+		},
+		"menue": {
+			"go": "Datei",
+			"org": "System",
+			"user" : "Benutzer",
+			"data": "Verwaltung",
+			"addHardware": "Hardware hinzufügen",
+			"addLizenze": "Lizenz hinzufügen",
+			"logout": "Abmelden",
+			"settings": "Einstellungen",
+			"import": "Importieren...",
+			"showUser": "Benutzer",
+			"addUser": "Benutzer hinzufügen",
+			"refreshUser": "Benutzer aktuallisieren",
+			"delUser": "Benutzer austritt",
+			"controlSubmittals": "Vorlagen hinzufügen",
+			"controlLaptops": "Laptops hinzufügen",
+			"controlLocation": "Standort hinzufügen",
+			"controlHandy": "Handys hinzufügen",
+			"controlDepartement": "Abteilung hinzufügen"
+		},
+		"shortcurt": {
+			"clients": "Interne Hardware",
+			"netz": "Internes Netzwerk",
+			"lizenz": "Lizenzen"
+		},
+		"infoTable": {
+			"hostname": "Rechnername",
+			"user" : "User Info",
+			"hardwareInfo": "Hardware Informationen",
+			"hardwareDescription" : "Beschreibung",
+			"lizenzName": "Lizenzname",
+			"categorie": "Kategorie",
+			"use": "Verwendung",
+			"key": "Lizenzschlüssel"
+		}
+	},
+	"en": {
+		"default": {
+			"showAll": "Show all",
+			"location": "Location",
+			"search": "Search...",
+			"prev": "prev",
+			"next": "next"
+		},
+		"menue": {
+			"go": "Datei",
+			"org": "Verwaltung",
+			"user" : "User",
+			"addHardware": "Add hardware",
+			"addLizenze": "Add lizenz",
+			"logout": "logout",
+			"settings": "Settings",
+			"import": "Import...",
+			"showUser": "Show user",
+			"addUser": "Add user",
+			"refreshUser": "Refresh user",
+			"delUser": "User leave",
+			"data": "Daten",
+			"controlSubmittals": "Submittals",
+			"controlLaptops": "Laptops",
+			"controlLocation": "Location",
+			"controlHandy": "Handy",
+			"controlDepartement": "Department"
+		},
+		"shortcurt": {
+			"clients": "Internal hardware",
+			"netz": "Internal network",
+			"lizenz": "Licences"
+		},
+		"infoTable": {
+			"hostname": "Hostname",
+			"hardwareInfo": "Hardware informtion",
+			"lizenzName": "Licence name",
+			"categorie": "Categorie",
+			"use": "Use",
+			"key": "Key"
+		}
+	}
+}
+
