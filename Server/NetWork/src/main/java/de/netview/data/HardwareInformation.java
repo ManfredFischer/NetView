@@ -1,6 +1,9 @@
 package de.netview.data;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 import de.netview.model.Hardware;
 
@@ -26,7 +29,8 @@ public class HardwareInformation implements Serializable {
 	private String categorie;
 	private int location;
 	private String department;
-	
+	private String aktivIcon;
+
 	public HardwareInformation(Hardware hardware) {
 		this.hid = hardware.getHid();
 		this.hostname = hardware.getHostname();
@@ -44,91 +48,136 @@ public class HardwareInformation implements Serializable {
 		this.categorie = hardware.getCategorie();
 		this.department = hardware.getDepartment();
 		this.setLocation(hardware.getLocation());
+
+		InetAddress iAdr;
+		try {
+			iAdr = InetAddress.getByName(hardware.getHostname());
+
+			if (iAdr.isReachable(1000)) {
+				this.setAktivIcon("static/img/green.png");
+			}else {
+				this.setAktivIcon("static/img/red.png");
+			}
+			
+			this.ip = iAdr.getHostAddress();
+
+		} catch (IOException e) {
+			this.ip = hardware.getIp();
+		}
 	}
+
 	public Long getHid() {
 		return hid;
 	}
+
 	public void setHid(Long hid) {
 		this.hid = hid;
 	}
+
 	public String getHostname() {
 		return hostname;
 	}
+
 	public void setHostname(String hostname) {
 		this.hostname = hostname;
 	}
+
 	public String getIp() {
 		return ip;
 	}
+
 	public void setIp(String ip) {
 		this.ip = ip;
 	}
+
 	public String getDescription() {
 		return description;
 	}
+
 	public void setDescription(String description) {
 		this.description = description;
 	}
+
 	public String getOwner() {
 		return owner;
 	}
+
 	public void setOwner(String owner) {
 		this.owner = owner;
 	}
+
 	public String getAktivUsername() {
 		return aktivUsername;
 	}
+
 	public void setAktivUsername(String aktivUsername) {
 		this.aktivUsername = aktivUsername;
 	}
+
 	public String getAktivDate() {
 		return aktivDate;
 	}
+
 	public void setAktivDate(String aktivDate) {
 		this.aktivDate = aktivDate;
 	}
+
 	public String getLastLogin() {
 		return lastLogin;
 	}
+
 	public void setLastLogin(String lastLogin) {
 		this.lastLogin = lastLogin;
 	}
+
 	public String getModel() {
 		return model;
 	}
+
 	public void setModel(String model) {
 		this.model = model;
 	}
+
 	public String getBs() {
 		return bs;
 	}
+
 	public void setBs(String bs) {
 		this.bs = bs;
 	}
+
 	public String getCpu() {
 		return cpu;
 	}
+
 	public void setCpu(String cpu) {
 		this.cpu = cpu;
 	}
+
 	public String getRam() {
 		return ram;
 	}
+
 	public void setRam(String ram) {
 		this.ram = ram;
 	}
+
 	public String getSn() {
 		return sn;
 	}
+
 	public void setSn(String sn) {
 		this.sn = sn;
 	}
+
 	public String getCategorie() {
 		return categorie;
 	}
+
 	public void setCategorie(String categorie) {
 		this.categorie = categorie;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -149,6 +198,7 @@ public class HardwareInformation implements Serializable {
 		result = prime * result + ((sn == null) ? 0 : sn.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -230,19 +280,29 @@ public class HardwareInformation implements Serializable {
 			return false;
 		return true;
 	}
+
 	public String getDepartment() {
 		return department;
 	}
+
 	public void setDepartment(String department) {
 		this.department = department;
 	}
+
 	public int getLocation() {
 		return location;
 	}
+
 	public void setLocation(int location) {
 		this.location = location;
 	}
 	
-	
+	public String getAktivIcon() {
+		return aktivIcon;
+	}
+
+	public void setAktivIcon(String aktivIcon) {
+		this.aktivIcon = aktivIcon;
+	}
 
 }

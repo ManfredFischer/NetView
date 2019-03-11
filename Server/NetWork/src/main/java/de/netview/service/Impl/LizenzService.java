@@ -66,12 +66,28 @@ public class LizenzService implements ILizenzService {
 		List<LizenzInformation> result = new ArrayList<>();
 		
 		List<Lizenz> lizenzen = lizenzDao.getLizenz(state);
-		
+		checkLizenz(lizenzen);
 		for (Lizenz lizenz : lizenzen) {
 			result.add(new LizenzInformation(lizenz));
 		}
 		
 		return result;
+	}
+	
+	public void checkLizenz(List<Lizenz> lizenzen) {
+		for (Lizenz lizenz : lizenzen) {
+			if(lizenz.getHardware().size() > 0) {
+				if(lizenz.getHardware().size() > 1) {
+					lizenz.setState(2);
+				}else {
+					lizenz.setState(1);
+				}
+			}else {
+				if (lizenz.getState() > 0) {
+					lizenz.setState(3);
+				}
+			}
+		}
 	}
 
 	@Override

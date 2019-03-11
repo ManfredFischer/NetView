@@ -1,16 +1,101 @@
 body, html {
 	height: 100%;
-	background-image: url("/NetView/static/img/hintergund.jpeg");
-	background-repeat: no-repeat;
-	background-color: #ffffff;
-	background-attachment: fixed;
-	background-size: 100% auto;
+	
+}
+
+
+.menueLeiste {
+	background-color:#084B8A;
+	border-bottom: 10px solid #E6E6E6;
+}
+
+.css-input {
+     padding: 7px;
+     font-size: 14px;
+     border : 0px;
+     border-bottom: 1px;
+     color: #084B8A;
+     border-style: solid;
+     margin:8px;
+}
+
+.css-input:focus {
+     outline:none;
+}
+
+.menue {
+	color: white;
+	font-size:14px;
+	padding: 12px;
+}
+
+.menue:hover {
+	cursor: pointer;
+	background-color:#045FB4;
 }
 
 .shortcut {
-	font-size: 16px;
-	height: 70px;
+	height: 60px;
 }
+
+.shortcutImg {
+	width : 25px;
+	height:25px;
+	vertical-align:middle;
+}
+
+.dialog {
+	min-width: 600px;
+}
+
+.dialogAbstract {
+	background-color:#084B8A;
+	border-bottom: 5px solid #E6E6E6;
+	color:white;
+	height:60px;
+}
+
+.dialogTitle {
+	margin:10px;
+	font-size:16px;
+}
+
+.dialogTitleImg {
+	width: 30px;
+	height: 30px;
+	vertical-align:middle;
+	margin-right:15px;
+}
+
+.dialogAbstractAddIcon {
+	width:30px;
+	height:30px; 
+	vertical-align:middle;
+	margin-right:10px;
+}
+
+.dialogAbstractAddIcon:focus {
+	outline: none;
+}
+
+.dialogAbstractAddIcon:hover {
+	cursor: pointer;
+}
+
+.mainPageSearch {
+	
+}
+
+.mainPage {
+	height: 70px;
+	padding: 5 5 0 0;
+	width:100%;
+}
+
+.mainPageShow {
+  margin-left:5px;	
+}
+
 
 .listdemoListControls md-list-item>p, .listdemoListControls md-list-item>.md-list-item-inner>p,
 	.listdemoListControls md-list-item .md-list-item-inner>p,
@@ -54,10 +139,10 @@ body, html {
 
 .page {
 	background-color: white;
-	margin: 20px;
-	padding: 10px;
-	border: 10px;
-	border-radius: 10px;
+	height: 85%;
+	margin: 10px;
+	border: 2px;
+	border-radius: 5px;
 	box-shadow: 0 1px 2px 1px rgba(0, 0, 0, 0.25);
 }
 
@@ -129,35 +214,6 @@ md-switch.md-checked .md-ink-ripple {
 	/* selected switch ripple color */
 }
 
-.menue {
-	color: #BDBDBD;
-	margin: 15px;
-	font-size: 20px;
-}
-
-.menueStart {
-	text-align: center;
-	color: f98e22;
-	margin: 15px;
-	font-size: 20px;
-}
-
-.menueStart:hover {
-	text-align: center;
-	cursor: pointer;
-}
-
-.menue:hover {
-	color: white;
-	font-size: 20px;
-	cursor: pointer;
-}
-
-#button {
-	position: absolute;
-	bottom: 10;
-	width: 100%;
-}
 
 .md-1-line:hover {
 	background: #F2F2F2;

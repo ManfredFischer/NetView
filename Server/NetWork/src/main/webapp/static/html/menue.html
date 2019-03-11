@@ -1,12 +1,11 @@
-<md-menu-bar style="background-color:#2E2E2E">
+<md-menu-bar class="menueLeiste">
         	 
         	    <md-menu>
-                    <a href="main" class="menueStart" >
-                        <img src="/NetView/static/img/reservix.jpg" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:5px"></img>
+                    <a href="main" class="menue" >
+                        <img src="/NetView/static/img/reservix.jpg" width="20px" height="20px" style="border-radius:5px 15%;vertical-align:middle;margin-right:5px"></img>
                     </a>
                 </md-menu>
-        	    
-           
+                
                 <md-menu>
                     <div ng-click="$mdMenu.open()" class="menue" >
                         {{translation.menue.go}}
@@ -74,7 +73,7 @@
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
-                        <md-menu-item ng-if="false" >
+                        <md-menu-item ng-if="false">
                             <md-button ng-click="selectMenu('showCreateUser')">
                                 <img src="/NetView/static/img/AddUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addUser}}
                             </md-button>
@@ -84,7 +83,7 @@
                                 <img src="/NetView/static/img/UpdateUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.refreshUser}}
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item ng-if="false" >
+                        <md-menu-item >
                             <md-button ng-click="selectMenu('showDeleteUser')">
                                 <img src="/NetView/static/img/DellUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.delUser}}
                             </md-button>
@@ -118,6 +117,27 @@
                         <md-menu-item>
                             <md-button ng-click="selectMenu('showDepartment')">
                                 {{translation.menue.controlDepartement}}
+                            </md-button>
+                        </md-menu-item>
+                  </md-menu>
+                  <md-menu>
+                    <div ng-click="$mdMenu.open()" class="menue" >
+                        {{translation.menue.software}}
+                    </div>
+                    <md-menu-content>
+                        <md-menu-item>
+                            <md-button ng-click="selectMenu('showSoftware')">
+                                {{translation.menue.controlSoftware}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="selectMenu('showLaptops')">
+                                {{translation.menue.addSoftware}}
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="selectMenu('schowLocation')">
+                                {{translation.menue.delSoftware}}
                             </md-button>
                         </md-menu-item>
                 </md-menu>

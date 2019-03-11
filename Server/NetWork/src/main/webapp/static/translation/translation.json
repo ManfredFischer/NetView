@@ -26,7 +26,10 @@
 			"controlLaptops": "Laptops hinzufügen",
 			"controlLocation": "Standort hinzufügen",
 			"controlHandy": "Handys hinzufügen",
-			"controlDepartement": "Abteilung hinzufügen"
+			"controlDepartement": "Abteilung hinzufügen",
+			"software" : "Software" ,
+			"addSoftware" : "Software hinzufügen",
+			"delSoftware" : "Software entfernen"
 		},
 		"shortcurt": {
 			"clients": "Interne Hardware",
@@ -41,7 +44,11 @@
 			"lizenzName": "Lizenzname",
 			"categorie": "Kategorie",
 			"use": "Verwendung",
-			"key": "Lizenzschlüssel"
+			"key": "Lizenzschlüssel",
+			"Software" : "Software Name",
+			"Beschreibung" : "Beschreibung",
+			"Standard" : "Standard",
+			"Aktiv"	: "Aktiv"
 		}
 	},
 	"en": {

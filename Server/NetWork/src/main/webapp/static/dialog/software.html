@@ -1,0 +1,47 @@
+
+<div layout-gt-sm="row" flex> 
+<md-checkbox flex md-no-ink ng-model="softwareService.software.defaultsoftware" class="md-primary">
+       Standart Software
+</md-checkbox>
+
+<md-checkbox flex md-no-ink ng-model="softwareService.software.removebydeleting" class="md-primary">
+       Entfernen bei Austritt
+</md-checkbox>
+</div>
+
+<div layout-gt-sm="row" flex >
+ <md-checkbox flex md-no-ink ng-model="softwareService.software.distribute" class="md-primary">
+        Aktivieren
+ </md-checkbox>
+
+ <md-checkbox flex md-no-ink ng-model="softwareService.software.msi" class="md-primary">
+       MSI
+ </md-checkbox>
+</div>
+<div layout-gt-sm="row" ng-if="softwareService.software.msi">
+	<md-input-container class="md-block" flex-gt-sm>
+    	<label>File</label>
+    	<input readonly ng-model="softwareService.msi">
+	</md-input-container>
+	<md-button ng-click="addLizenz()">
+	 Datei..
+    </md-button>
+</div>
+<md-input-container class="md-block" flex-gt-sm>
+   <label>Display Name</label>
+   <input ng-model="softwareService.software.displayname">
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+   <label>Installation</label>
+   <input ng-model="softwareService.software.installcontent">
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Beschreibung</label>
+    <input ng-model="softwareService.software.description">
+</md-input-container>
+
+
+
+  

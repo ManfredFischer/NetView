@@ -1,27 +1,26 @@
 <md-content ng-show="isLizenzVewaltungSelected">
         <div class="page">
         
-           <div layout-gt-sm="row" layout-align="space-between center">
-         	 <md-input-container class="md-block" flex-gt-sm style="margin-right:25px">
-            		<label>{{translation.default.search}}</label>
-            		<input ng-model="searchLizenz" ng-change="setLizenzPage()">
-        	 </md-input-container>
-        	 <md-input-container flex-gt-sm style="max-width:150px;margin-right:25px">
+           <div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
+             
+             <input flex-gt-sm class="css-input" placeholder="Search..." ng-model="searchHostClient" ng-change="setClientsPage()">
+             
+             <md-input-container flex-gt-sm style="max-width:150px;margin-right:25px">
                 <label>{{translation.infoTable.use}}</label>
                 <md-select aria-label="ShowHideAccountant" ng-Model="showAllUsed" ng-change="setLizenzPage()">
                  <md-option ng-repeat="use in useList" value="{{ use.name }}">{{use.name }}
                  </md-option>
                 </md-select>
-            </md-input-container>
+             </md-input-container>
         	 <md-checkbox md-no-ink ng-model="showAllLizenz" ng-change="setLizenzPage()" class="md-primary" style="width:120px">
                 {{translation.default.showAll}}	
           	 </md-checkbox>
             </div>
             <div class="ng-scope layout-row " style="padding-left:10px">
-                    <div flex="20 " class="flex ">{{translation.infoTable.lizenzName}}</div>
-                    <div flex="10 " class="flex ">{{translation.infoTable.categorie}}</div>
-                    <div flex="10 " class="flex ">{{translation.infoTable.use}}</div>
-                    <div class="flex ">{{translation.infoTable.key}}</div>
+                    <div flex="20" style="font-size:14px">{{translation.infoTable.lizenzName}}</div>
+                    <div flex="10" style="font-size:14px">{{translation.infoTable.categorie}}</div>
+                    <div flex="10" style="font-size:14px">{{translation.infoTable.use}}</div>
+                    <div flex style="font-size:14px">{{translation.infoTable.key}}</div>
             </div>
             <hr />
                 

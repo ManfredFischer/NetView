@@ -165,5 +165,33 @@
          <column name="department" type="varchar(255)"/>
     	</addColumn>
 	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-12234234">
+		<createTable tableName="DISTRIBUTESOFTWARE">
+			<column name="dsid" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="displayname" type="VARCHAR(1020)" />
+			<column name="installconent" type="VARCHAR(1020)" />
+			<column name="description" type="VARCHAR(1020)" />	
+			<column name="defaultsoftware" type="BOOLEAN" />
+			<column name="distribute" type="BOOLEAN" />
+			<column name="removebydeleting" type="BOOLEAN" />
+			<column name="deleted" type="BOOLEAN" />
+			<column name="msi" type="BOOLEAN" />			
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-234234">
+		<createTable tableName="HARDWARE_DISTRIBUTESOFTWARE">
+            <column name="hid" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="dsid" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="date" type="VARCHAR(1020)" />			
+		</createTable>
+	</changeSet>
 
 </databaseChangeLog>

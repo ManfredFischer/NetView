@@ -12,21 +12,19 @@
 </head>
 
 <body class="body" ng-app="MainPage" ng-cloak ng-controller="ListCtrl as ctrl">
-    <md-toolbar class="md-menu-toolbar">
-     <div my-menue></div>
-     <div my-shurtcurt></div>
-    </md-toolbar>
     
-   	<div my-lizenz></div>
-    
-    <div my-hardware></div>
-
-    <div my-netz></div>
-    
-    <div my-mobile></div>
-    
-    <div my-userdetails></div>
-
+   
+     <md-toolbar style="background-color: transparent;">
+       <div my-menue></div>
+     </md-toolbar>
+   
+   	 <div my-lizenz></div>
+     <div my-hardware></div>
+     <div my-netz></div>
+     <div my-mobile></div>
+     <div my-software></div>
+     <div my-userdetails></div>
+     
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
@@ -35,7 +33,10 @@
 	<script src="static/framework/ng-file-upload.min.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
-
+    <script type="text/javascript" src="<c:url value='/static/js/service/search.js' />"></script>
+	<script type="text/javascript" src="<c:url value='/static/js/service/loadValues.js' />"></script>
+	<script type="text/javascript" src="<c:url value='/static/js/service/SoftwareService.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/static/js/service/directive.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/main.js' />"></script>
 </body>
 

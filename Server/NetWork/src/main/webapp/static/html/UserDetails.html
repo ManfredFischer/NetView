@@ -6,7 +6,7 @@
                         <md-card class="page-tab">
                             <div layout-gt-sm="row" layout-align="space-between center">
 								
-                                    <md-button class="md-raised" ng-click="showUserInformation()" md-colors="{color: 'green'}">Details</md-button>
+                                    <md-button class="md-raised" ng-click="showUserInformation(userInformation.uid)" md-colors="{color: 'green'}">Details</md-button>
                                 
                                     
                                         <md-button ng-show="isUserVerwaltungUpdateSelected" ng-disabled="true" ng-click="updateUserInformation()" type="submit"
@@ -20,10 +20,10 @@
                             <md-divider></md-divider>
                             <hr/>                            
                             <form ng-submit="selectUpdateUser(searchText,$event)">
-                                <md-autocomplete ng-show="showUserSearch" md-item-text="item.display" md-search-text="searchUserText"
+                                <md-autocomplete ng-show="showUserSearch" md-item-text="item.displayName" md-search-text="searchUserText"
                                     md-items="item in querySearch(searchUserText)" placeholder="Username...">
                                     <md-item-template>
-                                        <span md-highlight-text="searchUserText" md-highlight-flags="^i">{{item.display}}</span>
+                                        <span md-highlight-text="searchUserText" md-highlight-flags="^i">{{item.displayName}}</span>
                                     </md-item-template>
                                 </md-autocomplete>
                             </form>

@@ -1,0 +1,23 @@
+<div class="dialog">
+	<div layout="row" class="dialogAbstract"
+		layout-align="space-between center">
+		<div layout-gt-sm="row" class="dialogTitle">
+			<img ng-src="{{titleImg}}" class="dialogTitleImg"></img> <span>
+				{{titleDialog}} </span>
+		</div>
+
+
+		<img src="static/img/add.png" class="dialogAbstractAddIcon"
+			ng-click="actionDialog()"></img>
+
+
+	</div>
+	<div style="padding: 5px">
+
+		<div ng-if="dialogHardware" add-hardware></div>
+		<div ng-if="dialogSoftware" add-software></div>
+		<div ng-if="dialogLizenzen" add-lizenzen></div>
+		<div ng-if="showHardware" show-hardware></div>
+
+	</div>
+</div>

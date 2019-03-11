@@ -1,27 +1,27 @@
 <md-content ng-show="isServerVerwaltungSelected">
-        <div class="page">        	
-        	<div layout-gt-sm="row" layout-align="space-between center">
+        <div class="page">        	        	
+        	<div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
              
-             <md-input-container class="md-block" flex-gt-sm style="margin-right:25px">
-            		<label>{{translation.default.search}}</label>
-            		<input ng-model="searchHostServer"  ng-change="setHardwarePage()">
-             </md-input-container>
+             <input flex-gt-sm class="css-input" placeholder="Search..." ng-model="searchHostServer" ng-change="setHardwarePage()">
              
-               <md-checkbox md-no-ink ng-model="showAllServer" ng-change="setHardwarePage()" class="md-primary" style="width:120px" >
+             <md-checkbox md-no-ink ng-model="showAllClients"  ng-change="setClientsPage()" class="md-primary" >
                 {{translation.default.showAll}}		
-          	   </md-checkbox>
+             </md-checkbox>
               
-        	</div>
+          </div>
             
-            <div class="ng-scope layout-row " style="padding-left:10px">
-                    <div flex="10 " class="flex ">{{translation.infoTable.hostname}}</div>
-                    <div flex="40">{{translation.infoTable.hardwareInfo}}</div>
-                    <div flex="45">{{translation.infoTable.hardwareDescription}}</div>
+            <div class="ng-scope layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
+            	<div flex="5" style="font-size:14px">Status</div>
+                <div flex="10 " style="font-size:14px">{{translation.infoTable.hostname}}</div>
+                <div flex="40" style="font-size:14px">{{translation.infoTable.hardwareInfo}}</div>
+                <div flex="40" style="font-size:14px">{{translation.infoTable.hardwareDescription}}</div>
             </div>
-            <hr />
             
             <md-list ng-cloak>
                 <md-list-item ng-repeat="hw in ctrl.getNetzwerkHost('server', serverVerwaltungSelectedLocation)"  ng-click="showHardwareInformation(hw.hid)" class="md-2-line">
+                    <div flex="5" class="md-list-item-text" layout="column">
+                        <img width="25px" heigth="25px" src={{hw.aktivIcon}}></md-icon>
+                    </div>
                     <div flex="10" class="md-list-item-text" layout="column">
                         <h3>{{ hw.hostname }}</h3>
                         <h4>{{ hw.ip }}</h4>
@@ -30,7 +30,7 @@
                         <h3>{{ hw.model}}</h3>
                         <h4>{{ hw.sn }}</h4>
                     </div>
-                    <div flex="45" class="md-list-item-text" layout="column">
+                    <div flex="40" class="md-list-item-text" layout="column">
                         <h3>{{ hw.description}}</h3>
                         <h4>{{ hw.bs }}</h4>
                     </div>

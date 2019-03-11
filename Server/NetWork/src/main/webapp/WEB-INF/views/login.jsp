@@ -13,8 +13,7 @@
 <body ng-app="BlankApp" ng-cloak>
 <div ng-controller="DemoBasicCtrl as ctrl" ng-cloak>
         <div layout="row" layout-align="space-between start">
-            <div>
-            </div>
+            <div></div>
             <div>
             
                 <form action="login" method="post" class="form-inline my-2 my-lg-0">

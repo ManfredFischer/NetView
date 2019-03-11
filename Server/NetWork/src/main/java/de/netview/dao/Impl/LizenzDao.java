@@ -33,12 +33,12 @@ public class LizenzDao extends AbstractDao<Lizenz> implements ILizenzDao {
 
 	@Override
 	public List<Lizenz> getLizenz(String state) {
-		
+		int value = Integer.parseInt(state);
 		List<Lizenz> lizenzList;
 		if (state.equals("-1")) {
 		  lizenzList = getSession().createQuery("from Lizenz").list();
 		}else {
-		  lizenzList = getSession().createQuery("from Lizenz where state = :state").setParameter("state", state).list();
+		  lizenzList = getSession().createQuery("from Lizenz where state = :state").setParameter("state", value).list();
 		}
 		if (lizenzList != null) {
 			return lizenzList;
