@@ -1,6 +1,183 @@
 // @ts-ignore
 app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, softwareService) {
 			
+	
+			$scope.security = {
+					settings : true,
+					verwaltung : true,
+					verwaltungConfig : {
+						clients : true,
+						netz : true,
+						mobile : true,
+						lizenz : true,
+						addHardware : true,
+						addLizenz : true
+					},
+					config : {
+						mobile : true						
+					},
+					user : true,
+					userConfig : {
+						users : true,
+						addUser : false,
+						deleteUser : false,
+						updateUser : false
+					},
+					software : false,
+					softwareConfig : {
+						software : true,
+						addSoftware : true,
+						delSoftware : true
+					}
+			}
+
+			$scope.addContractView = false;
+			$scope.addContract = {
+					number : '',
+					sim : '',
+					pin : '',
+					puk : '',
+					ultraOne : '',
+					ultraTwo : ''
+			}
+			
+			
+			$scope.searchUserMobileText = "";
+			$scope.handyModelId = '';
+			
+			$scope.handy = {
+					imei : '',
+					date : '',
+					description : ''
+			}
+			
+			// ********************
+			$scope.handyModel = {};
+			$scope.handyModelList = [];
+			$scope.resetHandyModel = function(){
+				$scope.handyModel = {
+						displayName : '',
+						model : '',
+						color : '',
+						store : ''
+				}
+			}
+			$scope.resetHandyModel();
+			
+			$scope.addHandyModel = function(){
+				$http({
+					method: 'POST',
+					scope: $scope,
+					url: 'handyModel',
+					data : $scope.handyModel
+				}).then(function successCallback(response) {
+					$scope.handyModelList.push(response.data);
+					$scope.resetHandyModel();
+				});	
+			}
+			
+			$scope.deleteHandyModel = function(handyModel){
+				$http({
+					method: 'DELETE',
+					scope: $scope,
+					url: 'handyModel/'+ handyModel.hmid,
+				}).then(function successCallback(response) {
+					$scope.removeItemFromArrayDictonariy($scope.handyModelList,handyModel.hmid, 'hmid');
+				});	
+			}
+			
+			$scope.deleteContract = function(contract){
+				$http({
+					method: 'DELETE',
+					scope: $scope,
+					url: 'contract/'+ contract.cid,
+				}).then(function successCallback(response) {
+					$scope.removeItemFromArrayDictonariy($scope.handyModelList,handyModel.hmid, 'hmid');
+				});	
+			}
+			
+			this.getHandyList = function(){
+				if ($scope.handyModelList != undefined && $scope.handyModelList.length > 0)
+				 return $scope.handyModelList;	
+				else
+				 return []; 
+			}
+			
+			this.getContractList = function(){
+				if ($scope.contractList != undefined && $scope.contractList.length > 0)
+				 return $scope.contractList;	
+				else
+				 return []; 
+			}
+			
+			// ********************
+			$scope.contractList = [];
+			$scope.newContract = {};
+			$scope.resetNewContract = function(){
+				$scope.newContract = {
+						name : '',
+						contract : '',
+						model : '',
+						color : '',
+						store : ''
+				}
+			}
+			$scope.resetNewContract();
+			
+			$scope.addNewContract = function(){
+				$http({
+					method: 'POST',
+					scope: $scope,
+					url: 'contract',
+					data : $scope.newContract
+				}).then(function successCallback(response) {
+					$scope.contractList.push(response.data);
+					$scope.resetNewContract();
+				});	
+			}
+			
+			// ********************
+			
+			    
+		      
+			$scope.settingsConfig = {};
+			$scope.resetSettingsConfig = function(){
+				$scope.settingsConfig = {
+						converter : false,
+						data : false
+				}
+			}
+			$scope.resetSettingsConfig();
+			
+			$scope.selectSetting = function(select){
+				
+				$scope.resetSettingsConfig();
+				switch(select){
+					case 0 : 
+						$scope.settingsConfig.data = true;
+				 		break;
+					case 3 :
+						$scope.settingsConfig.converter = true;
+					break;
+				}
+			}
+			
+			$scope.settingsViewList = [{
+				name : "Daten",
+				id : 0
+			}];
+			
+			this.getSettingsViewList = function(){
+				return $scope.settingsViewList;
+			}
+		      
+			
+			$scope.hostname = "";
+			
+			$scope.openTeamViewer = function(){
+				window.open("https://start.teamviewer.com/device/"+$scope.hardwareInformation.hostname+"/authorization/password/mode/control", "_blank");
+			}
+			
 			softwareService.mdDialog = $mdDialog;
 			softwareService.scopeMain = $scope;
 			this.softwareService = softwareService;
@@ -11,6 +188,15 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				$scope.translation = res.data[language];     
 				$scope.title = $scope.translation.shortcurt.clients
 	        });
+			
+			$scope.overview = {
+					adUserAmount : '',
+					rentHardwareAmount : '',
+					hardwareAmount : '',
+					hardwareDisableAmount : '',
+					lizenzAmount : '',
+					lizenzErrorAmount : '',
+			}
 		
 			$scope.people = [];
 			$scope.menueIcon = "/NetView/static/img/netzwerk.jpg";
@@ -37,13 +223,58 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				name : 'Server'
 			},{
 				name : 'Client'
+			},{
+				name : 'Drucker'
+			},{
+				name : 'Video'
+			},{
+				name : 'Access Point'
+			},{
+				name : 'Switch'
+			},{
+				name : 'Router'
+			},{
+				name : 'Telefonie'
+			},{
+				name : 'Lifesize'
+			}];
+			
+			$scope.aktivList = [{
+				value : 'All'
+			},{
+				value : 'Aktiv'
+			},{
+				value : 'Inaktiv'
+			},{
+				value : 'Unbekannt'
+			}];
+			
+			$scope.categorieList = [{
+				value : 'All'
+			},{
+				value : 'Server'
+			},{
+				value : 'Drucker'
+			},{
+				value : 'Video'
+			},{
+				value : 'Access Point'
+			},{
+				value : 'Switch'
+			},{
+				value : 'Router'
+			},{
+				value : 'Telefonie'
+			},{
+				value : 'Lifesize'
 			}];
 			
 			$scope.title = "";
 			
 			$scope.serverVerwaltungSelectedLocation = 1;
 			$scope.isLizenzVewaltungSelected = false;
-			$scope.isNetzwerkVewaltungSelected = true;
+			$scope.isNetzwerkVewaltungSelected = false;
+			$scope.isOverview = true;
 			$scope.isUserVerwaltungSelected = false;
 			$scope.isUserVerwaltungUpdateSelected = false;
 			$scope.isUserVerwaltungCreateSelected = false;
@@ -93,11 +324,17 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			$scope.hardwareServerViewPages = false;
 			$scope.lizenzen = [];
 			$scope.lizenzenFrei = [];
-			$scope.lizenz = {
-					name : '',
-					key : '',
-					categorie : ''	
-			};
+			$scope.lizenz;
+			
+			$scope.resetLizenz = function(){
+				$scope.lizenz = {
+						name : '',
+						key : '',
+						categorie : ''	
+				};
+			}
+			
+			$scope.resetLizenz();
 			
 			$scope.useList = [
 				{
@@ -122,6 +359,12 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			$scope.lizenzPage = 1;
 			$scope.searchLizenz = '';
 			$scope.selectedHardwareNewLizenz = -1;
+			
+			$scope.searchMobile = '';
+			$scope.mobileData = [];
+			$scope.mobilePage = 0;
+			$scope.mobileMaxPage = 0;
+			$scope.aktivMobileShow = 0;
 
 			$scope.showHardwareActiv = false;
 			
@@ -175,6 +418,37 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				create: false,
 				userdetails: true
 			};
+			
+			$scope.settingsView ={}
+			
+			$scope.dialogConfig ={
+					actionUpdateShow : false,
+					actionAddShow : false,
+					actionDeleteShow : false,
+					showDialogSoftware : false,
+					showDialogHardware : false,
+					showDialogLizenzen : false,
+					showLizenzen : false,
+					showHardware : false,
+					actionMgmtShow : false
+			}
+			
+			$scope.resetViews = function (){
+				$scope.showLizenzHardwareView  = false;
+				$scope.dialogConfig ={
+						actionUpdateShow : false,
+						actionAddShow : false,
+						actionDeleteShow : false,
+						showDialogSoftware : false,
+						dialogMobile : false,
+						showDialogHardware : false,
+						showDialogLizenzen : false,
+						showLizenzen : false,
+						showHardware : false,
+						actionMgmtShow : false
+				}
+			}
+			
 
 			$scope.addLizenz = function(){
 				$http({
@@ -189,6 +463,21 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 							categorie : ''	
 					}
 				});			
+			}
+			
+			$scope.getBackHardware = function(hardwareRentHID, username){
+				$scope.messageValue = {
+						hid: hardwareRentHID,
+						username : username
+				}
+				$http({
+					method: 'PUT',
+					data : $scope.messageValue,
+					scope : $scope,
+					url: 'ldap/user/rent/back'
+				}).then(function successCallback(response) {
+					$scope.changeValueFromArrayDictonariy($scope.hardware,$scope.messageValue.hid, 'hid','verliehen', false);
+				});
 			}
 			
 			
@@ -223,6 +512,18 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					data: $scope.hardwareInsert,
 					url: 'hardware'
 				}).then(function successCallback(response) {
+					$scope.hardware.push(response.data)
+					$scope.resetHardwareInsert();
+				});
+			}
+			
+			$scope.updateHardware = function(){
+				$http({
+					method: 'POST',
+					data: $scope.hardwareInformation,
+					url: 'hardware'
+				}).then(function successCallback(response) {
+					$scope.hardware.push(response.data)
 					$scope.resetHardwareInsert();
 				});
 			}
@@ -271,6 +572,9 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 
 			data.loadLocation($scope);
 			data.loadUser($scope);
+			data.loadMobile($scope);
+			data.loadHandyModel($scope);
+			data.loadContract($scope);
 			
 			$scope.showImport = function(){
 				$mdDialog.show({
@@ -285,19 +589,19 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			$scope.sendImport = function(importHardwareData, importLizenzData, importMobileData){
 				if (importHardwareData != undefined && importHardwareData.length > 0 ){
 				 Upload.upload({
-			        url: 'import/hardware',// additional data to send
+			        url: 'import/hardware',
 			        file: importHardwareData[0]
 			     });
 				}
 				if (importLizenzData != undefined && importLizenzData.length > 0){
 				 Upload.upload({
-			        url: 'import/lizenz',// additional data to send
+			        url: 'import/lizenz',
 			        file: importLizenzData[0]
 			     });
 				}
 				if (importMobileData != undefined && importMobileData.length > 0){
 				 Upload.upload({
-			        url: 'import/mobile',// additional data to send
+			        url: 'import/mobile',
 			        file: importMobileData[0]
 			     });
 				}
@@ -353,7 +657,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				$scope.showUserInfos = true;
 				$scope.showUserSearch = true;
 				$scope.showUserDisableDate = false;
-				
+				$scope.isSettingsSelected = false;
 				$scope.isLizenzVewaltungSelected = false;
 				$scope.isNetzwerkVewaltungSelected = false;
 				$scope.isUserVerwaltungSelected = false;
@@ -383,11 +687,12 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					data.loadLizenz($scope,"-1");
 					$scope.isLizenzVewaltungSelected = true;
 					$scope.selectedLizenzColor = color;
+				}else if (selectMenue == 'showSettings') {
+					$scope.isSettingsSelected = true;
 				} else if (selectMenue == 'showClients') {
 					$scope.systemVerwaltung = true;
 					data.loadHardware($scope,'clients');
 					$scope.isNetzwerkVewaltungSelected = true;
-					$scope.selectedHardwareColor = color;
 				} else if (selectMenue == 'showServer') {
 					$scope.systemVerwaltung = true;
 					data.loadHardware($scope,'sonstiges');
@@ -395,7 +700,6 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					$scope.isServerVerwaltungSelected = true;
 				} else if (selectMenue == 'showMobile') {
 					$scope.systemVerwaltung = true;
-					$scope.selectedMobileColor = color;
 					$scope.isMobileVewaltungSelected = true;
 				} else if (selectMenue == 'showSoftware') {
 					$scope.systemVerwaltung = true;
@@ -475,41 +779,65 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 							fullscreen: $scope.customFullscreen
 						});
 				} else if (selectMenue == 'serverAdd') {
-					$scope.dialogSoftware = false;
-					$scope.dialogHardware = true;
-					$scope.dialogLizenzen = false;
-					$scope.titleImg = "static/img/AddHardware.png";
-					$scope.titleDialog = "Insert Hardware";
-					$scope.actionDialog = $scope.addHardware;
-					$mdDialog.show({
-							scope: $scope.$new(),
-							templateUrl: 'static/dialog/AbstractDialog.html',
-							clickOutsideToClose: true,
-							fullscreen: $scope.customFullscreen
-						});
+
+					$scope.resetViews();
+					$scope.dialogConfig.dialogHardware = true;
+					$scope.dialogConfig.actionAddShow = true;
+					$scope.dialogConfig.actionAddDialog = $scope.addHardware;
+					$scope.showAbstractInformation("Hardware Hinzufuegen","addHardware.png");
 				}else if (selectMenue == 'lizenzAdd') {
-					$scope.dialogSoftware = false;
-					$scope.dialogHardware = false;
-					$scope.dialogLizenzen = true;
-					$scope.showLizenzen = false;
-					$scope.titleImg = "static/img/License.png";
-					$scope.titleDialog = "Insert Hardware";
-					$scope.actionDialog = $scope.addLizenz;
-					$mdDialog.show({
-							scope: $scope.$new(),
-							templateUrl: 'static/dialog/AbstractDialog.html',
-							clickOutsideToClose: true,
-							fullscreen: $scope.customFullscreen
-						});
+					$scope.resetLizenz();
+					$scope.resetViews();
+					$scope.dialogConfig.dialogLizenzen = true;
+					$scope.dialogConfig.actionAddShow = true;
+					$scope.dialogConfig.actionAddDialog = $scope.addLizenz;
+					$scope.showAbstractInformation("Lizenz hinzufuegen","Lizenz.png");
+				}else if (selectMenue == 'mobileUserAdd'){
+					$scope.resetViews();
+					$scope.dialogConfig.dialogMobile = true;
+					$scope.dialogConfig.actionAddShow = true;
+					$scope.dialogConfig.actionAddDialog = $scope.addLizenz;
+					$scope.showAbstractInformation("Mobile User hinzufuegen","Lizenz.png");
 				}
 			}
 			
+			
+			$scope.showAbstractInformation = function(title, img){
+				$scope.dialogSoftware = $scope.settingsView.showDialogSoftware;
+				$scope.dialogHardware = $scope.settingsView.showDialogHardware;
+				$scope.dialogLizenzen = $scope.settingsView.showDialogLizenzen;
+				$scope.showLizenzHardwareList = $scope.settingsView.showLizenzen;;
+				$scope.showHardware = $scope.settingsView.showHardware;
+				
+				$scope.titleImg = "static/img/"+img;
+				$scope.titleDialog = title;
+				
+				if ($scope.settingsView.actionAdd != undefined){
+					$scope.actionAddDialog = $scope.settingsView.actionAdd;
+					$scope.actionAddShow = true;
+				}else{
+					$scope.actionAddShow = false;
+				}
+				
+				if ($scope.settingsView.actionUpdate != undefined){
+					$scope.actionUpdateDialog = $scope.settingsView.actionUpdate;
+					$scope.actionUpdateShow = true;
+				}else{
+					$scope.actionUpdateShow = false;
+				}
+				
+				$mdDialog.show({
+						scope: $scope.$new(),
+						templateUrl: 'static/dialog/AbstractDialog.html',
+						clickOutsideToClose: true,
+						fullscreen: $scope.customFullscreen
+					});
+			}
 
 			// @ts-ignore
-			$scope.selectUpdateUser = function (name, ev) {
+			$scope.selectUpdateUser = function (searchUserText) {
 				$scope.config.userdetails = false;
-				$scope.selectedUser = $scope.ctrl.searchUserText
-				$scope.userInformation = $scope.people.find($scope.findUser);
+				$scope.userInformation = $scope.findUserDetailsByDisplayname(searchUserText);
 			};
 
 			$scope.changeUserUpdateInsert = function () {
@@ -524,27 +852,141 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 
 			$scope.self = this;
 			
+			
+			$scope.messageValue;
+			
 			$scope.delHardware = function (hardware, ev) {
-				var confirm = $mdDialog.confirm()
-		          .title('Hardwar entfernen ('+hardware.hostname+')')
-		          .textContent('Sind Sie sicher?')
-		          .targetEvent(ev)
-		          .ok('Ja')
-		          .cancel('Nein');
 				
-				$mdDialog.show(confirm).then(function() {
-					$http({
+				$scope.dialogMessageReset();
+				
+				$scope.configMessageDialog.dialogYesNoMessage = true;
+				if (hardware != undefined && hardware.hostname != undefined)
+				 $scope.configMessageDialog.titleMessageDialog = "Hardware entfernen ("+hardware.hostname+")";
+				else
+					$scope.configMessageDialog.titleMessageDialog = "Hardware entfernen";
+				
+				$scope.configMessageDialog.dialogMessage = "Sind Sie sicher das die Hardware entfernt werden soll?"
+				$scope.messageValue = hardware;
+				
+				$mdDialog.show({
+					scope: $scope.$new(),
+					templateUrl: 'static/dialog/ask/MessageDialog.html',
+					clickOutsideToClose: true,
+					controller: DialogController,
+					fullscreen: $scope.customFullscreen
+				})		
+				
+				
+			}
+			
+			$scope.searchMessageUserValue;
+			
+			$scope.selectMessagUser = function(item){
+				$scope.searchMessageUserValue = item;
+		    }
+			
+			$scope.ctrl.searchMessageUserText = "";
+			
+			function DialogController($scope, $mdDialog) {
+			    $scope.deleteHardwareDialog = function() {
+			    	$http({
 						method: 'DELETE',
 						params: {
-							'hid' : hardware.hid,
+							'hid' : $scope.messageValue.hid,
 						},
 						scope : $scope,
 						url: 'hardware'
 					}).then(function successCallback(response) {
-						$scope.removeItemFromArrayDictonariy($scope.hardware,hardware.hid, 'hid');
+						$scope.removeItemFromArrayDictonariy($scope.hardware,$scope.messageValue.hid, 'hid');
 					});
-				 });
+			    	
+			    	$mdDialog.hide();
+			    };
+			    
+			    $scope.changeManagemerHardwareDialog = function(){
+			    	var userinfo = $scope.findUserDetailsByDisplayname($scope.searchMessageUserValue);
+			    	$scope.messageValue = {
+			    		uid : userinfo.uid,
+			    		hid : $scope.hardwareInformation.hid
+			    	}
+			    	
+			    	$http({
+		    			method: 'PUT',
+		    			data : $scope.messageValue,
+		    			scope : $scope,
+		    			url: 'hardware/owner'
+		    		}).then(function successCallback(response) {
+		    			$mdDialog.hide();
+				    	$scope.showHardwareInformation($scope.hardwareInformation.hid);
+		    		});
+			    	
+			    	
+			    }
+			    
+			    $scope.changeManagemerHardwareDialogCancel = function(){
+			    	$mdDialog.hide();
+			    	$scope.showHardwareInformation($scope.hardwareInformation.hid);
+			    }
+			    
+			    $scope.rentHardwareDialog = function(rentDate) {
+			    	var userinfo = $scope.findUserDetailsByDisplayname($scope.searchMessageUserValue);
+			    	
+			    	if (userinfo['uid'] != undefined && rentDate != "" && rentDate != undefined){
+			    		$scope.messageValue.uid = userinfo.uid;
+			    		$scope.messageValue.date = new Date(rentDate).getTime();
+			    		$http({
+			    			method: 'PUT',
+			    			data : $scope.messageValue,
+			    			scope : $scope,
+			    			url: 'ldap/user/rent'
+			    		}).then(function successCallback(response) {
+			    			$scope.changeValueFromArrayDictonariy($scope.hardware,$scope.messageValue.hid, 'hid','verliehen', true);
+			    			$scope.changeValueFromArrayDictonariy($scope.hardware,$scope.messageValue.hid, 'hid','verliehenAn', $scope.messageValue.uid);
+			    			$scope.changeValueFromArrayDictonariy($scope.hardware,$scope.messageValue.hid, 'hid','verliehenBis', $scope.formatDate(new Date($scope.messageValue.date)));
+			    		});
+			    	
+			    		$mdDialog.hide();
+			    	}
+			    }
+			    
+			    $scope.cancel = function(){
+			    	$mdDialog.hide();
+			    }
+			  }
+			
+			$scope.changeManagement = function(){
+				$scope.dialogMessageReset();
 				
+				$scope.configMessageDialog.dialogUserMessage = true;
+				$scope.configMessageDialog.titleMessageDialog = "Verwantworlicher - "+$scope.hardwareInformation.hostname;
+				$scope.configMessageDialog.setHardwareManagerDilog = true;			
+				
+				$mdDialog.show({
+					scope: $scope.$new(),
+					templateUrl: 'static/dialog/ask/MessageDialog.html',
+					clickOutsideToClose: false,
+					controller: DialogController
+				});
+			}
+			
+			$scope.formatDate = function(date) {
+			    var d = date.getDate();
+			    var m = date.getMonth() + 1; //Month from 0 to 11
+			    var y = date.getFullYear();
+			    return (d <= 9 ? '0' + d : d) + '.' + (m<=9 ? '0' + m : m) + '.' + y;
+			}
+			
+			$scope.findUserDetailsByDisplayname = function(username){
+				$scope.searchUserText = username;
+		    	return $scope.people.find($scope.findUser);
+			}
+			
+			$scope.changeValueFromArrayDictonariy = function(hardwareList, id, searchName, name, value){
+				for( var i = 0; i < hardwareList.length; i++){ 
+				   if ( hardwareList[i][searchName] === id) {
+					   hardwareList[i][name] = value;
+				   }
+				}
 			}
 			
 			$scope.removeItemFromArrayDictonariy = function(values, remove, searchName){
@@ -610,42 +1052,107 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 							window.location = "NetView/login"
 						});
 			}
-			
+			$scope.showLizenzHardwareView = true;
 			$scope.showLizenzInformation = function(lizenz){
 				
 				$scope.lizenz = lizenz;
-				
-				$scope.dialogSoftware = false;
-				$scope.dialogHardware = false;
-				$scope.dialogLizenzen = true;
-				$scope.titleImg = "static/img/License.png";
-				$scope.titleDialog = "Lizenz";
-				$scope.actionDialog = $scope.addLizenz;
-				$scope.showLizenzen = true;
 				$scope.lizenzHostList = $scope.lizenz.hardware;
 				
+				$scope.resetViews();
+				$scope.dialogConfig.actionUpdate = $scope.addLizenz;
+				$scope.dialogConfig.actionUpdateShow = true;
+				$scope.dialogConfig.dialogLizenzen = true;
+				$scope.showLizenzHardwareView = true;
 				
-				if ($scope.lizenz.state > 0){
-					$scope.selectLizenzAsUsed = true;
-				}else{
-					$scope.selectLizenzAsUsed = false;
-				}
+				$scope.showAbstractInformation("Lizenz","Lizenz.png");
 				
-				$mdDialog.show({
-						scope: $scope.$new(),
-						templateUrl: 'static/dialog/AbstractDialog.html',
-						clickOutsideToClose: true,
-						fullscreen: $scope.customFullscreen
-					});
 			}
 			
-			$scope.showHardwareInformation = function (hid) {
+			$scope.showUserInformation = function (uid) {
+
+				$scope.resetHardwareView();
 				
-				$scope.showHardwareViewOwner = false;
-				$scope.showHardwareViewHardware = false;
-				$scope.showHardwareViewLizenz = false;
-				$scope.showHardwareViewHardwareList = false;
-				$scope.showHardwareViewUser = false;
+				var username = uid.split(".")[0]+'_'+uid.split(".")[1];
+				$http({
+					method: 'GET',
+					scope: $scope,
+					sync: true,
+					url: 'ldap/user/'+username
+				}).then(function successCallback(response) {
+					data.loadLizenz($scope,"0");
+					
+					$scope.showHardwareUser = true;
+					$scope.showHardwareUserDetails = true;
+					$scope.hardwareUser = response.data.userData
+					$scope.hardwareAktivList = response.data.aktivHardware;
+					$scope.hardwareOwnerList = response.data.ownerHardware;
+					$scope.hardwareLizenzen = response.data.lizenz;
+					$scope.hardwareUserDetails = response.data.ldapUser == null ? {} :response.data.ldapUser;
+					$scope.hardwareUserDetails["username"] = response.data.userData.uid;
+					
+					$scope.listHardwareInformationList=true;
+					
+					if ($scope.hardwareAktivList != undefined && $scope.hardwareAktivList.length > 0){
+						$scope.showHardwareViewInformation = true;
+						$scope.hardwareInformation = $scope.hardwareAktivList[0];
+					}
+					
+					if ($scope.hardwareOwnerList != undefined && $scope.hardwareOwnerList.length > 0){
+						$scope.showHardwareOwner = true;
+						$scope.hardwareOwner = $scope.hardwareOwnerList[0];
+					}
+					
+					$scope.resetViews();
+					$scope.dialogConfig.showHardware = true;
+					$scope.showAbstractInformation($scope.hardwareUser.displayName,"user.png");
+					
+				});
+
+				
+			};
+			
+			$scope.showMobileInformation = function (mid) {
+
+				$scope.resetHardwareView();
+				
+				$http({
+					method: 'GET',
+					scope: $scope,
+					sync: true,
+					url: 'mobile/'+mid
+				}).then(function successCallback(response) {
+					data.loadLizenz($scope,"0");
+					$scope.mobileInformation = response.data;
+					
+					
+					if ($scope.mobileInformation.user != undefined && $scope.hardwareInformation.ownerInformation.displayName != undefined){
+						$scope.showHardwareUserOwner = true;
+						$scope.hardwareOwner = $scope.hardwareInformation.ownerInformation;
+						
+					}
+					
+					if ($scope.mobileInformation.hardwareOwner != undefined){
+						$scope.showHardwareUser = true;
+						$scope.hardwareUser = $scope.hardwareInformation.inUseInformation;
+					}
+					
+					if ($scope.mobileInformation.hardwareAktiv != undefined){
+						$scope.showHardwareUser = true;
+						$scope.hardwareUser = $scope.hardwareInformation.inUseInformation;
+					}
+
+					$scope.hardwareLizenzen = $scope.hardwareInformation.lizenz;
+					
+					$scope.resetViews();
+					
+					
+					$scope.showAbstractInformation("Mobile","Hardware.png");
+				});
+			}
+			
+			$scope.showHardwareInformation = function (hid, editable) {
+
+				$scope.resetHardwareView();
 				
 				$http({
 					method: 'GET',
@@ -656,41 +1163,40 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					data.loadLizenz($scope,"0");
 					$scope.hardwareInformation = response.data;
 					
-					$scope.showHardwareViewHardware = true;
+					$scope.showHardwareViewInformation = true;
 					$scope.showHardwareViewLizenz = true;
 					
 					
 					if ($scope.hardwareInformation.ownerInformation != undefined && $scope.hardwareInformation.ownerInformation.displayName != undefined){
-						$scope.showHardwareViewOwner = true;
+						$scope.showHardwareUserOwner = true;
 						$scope.hardwareOwner = $scope.hardwareInformation.ownerInformation;
 						
 					}
 					
 					if ($scope.hardwareInformation.inUseInformation != undefined && $scope.hardwareInformation.inUseInformation.displayName != undefined){
-						$scope.showHardwareViewUser = true;
+						$scope.showHardwareUser = true;
 						$scope.hardwareUser = $scope.hardwareInformation.inUseInformation;
 					}
 
 					$scope.hardwareLizenzen = $scope.hardwareInformation.lizenz;
-	
-					$scope.dialogSoftware = false;
-					$scope.dialogHardware = false;
-					$scope.dialogLizenzen = false;
-					$scope.showHardware = true;
-					$scope.titleImg = "static/img/ClientsIcon.png";
-					$scope.titleDialog = $scope.hardwareInformation.hostname;
-					$scope.actionDialog = $scope.addLizenz;
-					$mdDialog.show({
-							scope: $scope.$new(),
-							templateUrl: 'static/dialog/AbstractDialog.html',
-							clickOutsideToClose: true,
-							fullscreen: $scope.customFullscreen
-						});
+					
+					$scope.resetViews();
+					
+					if (editable != undefined){
+						$scope.dialogConfig.actionUpdateShow = editable;
+						$scope.dialogConfig.actionUpdateDialog = $scope.updateHardware;
+					}
+					
+					$scope.dialogConfig.actionMgmtShow = true;
+					$scope.dialogConfig.showHardware = true;
+					$scope.dialogConfig.actionMgmtDialog = $scope.changeManagement;
+					$scope.showAbstractInformation($scope.hardwareInformation.hostname,"Hardware.png");
 					
 					
 					
 				});
-			};
+			};	
+			
 
 			$scope.showSettings = function () {
 				$http({
@@ -708,6 +1214,50 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 							});
 					});
 			}
+			
+			
+			
+			
+			$scope.dialogMessageReset = function(){
+				$scope.configMessageDialog = {
+				  dialogUserMessage : false,
+				  dialogYesNoMessage : false,
+				  actionUserMessageCancel : undefined,
+				  actionYesNoMessageNo : undefined,
+				  actionYesNoMessageYes : undefined,
+				  actionUserMessageOK : undefined,
+				  titleMessageDialog : "",
+				  setHardwareManagerDilog : false,
+				  showMessageDialogDate : false
+				}
+			}
+			
+			$scope.dialogMessageReset();
+			
+			$scope.dialogUserMessageValue;
+			
+			this.messageUserDate = "";
+			
+			
+			
+			$scope.rentHardware = function(hw){
+				$scope.dialogMessageReset();
+				$scope.configMessageDialog.rentHardwareDilog = true;
+				$scope.configMessageDialog.dialogUserMessage = true;
+				$scope.configMessageDialog.showMessageDialogDate = true;
+				$scope.configMessageDialog.titleMessageDialog = "Verliehen an";
+				$scope.messageValue = {};
+				$scope.messageValue.hid = hw.hid;
+				
+				
+				$mdDialog.show({
+					scope: $scope.$new(),
+					templateUrl: 'static/dialog/ask/MessageDialog.html',
+					clickOutsideToClose: true,
+					controller: DialogController,
+					fullscreen: $scope.customFullscreen
+				});
+			}
 
 			$scope.updateSettings = function () {
 
@@ -721,50 +1271,31 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			}
 
 			$scope.showLizenzDetails = true;
-			
-			$scope.showUserInformation = function (uid) {
-
-				$scope.showHardwareViewOwner = false;
-				$scope.showHardwareViewHardware = false;
-				$scope.showHardwareViewLizenz = false;
-				$scope.showHardwareViewHardwareList = false;
-				$scope.showHardwareViewUser = false;
-				
-				$http({
-					method: 'GET',
-					scope: $scope,
-					sync: true,
-					url: 'user/'+uid
-				}).then(function successCallback(response) {
-					data.loadLizenz($scope,"0");
-					$scope.showHardwareViewUser = true;
-					$scope.hardwareUser = response.data
-					$scope.hardwareList = $scope.showHardware;
-					
-					if ($scope.hardwareUser.aktivHardware != undefined){
-						$scope.showHardwareActiv = false;
-						$scope.hardwareList.push($scope.hardwareUser.aktivHardware);
-					}
-					
-					if ($scope.hardwareList.length > 0){
-
-						$scope.showHardwareViewHardware = true;
 						
-						if ($scope.hardwareList.length > 1){
-							$scope.showHardwareViewHardwareList = true;
-						}
-					}
-					
-					$mdDialog.show({
-							scope: $scope.$new(),
-							templateUrl: 'static/dialog/hardwareView.html',
-							clickOutsideToClose: true,
-							fullscreen: $scope.customFullscreen
-					});
+			$scope.changeValueHW = function(selectedHardware){
+				$scope.hardwareOwner = JSON.parse(selectedHardware);
+			}
+			
+			$scope.hardwareOwner = {}
+			$scope.hardwareUserDetails = {};
+			
+			$scope.resetHardwareView = function(){
+				$scope.showHardwareUser = false;
+				$scope.showHardwareUserOwner = false;
+				$scope.showHardwareViewInformation = false;
+				$scope.showHardwareOwner = false;
+				$scope.showHardwareViewLizenz = false;
+				$scope.listHardwareInformationList=false;
+				$scope.showHardwareUserDetails = false;				
+			}
+			
+			$scope.saveUserDetails = function(hardwareUserDetails){
+				$http.post("ldap/user", hardwareUserDetails, {
+					'Content-Type': 'application/json'
 				});
-
-				
-			};
+			}
+			
+			
 
 		
 			
@@ -815,15 +1346,26 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			
 			data.loadHardware($scope,'clients');
 			
-			$scope.setHardwareViewPages = function(hardware, values){
-				var view = false;
+			$scope.hardwareRows ='14';
+			$scope.clientsRows = '9';
+			$scope.mobilesRows = '14';
+			$scope.lizenzRows ='14';
+			
+			$scope.hardwareRowsList = [
+				{value :9},
+				{value :14},
+				{value :50},
+				{value :100},
+				{value :200},
+				{value :'All'}
+				];
+			
+			$scope.setHardwareViewPages = function(hardware, values,rows){
 				if (values != undefined){
 					var result = {};
-					if (hardware.length >= 11){
-						view = true;
-						
+					if (hardware.length >= 11){						
 						var page = [];
-						var pageAmount = 7;
+						var pageAmount = rows;
 						var pageSize=1;
 						for (var i=0;i<hardware.length;i++){
 							if (pageAmount > 0){
@@ -832,33 +1374,59 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 							}else{
 								values[pageSize] = page;
 								pageSize++;
-								pageAmount = 7;
+								pageAmount = rows;
 								var page = [];
+								i=i-1;
 							}
 						}
 						
 						if (Object.keys(page).length > 0)
 							values[pageSize] = page;
 						
-					}else{
-						view = false;	
+					}else{	
 						values[1] = hardware;
 					}
 				}
-				
-				
-				return view;
+			}
+			
+			$scope.setMobileViewPages = function(data, values, rows){
+				if (values != undefined){
+					var result = {};
+					if (data.length >= 11){						
+						var page = [];
+						var pageAmount = rows;
+						var pageSize=1;
+						for (var i=0;i<data.length;i++){
+							if (pageAmount > 0){
+								page.push(mobile[i]); 
+								pageAmount--;
+							}else{
+								data[pageSize] = page;
+								pageSize++;
+								pageAmount = rows;
+								var page = [];
+								i=i-1;
+							}
+						}
+						
+						if (Object.keys(page).length > 0)
+							values[pageSize] = page;
+						
+					}else{	
+						values[1] = data;
+					}
+				}
 			}
 			
 			$scope.clientMaxPage = 1;
 			
-			$scope.setLizenzViewPages = function(lizenzen){
+			$scope.setLizenzViewPages = function(lizenzen,rows){
 				var result = {};
 				$scope.lizenzPages = [];
 				if (lizenzen.length >= 11){
 					$scope.lizenzViewPages = true;	
 					var page = [];
-					var pageAmount = 9;
+					var pageAmount = $scope.lizenzRows;
 					var pageSize=1;
 					for (var i=0;i<lizenzen.length;i++){
 						if (pageAmount > 0){
@@ -867,8 +1435,9 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 						}else{
 							$scope.lizenzPages[pageSize] = page;
 							pageSize++;
-							pageAmount = 9;
+							pageAmount = $scope.lizenzRows;
 							var page = [];
+							i=i-1;
 						}
 					}
 					
@@ -939,11 +1508,13 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				}
 			}
 			
+			$scope.resetPage = false;
 			
 			$scope.nextPage = function(view){
+				$scope.resetPage = false;	
 				if (view == 'hardware'){
-					if (Object.keys($scope.hardwareServerPages).length > $scope.netzwerkPage){
-						$scope.netzwerkPage++;
+					if (Object.keys($scope.hardwareServerPages).length > $scope.hardwarePage){
+						$scope.hardwarePage++;
 					}
 				}else if(view == 'client'){
 					if (Object.keys($scope.hardwareClientsPages).length > $scope.clientPage){
@@ -953,9 +1524,12 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					if (Object.keys($scope.lizenzPages).length > $scope.lizenzPage){
 						$scope.lizenzPage++;
 					}
+				}else if(view == 'moble'){
+					if (Object.keys($scope.mobilePage).length > $scope.mobilePage){
+						$scope.mobilePage++;
+					}
 				}
-				
-				
+							
 			}
 			
 			
@@ -980,11 +1554,19 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					if (1 < Object.keys($scope.lizenzPages).length && $scope.lizenzPage != 1){
 						$scope.lizenzPage--;
 					}
-				}
-				
+				}else if(view == 'mobile'){
+					if (1 < Object.keys($scope.mobilePage).length && $scope.mobilePage != 1){
+						$scope.mobilePage--;
+					}
+				}		
 			}
 			
-			this.getNetzwerkHost = function(modus){	
+			$scope.categorieHardwareValue = "All";
+			$scope.hardwareActivValue = "All";
+			$scope.clientsActivValue = "All";
+			
+			this.getNetzwerkHost = function(modus){
+								
 				var lowerCaseSearchHost = '';
 			    var filterHardware = [];
 			    var server = false;
@@ -996,55 +1578,87 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				 lowerCaseSearchHost = $scope.searchHostClient.toLowerCase(); 
 			    }
 			 
-			 for (var i=0;i<$scope.hardware.length;i++){
+			   for (var i=0;i<$scope.hardware.length;i++){
+				
+				var insert = false; 
 				if ($scope.hardware[i].categorie != undefined){
 				 if (server){
 					 if ($scope.hardware[i].categorie.toLowerCase() != 'client'){
 					  if ($scope.showLocation != "--" && $scope.showLocation != ""){
 							if ($scope.hardware[i].location.toString() == $scope.showLocation){
-								 filterHardware.push($scope.hardware[i]); 
-							 }	
+								insert = true;
+							}	
 					   }else {
-					      filterHardware.push($scope.hardware[i]);
+						   insert = true;
 					   }
+					 }
+					 
+					 if ($scope.hardwareActivValue != 'All' && insert){
+						 if (($scope.hardware[i].icon.toLowerCase().indexOf('green') != -1) && ($scope.hardwareActivValue == 'Aktiv')){
+							 insert = true;
+						 } else if (($scope.hardware[i].icon.toLowerCase().indexOf('red') != -1) && ($scope.hardwareActivValue == 'Inaktiv')){
+							 insert = true;
+						 } else if (($scope.hardware[i].icon.toLowerCase().indexOf('blanko') != -1) && ($scope.hardwareActivValue == 'Unbekannt')){
+							 insert = true;
+						 } else {
+							 insert = false;
+						 }
+					 }
+					 
+					 if ($scope.categorieHardwareValue != 'All' && insert){
+						 if (($scope.hardware[i].categorie.toLowerCase() == $scope.categorieHardwareValue.toLowerCase())){
+							 insert = true;
+						 } else {
+							 insert = false;
+						 }
 					 }
 				 }else {
 					 if ($scope.hardware[i].categorie.toLowerCase() == 'client'){
 						 if ($scope.showLocation != "--" && $scope.showLocation != ""){
 								if ($scope.hardware[i].location.toString() == $scope.showLocation){
-									 filterHardware.push($scope.hardware[i]); 
+									insert = true;
 								 }	
 							}else{
-						      filterHardware.push($scope.hardware[i]);
+						      insert = true;
 							} 											 
 					 } 
+					 
+					 if ($scope.clientsActivValue != 'All' && insert){
+						 if (($scope.hardware[i].icon.toLowerCase().indexOf('green') != -1) && ($scope.clientsActivValue == 'Aktiv')){
+							 insert = true;
+						 } else if (($scope.hardware[i].icon.toLowerCase().indexOf('red') != -1) && ($scope.clientsActivValue == 'Inaktiv')){
+							 insert = true;
+						 } else if (($scope.hardware[i].icon.toLowerCase().indexOf('blanko') != -1) && ($scope.clientsActivValue == 'Unbekannt')){
+							 insert = true;
+						 } else {
+							 insert = false;
+						 }
+					 }
+				 }
+				 
+				 if (insert){
+					 filterHardware.push($scope.hardware[i]); 
 				 }
 				}
 			 }
 			 
+			 
 			 if (lowerCaseSearchHost != ''){					
 				var result = new Array();
 				for (var i=0;i<filterHardware.length;i++){
-					if (filterHardware[i].hostname != null && filterHardware[i].hostname.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].owner != null && filterHardware[i].owner.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].aktivUsername != null && filterHardware[i].aktivUsername.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].sn != null && filterHardware[i].sn.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].model != null && filterHardware[i].model.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].ram != null && filterHardware[i].ram.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].categorie != null && filterHardware[i].categorie.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].description != null && filterHardware[i].description.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
-					} else if (filterHardware[i].department != null && filterHardware[i].department.toLowerCase().indexOf(lowerCaseSearchHost) != -1){
-						result.push(filterHardware[i]);
+					
+					for (var key in filterHardware[i]) {
+						if (filterHardware[i][key] != null && filterHardware[i][key].toString().toLowerCase().indexOf(lowerCaseSearchHost) != -1){
+							result.push(filterHardware[i]);
+							break;
+						}
 					}
 					
+					if (filterHardware[i].verliehen){
+						if ("verliehen".indexOf(lowerCaseSearchHost) != -1){
+							result.push(filterHardware[i]);
+						}
+					}
 					
 					   if ("freiburg".indexOf(lowerCaseSearchHost) > -1) {
 							  if (filterHardware[i].location != null && filterHardware[i].location == 1){
@@ -1099,36 +1713,32 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			 }
 			 
 			 
-			
 			 if (server){
-				if ($scope.showAllServer){
-					$scope.hardwareServerViewPages = false;
+				if ($scope.hardwareRows == 'All'){
+					$scope.aktivHardwareShow = Object.keys(filterHardware).length;
 					return filterHardware;
 				}
 				$scope.hardwareServerPages = [];
-				$scope.hardwareServerViewPages = $scope.setHardwareViewPages(filterHardware, $scope.hardwareServerPages);
+				$scope.setHardwareViewPages(filterHardware, $scope.hardwareServerPages,$scope.hardwareRows);
 				$scope.hardwareMaxPage = Object.keys($scope.hardwareServerPages).length;
+				$scope.aktivHardwareShow = Object.keys($scope.hardwareServerPages[$scope.hardwarePage]).length;
 				return $scope.hardwareServerPages[$scope.hardwarePage];
 			 } else {
-				if ($scope.showAllClients){
-					$scope.hardwareClientViewPages = false;
+				if ($scope.clientsRows == 'All'){
+					$scope.aktivClientsShow = Object.keys(filterHardware).length;
 					return filterHardware;
 				}
 				$scope.hardwareClientsPages = [];
-				$scope.hardwareClientViewPages = $scope.setHardwareViewPages(filterHardware, $scope.hardwareClientsPages);
+				$scope.setHardwareViewPages(filterHardware, $scope.hardwareClientsPages,$scope.clientsRows);
 				$scope.clientMaxPage = Object.keys($scope.hardwareClientsPages).length;
+				$scope.aktivClientsShow = Object.keys($scope.hardwareClientsPages[$scope.clientPage]).length;
 				return $scope.hardwareClientsPages[$scope.clientPage];
 			 }
 			}
 			
 			$scope.setClientsPage = function(){
 				$scope.clientPage = 1;
-			}
-			
-			$scope.setLocationPage = function(){
-				$scope.clientPage = 1;
-				$scope.hardwarePage = 1;
-			}
+			}	
 			
 			$scope.setHardwarePage = function(){
 				$scope.hardwarePage = 1;
@@ -1137,6 +1747,13 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			$scope.setLizenzPage = function(){
 				$scope.lizenzPage = 1;
 			}
+			
+			$scope.setMobilePage = function(){
+				$scope.mobilePage = 1;
+			}
+			
+
+			$scope.lizenzPageAmount = 0;
 			
 			this.getLizenz = function(){
 				 var lowerCaseSearchLizenz = $scope.searchLizenz.toLowerCase();
@@ -1156,37 +1773,79 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				 if (lowerCaseSearchLizenz != ''){	
 					var result = new Array();
 					for (var i=0;i<lizenzData.length;i++){
-						if (lizenzData[i].name != null && lizenzData[i].name.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
-							result.push(lizenzData[i]);
-						} else if (lizenzData[i].key != null && lizenzData[i].key.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
-							result.push(lizenzData[i]);
-						} else if (lizenzData[i].categorie != null && lizenzData[i].categorie.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
-							result.push(lizenzData[i]);
-						} else if (lizenzData[i].stateInfo != null && lizenzData[i].stateInfo.toLowerCase().indexOf(lowerCaseSearchLizenz) != -1){
-							result.push(lizenzData[i]);
-						} 
+						for (var key in lizenzData[i]) {
+							if (lizenzData[i][key] != null && lizenzData[i][key].toLowerCase().indexOf(lowerCaseSearch) != -1){
+								result.push(lizenzData[i]);
+								break;
+							}
+						}
 					}
 					
-					if ($scope.showAllLizenz){
-						$scope.lizenzViewPages = false;
-						return result;
-					}
+					lizenzData = result;
 					
-					$scope.setLizenzViewPages(result);
-					$scope.lizenzMaxPage = Object.keys($scope.lizenzPages).length;
-					
-					return $scope.lizenzPages[$scope.lizenzPage];	
-				 }else{
-					if ($scope.showAllLizenz){
-						$scope.lizenzViewPages = false;
-						return lizenzData;
-					}
-					
-					$scope.setLizenzViewPages(lizenzData);
-					$scope.lizenzMaxPage = Object.keys($scope.lizenzPages).length;
-					return $scope.lizenzPages[$scope.lizenzPage];	
 				 }
+
+				if ($scope.showAllLizenz){
+					$scope.lizenzViewPages = false;
+					$scope.lizenzMaxPage = Object.keys(lizenzData).length;
+					$scope.lizenzPageAmount = Object.keys(lizenzData).length;
+					return lizenzData;
+				}
+				
+				$scope.setLizenzViewPages(lizenzData);
+				if ($scope.result != undefined && $scope.result != null){
+					$scope.lizenzMaxPage = Object.keys($scope.lizenzPages).length;
+					$scope.lizenzPageAmount = Object.keys($scope.lizenzPages[$scope.lizenzPage]).length;						
+				} else {
+					$scope.lizenzMaxPage = 0;
+					$scope.lizenzPageAmount = 0;
+				}
+				
+				return $scope.lizenzPages[$scope.lizenzPage];	
+				 
 			}
+			
+			this.getMobile= function(){
+				 var lowerCaseSearch = $scope.searchMobile.toLowerCase();
+				 var result = [];
+				 if (lowerCaseSearch != ''){	
+					var result = new Array();
+					for (var i=0;i<$scope.mobileData.length;i++){
+						for (var key in mobileData[i]) {
+							if (mobileData[i][key] != null && mobileData[i][key].toLowerCase().indexOf(lowerCaseSearch) != -1){
+								result.push(mobileData[i]);
+								break;
+							}
+						}
+					}
+				 }else{
+					 result = $scope.mobileData;
+				 }
+				 
+				if ($scope.showAllLizenz){
+					$scope.lizenzMaxPage = Object.keys(result).length;
+					$scope.lizenzPageAmount = Object.keys(result).length;
+					return result;
+				}
+				
+				$scope.setMobileViewPages(result, $scope.mobilePages,$scope.mobileRows);
+				
+				if ($scope.result != undefined && $scope.result != null){
+					$scope.mobileMaxPage = Object.keys($scope.result).length;
+					$scope.mobilePageAmount = Object.keys($scope.mobilePages[$scope.mobilePage]).length;
+				}else{
+					$scope.mobileMaxPage = 0;
+					$scope.mobilePageAmount =0;
+				}
+				
+				if ($scope.mobilePages != undefined && $scope.mobilePages.length > 0)
+				 return $scope.mobilePages[$scope.mobilePage];	
+				else
+				 return [];
+				 
+			}
+			
+			
 
 			$scope.querySearch = querySearch;
 

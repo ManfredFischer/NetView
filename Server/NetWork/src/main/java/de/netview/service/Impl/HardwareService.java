@@ -8,15 +8,19 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import de.netview.config.BeanUtil;
 import de.netview.dao.IHardwareDAO;
 import de.netview.dao.ILizenzDao;
 import de.netview.dao.ISoftwareDao;
 import de.netview.data.ADUserData;
 import de.netview.data.HardwareData;
 import de.netview.data.HardwareInformation;
+import de.netview.function.IIPSort;
 import de.netview.model.Hardware;
 import de.netview.model.Lizenz;
 import de.netview.model.Software;
@@ -43,12 +47,19 @@ public class HardwareService implements IHardwareService {
 	@Autowired
 	private ILDAPService ldapService;
 
+	@Autowired
+	private IIPSort IPSort;
+	
 	@Transactional
 	@Override
 	public Hardware insertHardware(Hardware hardware) {
 
-		if (hardware.getOwner() != null && hardware.getOwner() != "")
-			hardware.setDepartment(ldapService.getDepartementByName(hardware.getOwner()));
+		hardware.setIcon("unbekannt.png");
+		if (!StringUtils.isEmpty(hardware.getAktivusername())) {
+			ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
+			hardware.setDepartment(userData.getDepartment());
+			hardware.setAktivuserphone(userData.getTelephoneNumber());
+		}
 
 		Hardware hardwareInfo = hardwareDao.getHardwareByName(hardware.getHostname());
 
@@ -173,27 +184,33 @@ public class HardwareService implements IHardwareService {
 	@Override
 	@Transactional
 	public List<HardwareInformation> getAllHardware(String categorie) {
-		List<HardwareInformation> hardwareList = new ArrayList<>();
+		ArrayList<HardwareInformation> hardwareList = new ArrayList<>();
 		for (Hardware hardware : hardwareDao.getAllHardware(categorie)) {
 			HardwareInformation hardwareData = new HardwareInformation(hardware);
 			hardwareList.add(hardwareData);
 		}
 
-		return hardwareList;
+		return IPSort.sortHardware(hardwareList);
 	}
 
 	@Override
 	@Transactional
-	public HardwareData getHardwareById(long hid) {
+	public List<Hardware> getAllHardware() {
+		return hardwareDao.getAllHardware();
+	}
+
+	@Override
+	@Transactional
+	public HardwareData getHardwareDataById(long hid) {
 		Hardware hardware = hardwareDao.getHardwareById(hid);
-		
-		ADUserData userOwner = ldapService.getUserByName(hardware.getOwner());
+
+		ADUserData userOwner = ldapService.getLDAPUserByName(hardware.getOwner());
 		ADUserData userInUse = null;
-		
+
 		if (hardware.getOwner() != hardware.getAktivusername()) {
-			userInUse = ldapService.getUserByName(hardware.getAktivusername());
+			userInUse = ldapService.getLDAPUserByName(hardware.getAktivusername());
 		}
-		
+
 		HardwareData hardwareData = new HardwareData(userOwner, userInUse);
 		hardwareData.wrapperHardware(hardware);
 		return hardwareData;
@@ -260,6 +277,14 @@ public class HardwareService implements IHardwareService {
 		hardwareDao.saveOrUpdateHardware(hardware);
 
 	}
+	
+	@Override
+	@Transactional
+	public void changeHardwareOwner(Map value) {
+		Hardware hardware = getHardwareById(Long.parseLong(value.get("hid").toString()));
+		hardware.setOwner(value.get("uid").toString());
+		saveHardware(hardware);
+	}
 
 	@Override
 	@Transactional
@@ -273,10 +298,46 @@ public class HardwareService implements IHardwareService {
 		List hardwareList = hardwareDao.getHardwareByOwner(owner);
 		if (hardwareList == null || hardwareList.isEmpty()) {
 			return null;
-		}else {
+		} else {
 			return (Hardware) hardwareList.get(0);
 		}
-		
+
+	}
+
+	@Override
+	@Transactional
+	public List<Hardware> getHardwareByOwnerList(String owner) {
+		List<Hardware> hardwareList = hardwareDao.getHardwareByOwner(owner);
+		if (hardwareList == null || hardwareList.isEmpty()) {
+			return new ArrayList<Hardware>();
+		} else {
+			return hardwareList;
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public List<Hardware> getHardwareByUserList(String user) {
+		List<Hardware> hardwareList = hardwareDao.getHardwareByUser(user);
+		if (hardwareList == null || hardwareList.isEmpty()) {
+			return new ArrayList<Hardware>();
+		} else {
+			return hardwareList;
+		}
+
+	}
+
+	@Override
+	@Transactional
+	public void saveHardware(Hardware hardware) {
+		hardwareDao.saveOrUpdateHardware(hardware);
+	}
+
+	@Override
+	@Transactional
+	public Hardware getHardwareById(long hid) {
+		return hardwareDao.getHardwareById(hid);
 	}
 
 }

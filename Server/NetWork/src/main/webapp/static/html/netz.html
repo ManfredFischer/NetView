@@ -1,54 +1,103 @@
 <md-content ng-show="isServerVerwaltungSelected">
-        <div class="page">        	        	
-        	<div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
+       <div class="page">        	        	          
+          <div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
              
              <input flex-gt-sm class="css-input" placeholder="Search..." ng-model="searchHostServer" ng-change="setHardwarePage()">
              
-             <md-checkbox md-no-ink ng-model="showAllClients"  ng-change="setClientsPage()" class="md-primary" >
-                {{translation.default.showAll}}		
-             </md-checkbox>
-              
+             <md-input-container flex-gt-sm style="max-width:150px" ng-show="{{systemVerwaltung}}" >
+                <label>Aktiv</label>
+                <md-select aria-label="ShowHideAccountant" ng-Model="hardwareActivValue" ng-change="setHardwarePage()">
+                 <md-option ng-repeat="aktiv in aktivList" value="{{ aktiv.value }}">{{aktiv.value}}
+                 </md-option>
+                </md-select>
+             </md-input-container> 
+             
+             <md-input-container flex-gt-sm style="max-width:300px" ng-show="{{systemVerwaltung}}" >
+                <label>Kategorie</label>
+                <md-select aria-label="ShowHideAccountant" ng-Model="categorieHardwareValue" ng-change="setHardwarePage()">
+                 <md-option ng-repeat="categorie in categorieList" value="{{ categorie.value }}">{{categorie.value }}
+                 </md-option>
+                </md-select>
+             </md-input-container> 
+             
+             <md-input-container flex-gt-sm style="max-width:300px" ng-show="{{systemVerwaltung}}" >
+                <label>{{translation.default.location}}</label>
+                <md-select aria-label="ShowHideAccountant" ng-Model="showLocation" ng-change="setHardwarePage()">
+                 <md-option ng-repeat="location in LocationList" value="{{ location.lid }}">{{location.displayname }}
+                 </md-option>
+                </md-select>
+             </md-input-container> 
           </div>
+          
+           <div style="background:#084B8A;color:#ffffff;padding:5px;margin:0 0 15 0">
+		 	<div class="ng-scope layout-row " style="height: 23px">
+				<div style="padding-right: 10px; padding-left: 10px; font-size: 14px">Seite
+				{{hardwarePage}} von {{hardwareMaxPage}} (Anzahl: {{aktivHardwareShow}})</div>
+				<button class="buttonView buttonViewPrev" ng-click="prevPage('hardware')">Prev</button>
+				<button class="buttonView buttonViewNext" ng-click="nextPage('hardware')">Next</button>
+				<label style="padding-right: 10px; padding-left: 10px; font-size: 14px">Anzahl pro Seite: 
+				<select ng-Model="hardwareRows">
+					<option ng-repeat="rows in hardwareRowsList" value="{{ rows.value }}">{{rows.value}}</option>
+				</select>
+				</label>
+			</div>
+		   </div>
             
             <div class="ng-scope layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
-            	<div flex="5" style="font-size:14px">Status</div>
-                <div flex="10 " style="font-size:14px">{{translation.infoTable.hostname}}</div>
-                <div flex="40" style="font-size:14px">{{translation.infoTable.hardwareInfo}}</div>
-                <div flex="40" style="font-size:14px">{{translation.infoTable.hardwareDescription}}</div>
+            	<div flex="none" style="font-size:14px;margin-right:15px">Status</div>
+                <div flex="15 " style="font-size:14px">{{translation.infoTable.hostname}}</div>
+                <div flex="10 " style="font-size:14px">IP</div>
+                <div flex="30" style="font-size:14px">{{translation.infoTable.hardwareInfo}}</div>
+                <div flex style="font-size:14px">{{translation.infoTable.hardwareDescription}}</div>
             </div>
             
             <md-list ng-cloak>
-                <md-list-item ng-repeat="hw in ctrl.getNetzwerkHost('server', serverVerwaltungSelectedLocation)"  ng-click="showHardwareInformation(hw.hid)" class="md-2-line">
-                    <div flex="5" class="md-list-item-text" layout="column">
-                        <img width="25px" heigth="25px" src={{hw.aktivIcon}}></md-icon>
+                <md-list-item ng-repeat="hw in ctrl.getNetzwerkHost('server', serverVerwaltungSelectedLocation)"  ng-click="showHardwareInformation(hw.hid,true)" class="md-1-line">
+                    <div flex="none">
+                        <img width="25px" heigth="25px" src="static\img\{{hw.icon}}" style="margin-right:25px"></md-icon>
+                    </div>
+                    <div flex="15" class="md-list-item-text" layout="column">
+                        {{ hw.hostname }}
                     </div>
                     <div flex="10" class="md-list-item-text" layout="column">
-                        <h3>{{ hw.hostname }}</h3>
-                        <h4>{{ hw.ip }}</h4>
+                        {{ hw.ip }}
                     </div>
-                    <div flex="40" class="md-list-item-text" layout="column">
-                        <h3>{{ hw.model}}</h3>
-                        <h4>{{ hw.sn }}</h4>
+                    <div flex="30" class="md-list-item-text" layout="column">
+                        {{ hw.model}}
                     </div>
-                    <div flex="40" class="md-list-item-text" layout="column">
-                        <h3>{{ hw.description}}</h3>
-                        <h4>{{ hw.bs }}</h4>
+                    <div flex class="md-list-item-text" layout="column">
+                        {{ hw.description}}
                     </div>
-                    <div flex="5" class="md-list-item-text" layout="column">
-                     <md-button width="25" aria-label="ShowHideAccountant" ng-click="delHardware(hw)" >
-						<img width="15px" heigth="15px" src="/NetView/static/img/DeleteIcon.png"></md-icon>
-					 </md-button>
-                    </div> 
+                    <div flex="none" style="font-size: 14px">
+						<div ng-if="hw.verliehen" class="md-list-item-text" layout="column">
+							<p style="color: red; font-size: 10px">{{ hw.verliehenAn }} ({{ hw.verliehenBis }})</p>
+						</div>
+					</div>
+					<div flex="none" style="font-size: 14px">
+						<div ng-if="hw.verliehen" class="md-list-item-text" layout="column">
+							<md-button class="md-icon-button"
+								ng-click="getBackHardware(hw.hid,hw.verliehenAn)"> <img
+									width="15px" heigth="15px" src="/NetView/static/img/verliehenBack.png" /> </md-button>
+						</div>
+						<div ng-if="!hw.verliehen" class="md-list-item-text" layout="column">
+							<md-button class="md-icon-button" ng-click="rentHardware(hw)">
+							<img width="15px" heigth="15px" src="/NetView/static/img/verliehen.png">
+							</md-icon> </md-button>
+						</div>
+					</div>
+                    <div flex="none" style="font-size: 14px">
+						<div class="md-list-item-text" layout="column">
+							<md-button class="md-icon-button" ng-click="delHardware(hw)">
+								<img width="15px" heigth="15px"	src="/NetView/static/img/papierkorb.png"> </md-icon> 
+							</md-button>
+						</div>
+					</div>
                 </md-list-item>
             </md-list>
             
-            <div ng-show="hardwareServerViewPages">
-            <hr />
-            <div class="ng-scope layout-row " style="padding-left:10px">
-                    <div flex="10" ng-show="false" class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="prevPage('hardware')" md-colors="{color: 'green'}">Prev</md-button></div>
-                    <div flex="80" style="vertical-align: middle;text-align:center"><h3>Seite {{hardwarePage}} von {{hardwareMaxPage}}</h3></div>
-                    <div flex="10" class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="nextPage('hardware')" md-colors="{color: 'green'}">Next</md-button></div>
-            </div>
-            </div>
-        </div>
+            
+            
+           
+		
+	</div>
     </md-content>

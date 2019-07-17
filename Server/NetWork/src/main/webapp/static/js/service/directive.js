@@ -46,4 +46,32 @@ app.directive('myLizenz', function() {
 	return {
 		templateUrl : 'static/dialog/hardwareView.html'
 	};
+}).directive('mySettings', function() {
+	return {
+		templateUrl : 'static/html/settings.html'
+	};
+}).directive('myMobilephoneview', function() {
+	return {
+		templateUrl : 'static/html/mobilePhoneViewSettings.html'
+	};
+}).directive('myContractview', function() {
+	return {
+		templateUrl : 'static/html/contractViewSettings.html'
+	};
+}).directive('addHandyuser', function() {
+	return {
+		templateUrl : 'static/dialog/addHandyUser.html'
+	};
+}).directive('settingsData', function() {
+	return {
+		templateUrl : 'static/html/settingsData.html'
+	};
+}).directive('myOverview', function() {
+	return {
+		templateUrl : 'static/html/overview.html'
+	};
+}).directive('settingsConverter', function() {
+	return {
+		templateUrl : 'static/html/settingsConverter.html'
+	};
 });

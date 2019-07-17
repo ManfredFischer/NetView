@@ -4,14 +4,13 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.netview.model.Hardware;
 
 public class HardwareInformation implements Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -344715559006434406L;
 	private Long hid;
 	private String hostname;
@@ -19,6 +18,7 @@ public class HardwareInformation implements Serializable {
 	private String description;
 	private String owner;
 	private String aktivUsername;
+	private String aktivUserPhone;
 	private String aktivDate;
 	private String lastLogin;
 	private String model;
@@ -29,7 +29,18 @@ public class HardwareInformation implements Serializable {
 	private String categorie;
 	private int location;
 	private String department;
-	private String aktivIcon;
+	private String icon;
+	private Boolean verliehen;
+	private String verliehenAn;
+	private String verliehenBis;
+
+	public String getVerliehenBis() {
+		return verliehenBis;
+	}
+
+	public void setVerliehenBis(String verliehenBis) {
+		this.verliehenBis = verliehenBis;
+	}
 
 	public HardwareInformation(Hardware hardware) {
 		this.hid = hardware.getHid();
@@ -37,7 +48,15 @@ public class HardwareInformation implements Serializable {
 		this.ip = hardware.getIp();
 		this.description = hardware.getDescription();
 		this.owner = hardware.getOwner();
-		this.aktivUsername = hardware.getAktivusername();
+		if (hardware.getAktivusername() != null) {
+			String[] user = hardware.getAktivusername().split(".");
+			if (user.length > 1) {
+				this.aktivUsername = hardware.getAktivusername().split(".")[0] + " "
+						+ hardware.getAktivusername().split(".")[1];
+			} else {
+				this.aktivUsername = hardware.getAktivusername();
+			}
+		}
 		this.aktivDate = hardware.getAktivdate();
 		this.lastLogin = hardware.getLastlogin();
 		this.model = hardware.getModel();
@@ -48,22 +67,22 @@ public class HardwareInformation implements Serializable {
 		this.categorie = hardware.getCategorie();
 		this.department = hardware.getDepartment();
 		this.setLocation(hardware.getLocation());
-
-		InetAddress iAdr;
-		try {
-			iAdr = InetAddress.getByName(hardware.getHostname());
-
-			if (iAdr.isReachable(1000)) {
-				this.setAktivIcon("static/img/green.png");
-			}else {
-				this.setAktivIcon("static/img/red.png");
+		this.setIcon(hardware.getIcon());
+		this.setAktivUserPhone(hardware.getAktivuserphone());
+		
+		if (hardware.getLDAPUser() != null && hardware.getLDAPUser().size() > 0) {
+			this.setVerliehen(true);
+			this.setVerliehenAn(hardware.getLDAPUser().get(0).getUsername());
+			if (hardware.getVerliehenBis() != null) {
+				String pattern = "dd.MM.yyyy";
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+				String date = simpleDateFormat.format(new Date(hardware.getVerliehenBis()));
+				this.setVerliehenBis(date);
 			}
-			
-			this.ip = iAdr.getHostAddress();
-
-		} catch (IOException e) {
-			this.ip = hardware.getIp();
+		}else {
+			this.setVerliehen(false);
 		}
+
 	}
 
 	public Long getHid() {
@@ -296,13 +315,37 @@ public class HardwareInformation implements Serializable {
 	public void setLocation(int location) {
 		this.location = location;
 	}
-	
-	public String getAktivIcon() {
-		return aktivIcon;
+
+	public String getIcon() {
+		return icon;
 	}
 
-	public void setAktivIcon(String aktivIcon) {
-		this.aktivIcon = aktivIcon;
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public String getAktivUserPhone() {
+		return aktivUserPhone;
+	}
+
+	public void setAktivUserPhone(String aktivUserPhone) {
+		this.aktivUserPhone = aktivUserPhone;
+	}
+
+	public Boolean getVerliehen() {
+		return verliehen;
+	}
+
+	public void setVerliehen(Boolean verliehen) {
+		this.verliehen = verliehen;
+	}
+
+	public String getVerliehenAn() {
+		return verliehenAn;
+	}
+
+	public void setVerliehenAn(String verliehenAn) {
+		this.verliehenAn = verliehenAn;
 	}
 
 }

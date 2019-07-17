@@ -1,0 +1,63 @@
+<form ng-submit="selectUpdateUser(searchUserMobileText)">
+    <md-autocomplete md-item-text="item.displayName" md-search-text="searchUserMobileText"
+        md-items="item in querySearch(searchUserMobileText)" placeholder="Username" md-selected-item-change="selectUpdateUser(searchUserMobileText)">
+        <md-item-template>
+            <span md-highlight-text="searchUserMobileText" md-highlight-flags="^i">{{item.displayName}}</span>
+        </md-item-template>
+    </md-autocomplete>
+</form>
+
+
+<md-switch class="md-primary" md-no-ink aria-label="Switch No Ink" ng-model="addContractView">
+    neuer Vertrag
+</md-switch>
+
+
+<div ng-if="addContractView" style="border-bottom: 5px solid #E6E6E6;"> 
+ <md-input-container class="md-block" flex-gt-sm>
+    <label>Nummer</label>
+    <input ng-model="addContract.number">
+ </md-input-container>
+ <md-input-container class="md-block" flex-gt-sm>
+    <label>Simkarte</label>
+    <input ng-model="addContract.sim">
+ </md-input-container>
+ <md-input-container class="md-block" flex-gt-sm>
+    <label>Pin</label>
+    <input ng-model="addContract.pin">
+ </md-input-container>
+ <md-input-container class="md-block" flex-gt-sm>
+    <label>Puk</label>
+    <input ng-model="addContract.puk">
+ </md-input-container>
+ <md-input-container class="md-block" flex-gt-sm>
+    <label>Ultra 1</label>
+    <input ng-model="addContract.ultraOne">
+ </md-input-container>
+ <md-input-container class="md-block" flex-gt-sm>
+    <label>Ultra 2</label>
+    <input ng-model="addContract.ultraTwo">
+ </md-input-container>
+</div>
+
+<div layout-gt-sm="row">
+ <md-input-container style="width: 100%">
+        <label>Handy</label>
+        <md-select ng-Model="handyModelId" name="favoriteColor" ng-model="favoriteColor">
+            <md-option readonly ng-repeat="handyModel in handyModelList" value="{{handyModel.hid}}">{{ handyModel.displayName }}</md-option>
+        </md-select>
+ </md-input-container>
+</div>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>IMEI</label>
+    <input ng-model="handy.imei">
+</md-input-container>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Lieferdatum</label>
+    <input ng-model="handy.date">
+</md-input-container>
+<md-input-container class="md-block" flex-gt-sm>
+ <label>Beschreibung</label>
+ <textarea ng-model="handy.description" rows="5" md-select-on-focus></textarea>
+</md-input-container>

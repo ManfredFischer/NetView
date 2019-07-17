@@ -7,21 +7,17 @@
                             <div layout-gt-sm="row" layout-align="space-between center">
 								
                                     <md-button class="md-raised" ng-click="showUserInformation(userInformation.uid)" md-colors="{color: 'green'}">Details</md-button>
-                                
-                                    
-                                        <md-button ng-show="isUserVerwaltungUpdateSelected" ng-disabled="true" ng-click="updateUserInformation()" type="submit"
-                                            class="md-raised">Aktualisieren</md-button>
-                                        <md-button ng-show="isUserVerwaltungCreateSelected" ng-disabled="true" ng-click="createUserInformation()" class="md-raised">Hinzufügen</md-button>
-                                        <md-button ng-show="isUserDisableSelected" ng-disabled="true" ng-click="disableUser(false)" class="md-raised">Austritt</md-button>
-                                        <md-button ng-show="isUserDisableSelected" ng-disabled="true" ng-click="disableUser(true)" class="md-raised">Sofort</md-button>
+                                    <md-button ng-show="isUserVerwaltungCreateSelected" ng-disabled="true" ng-click="createUserInformation()" class="md-raised">Hinzufügen</md-button>
+                                    <md-button ng-show="isUserDisableSelected" ng-disabled="true" ng-click="disableUser(false)" class="md-raised">Austritt</md-button>
+                                    <md-button ng-show="isUserDisableSelected" ng-disabled="true" ng-click="disableUser(true)" class="md-raised">Sofort</md-button>
                                     
                                                                
                             </div>
                             <md-divider></md-divider>
                             <hr/>                            
-                            <form ng-submit="selectUpdateUser(searchText,$event)">
+                            <form ng-submit="selectUpdateUser(searchUserText)">
                                 <md-autocomplete ng-show="showUserSearch" md-item-text="item.displayName" md-search-text="searchUserText"
-                                    md-items="item in querySearch(searchUserText)" placeholder="Username...">
+                                    md-items="item in querySearch(searchUserText)" placeholder="Username..." md-selected-item-change="selectUpdateUser(searchUserText)">
                                     <md-item-template>
                                         <span md-highlight-text="searchUserText" md-highlight-flags="^i">{{item.displayName}}</span>
                                     </md-item-template>
@@ -39,7 +35,7 @@
                                 </md-input-container>
                             </div>
                             
-                            <div layout-gt-sm="row" style="height:70px" ng-show="showUserInfos">
+                            <div ng-if="false" layout-gt-sm="row" style="height:70px" ng-show="showUserInfos">
                                 <md-input-container class="md-block" flex-gt-sm>
                                     <label>Hostname</label>
                                     <input ng-model="userInformation.hardware.hostname">
@@ -56,7 +52,7 @@
                                 </md-input-container>
                             </div>
 
-                            <div layout-gt-sm="row" style="height:70px" ng-show="showUserInfos">
+                            <div ng-if="false" layout-gt-sm="row" style="height:70px" ng-show="showUserInfos">
                                 <md-input-container style="width: 100%">
                                     <label>Abteilung</label>
                                     <md-select ng-Model="laptop.lid">
@@ -82,7 +78,7 @@
                     <div class="my-lg-0" style="padding-left:20px" ng-show="isUserVerwaltungCreateSelected">
                         <md-card class="page-tab" style="width:400px;padding:20px">
                             <div layout-gt-sm="row" layout-align="space-between center">
-                                <div>Zubeh�r</div>
+                                <div>Zubehoer</div>
                                 <md-switch class="md-secondary"> Vorhanden </md-switch>
                             </div>
                             <div layout-gt-sm="row">

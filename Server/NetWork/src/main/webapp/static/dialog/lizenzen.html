@@ -2,9 +2,6 @@
         
         <div class="layout-row">
         <div flex>
-         <md-checkbox ng-model="selectLizenzAsUsed" class="md-primary" flex-gt-sm ng-if="showLizenzen">
-                {{translation.default.isInUseSelected}}	
-         </md-checkbox>
          <md-input-container class="md-block" flex-gt-sm>
                 <label>Lizenz Name</label>
                 <input ng-model="lizenz.name">
@@ -23,19 +20,19 @@
          </md-input-container>
         </div>
         
-        <div flex ng-if="showLizenzen">
+        <div flex ng-if="showLizenzHardwareView">
           <div class="layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
                     <div flex="45" style="font-size:14px">{{translation.infoTable.hostname}}</div>
                     <div flex="55" style="font-size:14px">{{translation.infoTable.user}}</div>
           </div>
            
           <md-list ng-cloak>
-                <md-list-item ng-repeat="hw in lizenzHostList" ng-click="showHardwareInformation(hw.hid)" class="md-1-line">
+                <md-list-item ng-repeat="hw in lizenzHostList" class="md-1-line">
                     <div flex="45" class="md-list-item-text" layout="column">
                         {{ hw.hostname }}
                     </div> 
                     <div flex="55" class="md-list-item-text" layout="column">
-                        {{ hw.owner }}
+                        {{ hw.aktivUsername }}
                     </div> 
                 </md-list-item>
           </md-list>

@@ -10,66 +10,43 @@
 
    
 </head>
-<body ng-app="BlankApp" ng-cloak>
-<div ng-controller="DemoBasicCtrl as ctrl" ng-cloak>
-        <div layout="row" layout-align="space-between start">
-            <div></div>
-            <div>
-            
-                <form action="login" method="post" class="form-inline my-2 my-lg-0">
-                <md-input-container class="md-caption">
-                 <label>Username</label>
-                 <input required name="username"  ng-model="username">
-                </md-input-container>
-                <md-input-container class="md-caption">
-                 <label>Password</label>
-                 <input required name="password" type="password" ng-model="password">
-				</md-input-container>
-				
-                 <input type="hidden" name="_csrf" value="${_csrf.token}" id="token"/>
-				<md-input-container class="md-caption">
-                <md-button type="submit">Login</md-button>
-                </md-input-container> 
-                </form>                         
-            </div>
+<body ng-app="BlankApp" ng-cloak ng-controller="DemoBasicCtrl as ctrl">
+
+       
+       <form action="login" method="post">
+        <div class="page">
+        
+           <input type="text" required name="username" class="css-input"  ng-model="username" placeholder="Username..."/>
+         
+           <input type="password" required name="password" class="css-input"  ng-model="password" placeholder="Password..."/>
+                
+              
+		 
+            <input type="hidden" name="_csrf" value="${_csrf.token}" id="token"/>
+            <md-button style="width:100%;margin:2px;align:center" type="submit">Login</md-button>
         </div>
-
-    <md-content class="page-container">
-        <md-card class="page">
-            <p>Change Password</p>
-            <md-input-container class="md-caption">
-                <label>Username</label>
-                <input required name="changeUsername" ng-model="project.username">
-            </md-input-container>
-            <md-input-container class="md-caption">
-                <label>Password</label>
-                <input type="password" required name="changePassword" ng-model="project.cpw">
-            </md-input-container>
-            <md-input-container class="md-caption">
-                <label>new Password</label>
-                <input type="password" required name="changeNewPssword" ng-model="project.cnpw">
-            </md-input-container>
-            <md-input-container class="md-caption">
-                <label>replay Password</label>
-                <input type="password" required name="changeReplayPassword" ng-model="project.crpw">
-            </md-input-container>
-            <md-button ng-click="change()">Change</md-button>
-        </md-card>
-    </md-content>
-</div>
+	
+	   
+	</form>
 
 
+        
 
-<!-- Angular Material requires Angular.js Libraries -->
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+		<!-- Angular Material requires Angular.js Libraries -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>
+   		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-aria.min.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-messages.min.js"></script>
+    	 <script data-require="jquery@*" data-semver="2.1.1" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+   
+    	<script src="static/framework/ng-file-upload-shim.min.js"></script>
+		<script src="static/framework/ng-file-upload.min.js"></script>
 
-<!-- Angular Material Library -->
-<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
+		<!-- Angular Material Library -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
 
-<!-- Your application bootstrap  -->
-<script type="text/javascript" src="<c:url value='/static/js/login.js' />"> </script>
+		<!-- Your application bootstrap  -->
+		<script type="text/javascript" src="<c:url value='/static/js/login.js' />"> </script>
 
 </body>
 </html>

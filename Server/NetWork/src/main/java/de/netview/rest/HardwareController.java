@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,10 +32,9 @@ public class HardwareController {
 
 	@PostMapping
 	public Hardware setHardwareInformation(@RequestBody Hardware hardware) {		
-		hardware = hardwareService.insertHardware(hardware);
-		
-		return hardware;
+		return hardwareService.insertHardware(hardware);
 	}
+	
 
 	@GetMapping
 	public @ResponseBody List getHardwareInformation(@RequestParam String categorie) {
@@ -43,7 +43,7 @@ public class HardwareController {
 	
 	@GetMapping("/{hid}")
 	public @ResponseBody HardwareData getHardwareInformationById(@PathVariable Long hid) {
-		return hardwareService.getHardwareById(hid);
+		return hardwareService.getHardwareDataById(hid);
 	}
 	
 	@PostMapping("/login")
@@ -69,6 +69,11 @@ public class HardwareController {
 	@PostMapping("/lizenz")
 	public void addHardwareLizenz(@RequestParam Long lid, @RequestParam Long hid) {
 		hardwareService.addHardwareLizenz(hid, lid);
+	}
+	
+	@PutMapping("/owner")
+	public void changeHardwareOwner(@RequestBody HashMap data) {
+		hardwareService.changeHardwareOwner(data);
 	}
 
 }

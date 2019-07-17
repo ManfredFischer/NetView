@@ -2,6 +2,8 @@ package de.netview.data;
 
 import java.io.Serializable;
 
+import de.netview.model.Lizenz;
+
 public class LizenzData implements Serializable{
 	
 	/**
@@ -13,6 +15,18 @@ public class LizenzData implements Serializable{
 	private String key;
 	private long state;
 	private String categorie;
+	
+	public LizenzData() {
+		
+	};
+	
+	public LizenzData(Lizenz lizenz) {
+		this.setLid(lizenz.getLid());
+		this.setName(lizenz.getName());
+		this.setKey(lizenz.getKey());
+		this.setCategorie(lizenz.getCategorie());
+		this.setState(lizenz.getState());
+	}
 	
 	public long getLid() {
 		return lid;

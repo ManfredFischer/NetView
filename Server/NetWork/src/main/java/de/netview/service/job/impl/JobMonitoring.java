@@ -22,21 +22,18 @@ public class JobMonitoring {
     @Autowired
     public JobMonitoring(Scheduler scheduler) {
         this.scheduler = scheduler;
-        startJobMonitoringJob();        
+        startCheckHardware();  
+        startCheckUPSConverter();
     }
-
-    /**
-     * Method is used to start a quartz job which monitors current joblist and launches jobs if necessary.
-     * The job is then automatically rescheduled every 60 seconds.
-     */
-    private void startJobMonitoringJob() {
+    
+    private void startCheckHardware() {
 
         Trigger trigger = null;
 
         try {
 
             Long creationTime = System.currentTimeMillis();
-            String name = "JobMonitor_Hardware";
+            String name = "JobMonitor_HardwareCheck";
             String group = "SystemJob";
 
             // We only add a new trigger if none exists
@@ -45,9 +42,38 @@ public class JobMonitoring {
                         .usingJobData("creationTime", creationTime).build();
 
                 trigger = TriggerBuilder.newTrigger().withIdentity(name, group)
-                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(60).repeatForever()) // Intervall
+                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(1).repeatForever()) // Intervall
                         .startNow().build();
+                
+                scheduler.scheduleJob(job, trigger);
+            }
+        } catch (Exception exp) {
+            try {
+                scheduler.unscheduleJob(trigger.getKey());
+            } catch (Exception exp2) {}
+        }
 
+    }
+    
+    private void startCheckUPSConverter() {
+
+        Trigger trigger = null;
+
+        try {
+
+            Long creationTime = System.currentTimeMillis();
+            String name = "JobMonitor_UPSConverter";
+            String group = "SystemJob";
+
+            // We only add a new trigger if none exists
+            if (!scheduler.checkExists(new TriggerKey(name, group))) {
+                JobDetail job = JobBuilder.newJob(CheckUPSConverterJob.class).withIdentity(name, group)
+                        .usingJobData("creationTime", creationTime).build();
+
+                trigger = TriggerBuilder.newTrigger().withIdentity(name, group)
+                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()) 
+                        .startNow().build();
+                
                 scheduler.scheduleJob(job, trigger);
             }
         } catch (Exception exp) {

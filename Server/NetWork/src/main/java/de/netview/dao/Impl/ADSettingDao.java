@@ -1,12 +1,11 @@
 package de.netview.dao.Impl;
 
 import java.util.List;
-
 import org.springframework.stereotype.Component;
-
 import de.netview.dao.IADSettingDao;
 import de.netview.dao.config.AbstractDao;
 import de.netview.model.ADSetting;
+
 @Component
 public class ADSettingDao extends AbstractDao<ADSetting> implements IADSettingDao{
 

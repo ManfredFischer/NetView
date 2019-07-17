@@ -193,5 +193,128 @@
 			<column name="date" type="VARCHAR(1020)" />			
 		</createTable>
 	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-1251257">
+	
+		<addColumn tableName="HARDWARE">
+         <column name="icon" type="varchar(255)"/>
+    	</addColumn>
+    	
+		<addColumn tableName="HARDWARE">
+         <column name="aktivuserphone" type="varchar(255)"/>
+    	</addColumn>
+    	
+		<addColumn tableName="HARDWARE">
+         <column name="verliehen" type="BOOLEAN"/>
+    	</addColumn>
+    	
+    </changeSet>
+    
+    <changeSet author="MaFischer" id="1423057244463-113-3">
+		<createTable tableName="LDAPUSER">
+			<column name="luid"  type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="username" type="VARCHAR(1020)" />
+			<column name="token" type="VARCHAR(1020)" />
+			<column name="description" type="VARCHAR(1020)" />	
+			<column name="phone" type="VARCHAR(1020)" />
+		</createTable>
+	</changeSet>
+    
+    <changeSet author="MaFischer" id="1423057244463-111-1">
+		<createTable tableName="ldapuser_lizenz">
+			<column name="luid" type="BIGINT"/>
+			<column name="lid" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-112-2">
+		<createTable tableName="ldapuser_hardware">
+			<column name="hid" type="BIGINT"/>
+			<column name="luid" type="BIGINT"/>
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-12512573">
+		<addColumn tableName="HARDWARE">
+         <column name="verliehenbis" type="BIGINT"/>
+    	</addColumn>    	
+    </changeSet>
+    
+    <changeSet author="MaFischer" id="1423057244463-113-4">
+		<createTable tableName="MOBILEUSER">
+			<column name="mid"  type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+			<column name="hid" type="BIGINT" />
+			<column name="cid" type="BIGINT" />
+			
+            <column name="name" type="VARCHAR(1020)" />
+			<column name="number" type="VARCHAR(1020)" />
+			<column name="sim" type="VARCHAR(1020)" />	
+			<column name="pin" type="VARCHAR(1020)" />	
+			<column name="puk" type="VARCHAR(1020)" />	
+			<column name="ultraone" type="VARCHAR(1020)" />	
+			<column name="ultratwo" type="VARCHAR(1020)" />
+		</createTable>
+		
+		<createTable tableName="CONTRACT">
+			<column name="cid"  type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="name" type="VARCHAR(1020)" />
+			<column name="cost" type="VARCHAR(1020)" />
+			<column name="discount" type="VARCHAR(1020)" />	
+			<column name="description" type="VARCHAR(1020)" />
+			<column name="contract" type="VARCHAR(1020)" />
+			<column name="enable" type="BOOLEAN" />
+		</createTable>
+		
+		<createTable tableName="HANDY">
+			<column name="hid"  type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+			<column name="hmid" type="BIGINT" />
+            <column name="imei" type="VARCHAR(1020)" />
+			<column name="deliverydate" type="VARCHAR(1020)" />
+			<column name="description" type="VARCHAR(1020)" />	
+		</createTable>
+		
+		<createTable tableName="HANDYMODEL">
+			<column name="hmid"  type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="displayname" type="VARCHAR(1020)" />
+			<column name="model" type="VARCHAR(1020)" />
+			<column name="color" type="VARCHAR(1020)" />	
+			<column name="store" type="VARCHAR(1020)" />
+			<column name="selectable" type="BOOLEAN" />
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="1423057244463-113-5">
+		<createTable tableName="CONVERTJOB">
+			<column name="cjid" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+            <column name="name" type="VARCHAR(1020)" />
+            <column name="status" type="VARCHAR(1020)" />
+			<column name="date" type="date" />
+			<column name="input" type="LONGVARBINARY" />
+			<column name="output" type="LONGVARBINARY" />		
+		</createTable>
+	</changeSet>
+	
+	<changeSet author="MaFischer" id="2">
+		<addColumn tableName="HARDWARE">
+         <column name="storage" type="VARCHAR(1020)"/>
+    	</addColumn>   
+    	<addColumn tableName="HARDWARE">
+         <column name="mac" type="VARCHAR(1020)"/>
+    	</addColumn>  	
+    </changeSet>
+	
+	
 
 </databaseChangeLog>

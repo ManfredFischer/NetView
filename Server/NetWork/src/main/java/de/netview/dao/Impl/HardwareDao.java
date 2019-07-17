@@ -34,6 +34,11 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 		}
 		return getSession().createQuery("from Hardware where categorie != 'Client'").list();
 	}
+	
+	@Override
+	public List<Hardware> getAllHardware() {
+		return getSession().createQuery("from Hardware").list();
+	}
 
 	@Override
 	public void deleteHardware(Hardware hardware) {
@@ -47,7 +52,12 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 	
 	@Override
 	public List getHardwareByOwner(String owner) {
-		return   getSession().createQuery("from Hardware where owner = :owner").setParameter("owner", owner).list();	
+		return   getSession().createQuery("from Hardware where UPPER(owner) = UPPER(:owner)").setParameter("owner", owner).list();	
+	}
+	
+	@Override
+	public List getHardwareByUser(String user) {
+		return   getSession().createQuery("from Hardware where UPPER(aktivusername) = UPPER(:user)").setParameter("user", user).list();	
 	}
 
 }

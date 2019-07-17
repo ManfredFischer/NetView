@@ -1,0 +1,54 @@
+<md-content>
+    <div layout-gt-sm="row" class="mainPage"
+		layout-align="space-between center">
+		<div flex></div>
+		<div><md-button class="md-raised" ng-click="addHandyModel()">Ausführen</md-button></div>
+	</div>
+	<div layout-gt-sm="row" class="mainPage"
+		layout-align="space-between center">
+		<input class="css-input" placeholder="Suchen..."	ng-model="searchUPS">
+	</div>
+
+	<div layout="row" layout-wrap style="padding-left: 10px; border-bottom: 5px solid #E6E6E6;">
+		<div flex="10" style="font-size: 14px">Autrag</div>
+		<div flex="10" style="font-size: 14px">Zeitpunkt</div>
+		<div flex="40" style="font-size: 14px">Input</div>
+		<div flex="40" style="font-size: 14px">Output</div>
+		<div flex style="font-size: 14px"></div>
+	</div>
+
+
+	<md-list ng-cloak> 
+	 <md-list-item
+		ng-repeat="ups in ctrl.getUPSInformation()" class="md-1-line">
+
+	  <div flex="100" layout="row" layout-wrap>
+	  
+		<div flex="10" style="font-size: 14px">
+			<p style="color: black"> {{ ups.Autrag }}</p>	
+		</div>
+		
+		<div flex="10" style="font-size: 14px">
+			<p style="color: black">{{ ups.date }}</p>
+		</div>
+		
+		<div flex="10" style="font-size: 14px">
+			<p style="color: black">{{ ups.input }}</p>
+		</div>
+		
+		<div flex="10" style="font-size: 14px">
+			<p style="color: black">{{ ups.output }}</p>
+		</div>
+		
+		<div flex></div>
+		<div flex="none" style="font-size: 14px">
+			<div class="md-list-item-text" layout="column">
+				<md-button class="md-icon-button" ng-click="delHardware(hw)">
+				<img width="15px" heigth="15px"
+					src="/NetView/static/img/download.png"> </md-icon> </md-button>
+			</div>
+		</div>
+	  </div>
+	 </md-list-item> 
+	</md-list>
+</md-content>

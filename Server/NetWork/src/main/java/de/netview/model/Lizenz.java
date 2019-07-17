@@ -33,6 +33,7 @@ public class Lizenz implements Serializable {
 	private String categorie;
 	
 	private List<Hardware> hardware = new ArrayList<>();
+	private List<LDAPUser> LDAPUser = new ArrayList<>();
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -113,7 +114,6 @@ public class Lizenz implements Serializable {
 	}
 
 	@ManyToMany(mappedBy = "lizenz")
-	@JsonIgnore
 	public List<Hardware> getHardware() {
 		return hardware;
 	}
@@ -128,6 +128,15 @@ public class Lizenz implements Serializable {
 
 	public void setReserved(String reserved) {
 		this.reserved = reserved;
+	}
+
+	@ManyToMany(mappedBy = "lizenz")
+	public List<LDAPUser> getLDAPUser() {
+		return LDAPUser;
+	}
+
+	public void setLDAPUser(List<LDAPUser> lDAPUser) {
+		LDAPUser = lDAPUser;
 	}
 
 	

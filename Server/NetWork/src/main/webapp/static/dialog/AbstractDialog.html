@@ -2,22 +2,31 @@
 	<div layout="row" class="dialogAbstract"
 		layout-align="space-between center">
 		<div layout-gt-sm="row" class="dialogTitle">
-			<img ng-src="{{titleImg}}" class="dialogTitleImg"></img> <span>
-				{{titleDialog}} </span>
+			<img ng-src="{{titleImg}}" class="dialogTitleImg"></img> <span>{{titleDialog}} </span>
 		</div>
+		<div flex></div>
 
-
-		<img src="static/img/add.png" class="dialogAbstractAddIcon"
-			ng-click="actionDialog()"></img>
-
-
+		<div flex="5" ng-if="hardwareInformation.verliehen" class="md-list-item-text" layout="column">
+			<p style="color: red;font-size: 10px">{{ hardwareInformation.verliehenAn }}</p>
+			<p style="font-size: 10px">{{ hardwareInformation.verliehenBis }}</p>
+		</div>
+					
+		<md-button class="md-icon-button" ng-if="dialogConfig.actionRentShow" ng-click="rentHardware(hw)" ><img  width="25" height="25" src="/NetView/static/img/rent.png"></img> </md-button>	
+		<md-button class="md-icon-button" ng-if="dialogConfig.actionAddShow" ng-click="dialogConfig.actionAddDialog()" ><img  width="25" height="25" src="static/img/add.png"></img> </md-button>    
+		<md-button class="md-icon-button" ng-if="dialogConfig.actionUpdateShow" ng-click="dialogConfig.actionUpdateDialog()" ><img  width="25" height="25" src="static/img/update.png"></img> </md-button>   
+		<md-button class="md-icon-button" ng-if="dialogConfig.actionDeleteShow" ng-click="dialogConfig.actionDeleteDialog()" ><img  width="25" height="25" src="static/img/delete.png"></img> </md-button>   	
+		<md-button class="md-icon-button" ng-if="dialogConfig.actionMgmtShow" ng-click="dialogConfig.actionMgmtDialog()" ><img  width="25" height="25" src="static/img/user.png"></img> </md-button>        
+		<md-button class="md-icon-button"  ng-click="openTeamViewer()" ><img  width="25" height="25" src="static/img/Teamviewer.png"></img> </md-button>        
+	
 	</div>
+	
 	<div style="padding: 5px">
 
-		<div ng-if="dialogHardware" add-hardware></div>
-		<div ng-if="dialogSoftware" add-software></div>
-		<div ng-if="dialogLizenzen" add-lizenzen></div>
-		<div ng-if="showHardware" show-hardware></div>
+		<div ng-if="dialogConfig.dialogHardware" add-hardware></div>
+		<div ng-if="dialogConfig.dialogSoftware" add-software></div>
+		<div ng-if="dialogConfig.dialogLizenzen" add-lizenzen></div>
+		<div ng-if="dialogConfig.dialogMobile" add-handyuser></div>
+		<div ng-if="dialogConfig.showHardware" show-hardware></div>
 
 	</div>
 </div>

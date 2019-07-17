@@ -1,9 +1,10 @@
 <md-content ng-show="isLizenzVewaltungSelected">
         <div class="page">
-        
-           <div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
+                
+            
+            <div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
              
-             <input flex-gt-sm class="css-input" placeholder="Search..." ng-model="searchHostClient" ng-change="setClientsPage()">
+             <input flex-gt-sm class="css-input" placeholder="Search..." ng-model="searchLizenz" ng-change="setHardwarePage()">
              
              <md-input-container flex-gt-sm style="max-width:150px;margin-right:25px">
                 <label>{{translation.infoTable.use}}</label>
@@ -12,17 +13,26 @@
                  </md-option>
                 </md-select>
              </md-input-container>
-        	 <md-checkbox md-no-ink ng-model="showAllLizenz" ng-change="setLizenzPage()" class="md-primary" style="width:120px">
-                {{translation.default.showAll}}	
-          	 </md-checkbox>
             </div>
-            <div class="ng-scope layout-row " style="padding-left:10px">
+            
+            <div style="background:#084B8A;color:#ffffff;padding:5px;margin:0 0 15 0">
+		 	<div class="ng-scope layout-row " style="height: 23px">
+			 <div style="padding-right: 10px; padding-left: 10px; font-size: 14px">Seite	{{lizenzPage}} von {{lizenzMaxPage}} (Anzahl: {{lizenzPageAmount}})</div>
+			 <button class="buttonView buttonViewPrev" ng-click="prevPage('lizenz')">Prev</button>
+			 <button class="buttonView buttonViewNext" ng-click="nextPage('lizenz')">Next</button>
+			 <label style="padding-right: 10px; padding-left: 10px; font-size: 14px">Anzahl pro Seite: 
+			   <select ng-Model="lizenzRows">
+					<option ng-repeat="rows in hardwareRowsList" value="{{ rows.value }}">{{rows.value}}</option>
+			   </select>
+			 </label>
+			</div>
+           </div>
+            <div class="ng-scope layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
                     <div flex="20" style="font-size:14px">{{translation.infoTable.lizenzName}}</div>
                     <div flex="10" style="font-size:14px">{{translation.infoTable.categorie}}</div>
                     <div flex="10" style="font-size:14px">{{translation.infoTable.use}}</div>
                     <div flex style="font-size:14px">{{translation.infoTable.key}}</div>
             </div>
-            <hr />
                 
             <md-list ng-cloak>
                 <md-list-item ng-repeat="lizenz in ctrl.getLizenz()" ng-click="showLizenzInformation(lizenz)" class="md-1-line">
@@ -39,19 +49,11 @@
                         {{ lizenz.key }}
                     </div>
                     <div flex="5" class="md-list-item-text" layout="column">
-                     <md-button width="25" aria-label="ShowHideAccountant" ng-click="delLizenz(lizenz, $event)" >
-						<img width="15px" heigth="15px" src="/NetView/static/img/DeleteIcon.png"></md-icon>
+                     <md-button class="md-icon-button" width="25" aria-label="ShowHideAccountant" ng-click="delLizenz(lizenz, $event)" >
+						<img width="15px" heigth="15px"	src="/NetView/static/img/papierkorb.png"></md-icon>
 					 </md-button>
                     </div> 
                 </md-list-item>
             </md-list>
-             <div ng-show="lizenzViewPages">
-            <hr />
-            <div class="ng-scope layout-row " style="padding-left:10px">
-                    <div flex="10 " class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="prevPage('lizenz')" md-colors="{color: 'green'}">{{translation.default.prev}}</md-button></div>
-                    <div flex="80" style="vertical-align: middle;text-align:center"><h3>Seite {{lizenzPage}} von {{lizenzMaxPage}}</h3></div>
-                    <div flex="10 " class="flex "><md-button class="md-raised" style="margin-bottom:10px" ng-click="nextPage('lizenz')" md-colors="{color: 'green'}">{{translation.default.next}}</md-button></div>
-            </div>
-            </div>
         </div>
     </md-content>

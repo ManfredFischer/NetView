@@ -32,7 +32,10 @@ public class Hardware implements Serializable {
 	private String department;
 	private String ip;
 	private String aktivusername;
+	private String aktivuserphone;
 	private String aktivdate;
+	private String mac;
+	private String storage;
 	private String lastlogin;
 	private String model;
 	private String bs;
@@ -42,8 +45,12 @@ public class Hardware implements Serializable {
 	private String description;
 	private String categorie;
 	private int location;
+	private String icon;
+	private Boolean verliehen;
+	private Long verliehenBis;
 	private List<Lizenz> lizenz = new ArrayList<Lizenz>();
 	private List<Software> software = new ArrayList<Software>();
+	private List<LDAPUser> LDAPUser = new ArrayList<LDAPUser>();
 
 	public void setSoftware(List<Software> software) {
 		this.software = software;
@@ -303,6 +310,9 @@ public class Hardware implements Serializable {
 		this.ram = hardware.getRam();
 		this.sn = hardware.getSn();
 		this.department = hardware.department;
+		this.icon = hardware.icon;
+		this.aktivuserphone = hardware.aktivuserphone;
+		this.LDAPUser = hardware.LDAPUser;
 	}
 
 	public String getDepartment() {
@@ -311,6 +321,66 @@ public class Hardware implements Serializable {
 
 	public void setDepartment(String department) {
 		this.department = department;
+	}
+
+	public String getIcon() {
+		return icon;
+	}
+
+	public void setIcon(String icon) {
+		this.icon = icon;
+	}
+
+	public String getAktivuserphone() {
+		return aktivuserphone;
+	}
+
+	public void setAktivuserphone(String aktivuserphone) {
+		this.aktivuserphone = aktivuserphone;
+	}
+
+
+	public Boolean getVerliehen() {
+		return verliehen;
+	}
+
+
+	public void setVerliehen(Boolean verliehen) {
+		this.verliehen = verliehen;
+	}
+
+	@ManyToMany(mappedBy = "hardwarerent")
+	public List<LDAPUser> getLDAPUser() {
+		return LDAPUser;
+	}
+
+
+	public void setLDAPUser(List<LDAPUser> lDAPUser) {
+		LDAPUser = lDAPUser;
+	}
+
+	public Long getVerliehenBis() {
+		return verliehenBis;
+	}
+
+	public void setVerliehenBis(Long verliehenBis) {
+		this.verliehenBis = verliehenBis;
+	}
+
+	public String getStorage() {
+		return storage;
+	}
+
+	public void setStorage(String storage) {
+		this.storage = storage;
+	}
+
+	public String getMac() {
+		return mac;
+	}
+
+	public void setMac(String mac) {
+		this.mac = mac;
 	}
 
 }

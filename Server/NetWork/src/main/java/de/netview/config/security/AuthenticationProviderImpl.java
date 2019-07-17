@@ -28,31 +28,25 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
         try {
 
-            UserDetailsImpl details;
-
+            UserDetailsImpl details = null;
+            Boolean ldapConnection = false;
             try {
                 details = (UserDetailsImpl) userService.loadUserByUsername(authentication.getName());
             } catch (UsernameNotFoundException e) {
-                throw new AuthenticationException(e.getMessage(), e) {
-                    private static final long serialVersionUID = 1L;
-                };
+            	ldapConnection = true;
             }
 
 
             UsernamePasswordAuthenticationToken token = null;
             Authentication adAuthentication = null;
-            Boolean ldapConnection = true;
+            
 
             try {
                 adAuthentication = adAuthenticationProvider.authenticate(authentication);
                 if (adAuthentication.isAuthenticated()) {
                     token = new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
-                }else {
-                    ldapConnection = false;
                 }
             }catch(Exception ex){
-                System.out.println("Nicht in der Domäne");
-                ldapConnection = false;
             }
 
             if (!ldapConnection){

@@ -1,10 +1,21 @@
 package de.netview.service.Impl;
 
+import de.netview.dao.ILDAPUserDao;
+import de.netview.dao.Impl.SystemuserDao;
 import de.netview.data.ADUserData;
 import de.netview.data.ADUserUpdateData;
+import de.netview.data.HardwareData;
+import de.netview.data.HardwareInformation;
+import de.netview.data.LDAPUserData;
+import de.netview.data.LDAPUserInformation;
+import de.netview.data.LizenzData;
 import de.netview.data.SettingsData;
 import de.netview.model.ADSetting;
+import de.netview.model.Hardware;
+import de.netview.model.LDAPUser;
 import de.netview.model.Location;
+import de.netview.model.Systemuser;
+import de.netview.service.IHardwareService;
 import de.netview.service.ILDAPService;
 import de.netview.service.ILocationService;
 import de.netview.service.ISettingService;
@@ -16,6 +27,8 @@ import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.*;
+import javax.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -32,10 +45,16 @@ public class LDAPService implements ILDAPService {
 	public ADSetting adSetting;
 	
 	@Autowired
+	private IHardwareService hardwareService;
+	
+	@Autowired
 	private ISettingService settingService;
 
 	@Autowired
 	private ILocationService locationService;
+	
+	@Autowired
+	private ILDAPUserDao ldapUserDao;
 
 	private void LDAPConnect() {
 		try {
@@ -61,13 +80,46 @@ public class LDAPService implements ILDAPService {
 			System.exit(-1);
 		}
 	}
+	
 
 	@Override
-	public List getUsers() {
-		return getUserByFilter("(objectClass=*)");
+	public List getLDAPADUsers() {
+		
+		List<ADUserData> result = new ArrayList<>();
+		try {
+			ArrayList<ADUserData> ADUserDataList = (ArrayList<ADUserData>) getLDAPUserByFilter("(objectClass=*)");
+			ArrayList<Location> LocationList = (ArrayList<Location>) locationService.getLocation();
+			ArrayList<HardwareInformation> hardwareList = (ArrayList<HardwareInformation>) hardwareService.getAllHardware("clients");
+
+			for (ADUserData aDUserdata : ADUserDataList) {
+				for (Location location : LocationList) {
+					if (location.getCity().equals(aDUserdata.getCity())
+							&& location.getStreet().equals(aDUserdata.getStreetAddress())) {
+						aDUserdata.setLid(location.getLid());
+						break;
+					}
+				}
+				
+				for (HardwareInformation hardware : hardwareList) {
+					if (hardware.getOwner() != null && hardware.getOwner().equalsIgnoreCase(aDUserdata.getFirstname()+"."+aDUserdata.getLastname())) {
+						aDUserdata.setHardware(hardware);
+						break;
+					}
+				}
+				
+				result.add(aDUserdata);
+			}
+			
+			
+		} catch (Exception e) {
+			
+		}
+		
+		
+		return result;
 	}
-	
-	private List<ADUserData> getUserByFilter(String filter) {
+		
+	private List<ADUserData> getLDAPUserByFilter(String filter) {
 		LDAPConnect();
 		ArrayList<ADUserData> allInternUsers = new ArrayList<>();
 		try {
@@ -115,7 +167,7 @@ public class LDAPService implements ILDAPService {
 		return attribute == null ? "" : (String) ((BasicAttribute) attribute).get();
 	}
 
-	public void createNewUser(ADUserUpdateData adUserUpdateData) {
+	public void createLDAPNewUser(ADUserUpdateData adUserUpdateData) {
 		LDAPConnect();
 		try {
 			String username = adUserUpdateData.getFirstname() + "." + adUserUpdateData.getLastname();
@@ -127,7 +179,7 @@ public class LDAPService implements ILDAPService {
 			oc.add("user");
 			newAttributes.put(oc);
 			
-			Map<String, String> dataMap = createUserData(adUserUpdateData);
+			Map<String, String> dataMap = createLDAPUserData(adUserUpdateData);
 			LDAPConnect();
 			for (Map.Entry<String, String> attribute : dataMap.entrySet()) {
 				newAttributes.put(new BasicAttribute(attribute.getKey(), attribute.getValue()));
@@ -148,7 +200,7 @@ public class LDAPService implements ILDAPService {
 		}
 	}
 
-	private Map createUserData(ADUserUpdateData adUserUpdateData) throws Exception {
+	private Map createLDAPUserData(ADUserUpdateData adUserUpdateData) throws Exception {
 
 		Location location = locationService.getLocationById(adUserUpdateData.getLid());
 
@@ -173,9 +225,9 @@ public class LDAPService implements ILDAPService {
 		return data;
 	}
 
-	public void updateUser(ADUserUpdateData adUserUpdateData) throws Exception {
+	public void updateLDAPUser(ADUserUpdateData adUserUpdateData) throws Exception {
 
-		Map<String, String> updateData = createUserData(adUserUpdateData);
+		Map<String, String> updateData = createLDAPUserData(adUserUpdateData);
 		LDAPConnect();
 		for (Map.Entry<String, String> attribute : updateData.entrySet()) {
 			try {
@@ -201,7 +253,7 @@ public class LDAPService implements ILDAPService {
 		}
 	}
 
-	public void updateUserPassword(String username, String password) {
+	public void updateLDAPUserPassword(String username, String password) {
 		LDAPConnect();
 		try {
 			String quotedPassword = "\"" + password + "\"";
@@ -227,7 +279,7 @@ public class LDAPService implements ILDAPService {
 		}
 	}
 
-	public Attributes getUserAttributes(String username) {
+	public Attributes getLDAPUserAttributes(String username) {
 		LDAPConnect();
 		Attributes attributes = null;
 		try {
@@ -250,24 +302,109 @@ public class LDAPService implements ILDAPService {
 		return attributes;
 	}
 
-	@Override
-	public String getDepartementByName(String name) {
-		List<ADUserData> department = getUserByFilter("(SAMAccountName=" + name + ")");
-		if (department.isEmpty()) {
-			return "";
-		}else {
-			return department.get(0).getDepartment();
-		}
-	}
 	
 	@Override
-	public ADUserData getUserByName(String name) {
-		List<ADUserData> user = getUserByFilter("(SAMAccountName=" + name + ")");
+	public ADUserData getLDAPUserByName(String name) {
+		List<ADUserData> user = getLDAPUserByFilter("(SAMAccountName=" + name + ")");
 		if (user.isEmpty()) {
 			return new ADUserData();
 		}else {
 			return user.get(0);
 		}
+	}
+	
+
+	
+	@Override
+	@Transactional
+	public LDAPUserData getLDAPUserData(String username) {
+		LDAPUserData userdata = new LDAPUserData();
+		ArrayList<HardwareData> hardwareOwnerList = new ArrayList<>();
+		ArrayList<HardwareData> hardwareAktivList = new ArrayList<>();
+		ArrayList<LizenzData> hardwareAktivLizenzList = new ArrayList<>();
+		
+		username = username.split("_")[0] + "." + username.split("_")[1];
+		ADUserData adUser = getLDAPUserByName(username);
+		
+
+		for (Hardware hardware : hardwareService.getHardwareByOwnerList(username)) {
+			HardwareData hardwareData = new HardwareData();
+			hardwareData.wrapperHardware(hardware);
+			hardwareOwnerList.add(hardwareData);
+		}
+
+		for (Hardware hardware : hardwareService.getHardwareByUserList(username)) {
+			HardwareData hardwareData = new HardwareData();
+			hardwareData.wrapperHardware(hardware);
+			hardwareAktivList.add(hardwareData);
+			hardwareAktivLizenzList.addAll(hardwareData.getLizenz());
+		}
+
+		userdata.setOwnerHardware(hardwareOwnerList);
+		userdata.setAktivHardware(hardwareAktivList);
+		userdata.setLizenz(hardwareAktivLizenzList);
+		userdata.setLdapUser(new LDAPUserInformation(ldapUserDao.getLDAPUserByName(username)));
+		userdata.setUserData(adUser);
+		
+		return userdata;
+	}
+
+	
+	@Override
+	@Transactional
+	public void addOrUpdateLDAPUser(LDAPUser ldapUser) {
+		LDAPUser ldapUserOrg = ldapUserDao.getLDAPUserByName(ldapUser.getUsername());
+		if (ldapUserOrg != null) {
+			ldapUserOrg.setDescription(ldapUser.getDescription());
+			ldapUserOrg.setToken(ldapUser.getToken());
+		}else {
+			ldapUserOrg = ldapUser;
+		}
+		ldapUserDao.addOrUpdateLDAPUser(ldapUserOrg);
+	}
+		
+	@Override
+	@Transactional
+	public void rentHardwareForLDAPUser(Map value) {
+		Hardware hardware = hardwareService.getHardwareById(Long.parseLong(value.get("hid").toString()));
+		LDAPUser ldapUser = ldapUserDao.getLDAPUserByName(value.get("uid").toString());
+		boolean save = true;
+		if (ldapUser == null) {
+			ldapUser = new LDAPUser();
+			ldapUser.setUsername(value.get("uid").toString());
+			ldapUser.getHardwarerent().add(hardware);
+		}else {
+			for (Hardware hardwareInfo : ldapUser.getHardwarerent()) {
+				if (hardwareInfo.getHid() == Long.parseLong(value.get("hid").toString())) {
+					save = false;
+					break;
+				}
+			}
+			if (save) {
+				ldapUser.getHardwarerent().add(hardware);
+			}
+		}
+		if (save) {
+			ldapUserDao.addOrUpdateLDAPUser(ldapUser);		
+		}
+		
+		hardware.setVerliehen(true);
+		hardware.setVerliehenBis(Long.valueOf(value.get("date").toString()));
+		hardwareService.saveHardware(hardware);
+	}
+	
+	@Override
+	@Transactional
+	public void getBackHardwareFromLDAPUser(Map value) {
+		Hardware hardware = hardwareService.getHardwareById(Long.parseLong(value.get("hid").toString()));
+		LDAPUser ldapUser = ldapUserDao.getLDAPUserByName(value.get("username").toString());
+		if (ldapUser != null) {
+			ldapUser.getHardwarerent().remove(hardware);
+			ldapUserDao.addOrUpdateLDAPUser(ldapUser);
+		}
+		
+		hardware.setVerliehen(false);
+		hardwareService.saveHardware(hardware);
 	}
 
 }

@@ -13,5 +13,7 @@ public interface IHardwareDAO {
 	public void deleteHardware(Hardware hardware);
 	Hardware getHardwareById(long hid);
 	List getHardwareByOwner(String owner);
+	List<Hardware> getAllHardware();
+	List getHardwareByUser(String user);
 
 }

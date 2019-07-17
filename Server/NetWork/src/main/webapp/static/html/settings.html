@@ -1,0 +1,26 @@
+<section ng-show="isSettingsSelected" layout="row" flex height="100%">
+    <md-sidenav style="height:90%"
+        class="md-sidenav-left"
+        md-component-id="left"
+        md-is-locked-open="$mdMedia('gt-md')"
+        md-whiteframe="4">
+
+      <md-toolbar class="md-theme-indigo" style="background-color:#084B8A">
+        <h1 class="md-toolbar-tools">Settings</h1>
+      </md-toolbar>
+      <md-content>
+        
+        <md-list-item
+			ng-repeat="settingView in settingsViewList" class="md-1-line" ng-click="selectSetting(settingView.id)">
+			<div style="font-size: 13px">
+               {{ settingView.name }}
+            </div>
+		</md-list-item>
+      </md-content>
+
+    </md-sidenav>
+
+     <div flex ng-if="settingsConfig.converter" settings-converter></div>
+     <div flex ng-if="settingsConfig.data" settings-data></div>
+  
+</section>

@@ -41,6 +41,34 @@ app.service('data', function($http) {
 			});
     }
     
+    this.loadContract = function ($scope) {
+		$http({
+			method: 'GET',
+			scope: $scope,
+			sync: false,
+			url: 'contract'
+		}).then(
+			function successCallback(response) {
+				response.data.forEach(function (data) {
+				  response.config.scope.contractList.push(data);
+				});
+			});
+    }
+    
+    this.loadHandyModel = function ($scope) {
+		$http({
+			method: 'GET',
+			scope: $scope,
+			sync: false,
+			url: 'handyModel'
+		}).then(
+			function successCallback(response) {
+				response.data.forEach(function (data) {
+					response.config.scope.handyModelList.push(data);
+				});
+			});
+    }
+    
     this.loadLizenz = function($scope, $state){
 		$http({
 			method: 'GET',
@@ -71,7 +99,7 @@ app.service('data', function($http) {
 	}
     
     this.loadDepartment = function($scope){
-		$http({
+    	/*$http({
 			method: 'GET',
 			scope: $scope,
 			url: 'department'
@@ -85,14 +113,13 @@ app.service('data', function($http) {
 					response.config.scope.departmentList.push(data);
 				});
 			}
-		);
+		);*/
 	}
     
     this.loadHardware = function($scope, categorie){
 		$http({
 			method: 'GET',
 			scope: $scope,
-			sync: false,
 			params : {
 				"categorie" : categorie
 			},
@@ -104,6 +131,21 @@ app.service('data', function($http) {
 				});
 				
 				response.config.scope.setHardwareViewPages(response.data);
+		});
+	}
+    
+    this.loadOverview = function($scope){
+    }
+    
+    this.loadMobile = function($scope){
+		$http({
+			method: 'GET',
+			scope: $scope,
+			url: 'mobile'
+		}).then(function successCallback(response) {
+				response.data.forEach(function (data) {
+					response.config.scope.mobile.push(data);
+				});
 		});
 	}
     

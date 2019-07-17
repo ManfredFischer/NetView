@@ -1,0 +1,90 @@
+   <md-content flex layout-padding>
+        <md-tabs md-dynamic-height md-border-bottom>
+	      <md-tab label="Handy">
+	        <md-content class="md-padding" style="height:70%">
+	          <div layout="column">
+				<div flex="8">
+				  <div layout-gt-sm="row">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Display Name</label>
+                        <input ng-model="handyModel.displayName">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Model</label>
+                        <input ng-model="handyModel.model">
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Farbe</label>
+                        <input ng-model="handyModel.color">
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Speicher</label>
+                        <input ng-model="handyModel.store">
+                    </md-input-container>
+                    <div>
+                     <md-button class="md-raised" ng-click="addHandyModel()">Speichern</md-button>
+                    </div>
+                  </div>
+				</div>
+				<div flex class="md-list-item-text" >
+				  <div my-mobilephoneview></div>
+				</div>
+			  </div>
+	        </md-content>
+	      </md-tab>
+	      <md-tab label="Vertraege">
+	        <md-content class="md-padding" style="height:75%">
+	          <div layout="column">
+				<div flex="8">
+				  <div layout-gt-sm="row">
+				    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Name</label>
+                        <input ng-model="newContract.name">
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Vertrag</label>
+                        <input ng-model="newContract.contract">
+                    </md-input-container>
+
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Kosten</label>
+                        <input ng-model="newContract.cost">
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Rabatt</label>
+                        <input ng-model="newContract.discount">
+                    </md-input-container>
+                    
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Beschreibung</label>
+                        <input ng-model="newContract.description">
+                    </md-input-container>
+                    <div>
+                     <md-button class="md-raised" ng-click="addNewContract()">Speichern</md-button>
+                    </div>
+                    
+                  </div>
+				</div>
+				
+				<div flex class="md-list-item-text" >
+				  <div my-contractview></div>
+				</div>
+			  </div>
+	        </md-content>
+	      </md-tab>
+        </md-tabs>
+        <div>
+          <md-button ng-click="toggleLeft()"
+            class="md-primary" hide-gt-md>
+            Toggle left
+          </md-button>
+        </div>
+
+      <div flex></div>
+
+    </md-content>

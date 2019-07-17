@@ -22,6 +22,7 @@ public class HardwareData implements Serializable {
 	private String description;
 	private String owner;
 	private String aktivUsername;
+	private String aktivUserPhone;
 	private String aktivDate;
 	private String lastLogin;
 	private String model;
@@ -37,7 +38,10 @@ public class HardwareData implements Serializable {
 	private ADUserData ownerInformation;
 	private ADUserData inUseInformation;
 	
-
+	public HardwareData() {
+		super();
+	}
+	
 	public HardwareData(ADUserData ownerInformation, ADUserData inUseInformation) {
 		super();
 		this.ownerInformation = ownerInformation;
@@ -181,6 +185,7 @@ public class HardwareData implements Serializable {
 		this.setCategorie(hardware.getCategorie());
 		this.setLocation(hardware.getLocation());
 		this.setDepartment(hardware.getDepartment());
+		this.setAktivUserPhone(hardware.getAktivuserphone());
 	}
 
 	public String getLastLogin() {
@@ -237,6 +242,14 @@ public class HardwareData implements Serializable {
 
 	public void setDepartment(String department) {
 		this.department = department;
+	}
+
+	public String getAktivUserPhone() {
+		return aktivUserPhone;
+	}
+
+	public void setAktivUserPhone(String aktivUserPhone) {
+		this.aktivUserPhone = aktivUserPhone;
 	}
 
 }

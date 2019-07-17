@@ -10,15 +10,36 @@ import de.netview.model.Lizenz;
 
 public interface IHardwareService {
 
-	public Hardware insertHardware(Hardware hardware);
-	public List<HardwareInformation> getAllHardware(String categorie);
-	public void loginHardware(String hostname, String username);
-	public void logoutHardware(String hostname );
-	public void deleteHardware(Long hid);
-	public void deleteHardwareLizenz(Long hid, Long lid);
-	public void addHardwareLizenz(Long hid, Long lid);
-	public Hardware getHardwareByHostname(String hostname);
-	HardwareData getHardwareById(long hid);
-	public Hardware getHardwareByOwner(String owner);
-	
+	Hardware insertHardware(Hardware hardware);
+
+	List<HardwareInformation> getAllHardware(String categorie);
+
+	void loginHardware(String hostname, String username);
+
+	void logoutHardware(String hostname);
+
+	void deleteHardware(Long hid);
+
+	void deleteHardwareLizenz(Long hid, Long lid);
+
+	void addHardwareLizenz(Long hid, Long lid);
+
+	Hardware getHardwareByHostname(String hostname);
+
+	HardwareData getHardwareDataById(long hid);
+
+	Hardware getHardwareByOwner(String owner);
+
+	void saveHardware(Hardware hardware);
+
+	List<Hardware> getAllHardware();
+
+	List<Hardware> getHardwareByOwnerList(String owner);
+
+	List<Hardware> getHardwareByUserList(String user);
+
+	Hardware getHardwareById(long hid);
+
+	void changeHardwareOwner(Map value);
+
 }

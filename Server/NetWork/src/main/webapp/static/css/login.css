@@ -1,29 +1,55 @@
 .page-container {
-    padding: 32px;
-    background-color: rgba(0, 0, 0, 0);
+	padding: 32px;
+	background-color: rgba(0, 0, 0, 0);
 }
 
-body {
-    background-image: url("/NetView/static/img/hintergund.jpeg");
-    background-repeat: no-repeat;
-    background-color: #ffffff;
+html,body {
+	background-image: url("/NetView/static/img/hintergund.jpeg");
+	background-repeat: no-repeat;
+	background-color: #ffffff;
 	background-attachment: fixed;
 	background-size: 100% auto;
 }
 
 .page {
-    margin: 0 auto;
-    padding: 24px;
-    max-width: 680px;
-    border-radius: 10px;
-    -webkit-box-shadow: 0px -6px 17px 0px rgba(115, 114, 115, 1);
-    -moz-box-shadow: 0px -6px 17px 0px rgba(115, 114, 115, 1);
-    box-shadow: 0px -6px 17px 0px rgba(115, 114, 115, 1);
+	background-color: rgb(8,75,138, 0.7);
+	position: absolute;
+	padding: 35px;
+	top: 40%;
+	left: 45%;
+	width: 200px;
+	margin-top: -75px;
+	margin-left: -100px;
+	
+	border-radius: 10px;
 }
 
-.page h1 {
-    text-align: center;
-    font-size: 1.8rem;
-    margin-top: 0;
-    font-weight: normal;
+.drop-box {
+	background: #F8F8F8;
+	border: 5px dashed #DDD;
+	width: 200px;
+	height: 100px;
+	text-align: center;
+	padding-top: 25px;
+	margin: 10px;
+}
+
+.dragover {
+	border: 5px dashed blue;
+}
+
+.css-input {
+     padding: 8px;
+     width : 100%;
+     font-size: 14px;
+     border-width: 0px;
+     margin: 5px;
+     border-color: #ffffff;
+     background-color: #FFFFFF;
+     border-style: solid;
+     border-radius: 5px;
+     
+}
+ .css-input:focus {
+     outline:none;
 }

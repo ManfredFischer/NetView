@@ -1,14 +1,57 @@
-<div style="min-width:600px;">
+<div style="min-width:800px;">
     <md-toolbar style="color:'green';background:#f98e22">
         <div layout-gt-sm="row" layout-align="space-between center">
              <div layout-gt-sm="row" style="padding:20px;font-size:24px;border-bottom: 1px solid #D8D8D8">
-      			<img ng-src="/NetView/static/img/hardware.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> Settings</span>
+      			<img ng-src="/NetView/static/img/Hardware.png" width="30px" height="30px" style="border-radius:10px 25%;vertical-align:middle;margin-right:15px"></img><span> Settings</span>
     		</div> 
             <md-button type="submit" class="md-raised">Speichern</md-button>
         </div>
     </md-toolbar>
     <md-content>
         <md-tabs style="padding:5px" md-dynamic-height="" md-dynamic-width="" md-border-bottom="">
+            <md-tab label="Gruppen">
+                <div layout-gt-sm="row" layout-align="space-between center">
+                 <div flex style="background: white;padding: 5px;">
+                    <md-input-container class="md-block"  flex-gt-sm>
+                                <label>User</label>
+                                <input ng-model="" />
+                   	</md-input-container>
+                 </div>
+                 <div style="background: white;padding: 5px;">
+                    <md-button type="submit" class="md-raised">Add</md-button>
+                 </div>
+                </div>
+                <div layout-gt-sm="row" layout-align="space-between center">
+                <div flex="30">
+                 <fieldset class="standard" >
+          		    <legend>User</legend>
+          			<div class="scrollUser">
+          				<md-list ng-cloak> 
+          					<md-list-item ng-repeat="hw in ctrl.getNetzwerkHost('client')" >
+								<md-checkbox ng-model="message.selected"></md-checkbox>{{ hw.owner }}
+	 						</md-list-item> 
+						 </md-list>
+						</div>
+        		  </fieldset>
+                 </div>
+                 <div flex="70" style="background: white;padding: 5px;">
+                    <div layout-gt-sm="row" layout-align="space-between center">
+                     <fieldset flex class="standard" >
+          				<legend>Verfügbar</legend>
+          				 <div class="scrollUser">
+          				 </div>
+        			 </fieldset>
+        			 <fieldset flex class="standard" >
+          				<legend>Vorhanden</legend>
+          				 <div class="scrollUser">
+          				 </div>
+        			 </fieldset>
+                    </div>
+                 </div>
+                </div>
+            </md-tab>
+            
+            
             <md-tab label="Active Directory Settings">
                 <md-content class="md-padding">
                     <div layout-gt-sm="row" layout-align="space-between center">
@@ -105,7 +148,5 @@
             </md-tab>
             
         </md-tabs>
-
-        <md-button ng-click="updateSettings()" class="md-raised" md-colors="{color: 'green', 'border-color': 'primary-600'}">Save</md-button>
-    </md-content>
+      </md-content>
 </div>

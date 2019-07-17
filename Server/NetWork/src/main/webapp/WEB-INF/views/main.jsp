@@ -24,6 +24,8 @@
      <div my-mobile></div>
      <div my-software></div>
      <div my-userdetails></div>
+     <div my-settings></div>
+     <div my-overview></div>
      
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>

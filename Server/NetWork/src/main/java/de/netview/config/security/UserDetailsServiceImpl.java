@@ -1,7 +1,8 @@
 package de.netview.config.security;
 
-import de.netview.model.Systemuser;
-import de.netview.service.IUserService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,8 +10,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import de.netview.model.Systemuser;
+import de.netview.service.ISystemUserService;
 
 /**
  * Created by mf on 20.08.2016.
@@ -20,11 +21,11 @@ import java.util.List;
 public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Autowired
-    private IUserService userService;
+    private ISystemUserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Systemuser systemuser = userService.getUserByUsername(username);
+        Systemuser systemuser = userService.getSystemuserByUsername(username);
         System.out.println("Systemuser : "+ systemuser);
         if(systemuser == null){
             System.out.println("Systemuser not found");

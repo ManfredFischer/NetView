@@ -39,7 +39,7 @@ public class ImportService implements IImportService {
 
 			if (attribute[0].equalsIgnoreCase("Hostname") || attribute[0].equalsIgnoreCase("Rechnername"))
 				continue;
-			if (attribute.length != 11)
+			if (attribute.length != 13)
 				continue;
 
 			if (hardwareService.getHardwareByHostname(attribute[0]) != null) {
@@ -55,20 +55,22 @@ public class ImportService implements IImportService {
 				hardware.setSn(attribute[3]);
 				hardware.setCpu(attribute[4]);
 				hardware.setRam(attribute[5]);
-				hardware.setOwner(attribute[6]);
-				hardware.setDescription(attribute[7]);
+				hardware.setStorage(attribute[6]);
+				hardware.setOwner(attribute[7]);
+				hardware.setDescription(attribute[8]);
+				hardware.setMac(attribute[9]);
 
 				List<Location> locationList = locationService.getLocation();
 
 				for (Location location : locationList) {
-					if (location.getDisplayname() == attribute[8]) {
+					if (location.getCity().toString().equalsIgnoreCase(attribute[10].toString())) {
 						hardware.setLocation(Integer.parseInt(location.getLid().toString()));
 						break;
 					}
 				}
 
-				hardware.setCategorie(attribute[9]);
-				hardware.setBs(attribute[10]);
+				hardware.setCategorie(attribute[11]);
+				hardware.setBs(attribute[12]);
 			} catch (Exception e) {
 				continue;
 			}
