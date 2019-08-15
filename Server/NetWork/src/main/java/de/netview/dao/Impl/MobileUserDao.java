@@ -28,7 +28,7 @@ public class MobileUserDao extends AbstractDao<MobileUser> implements IMobileUse
 
 	@Override
 	public List getMobileUser() {
-		return getSession().createQuery("from Mobileuser").list();
+		return getSession().createQuery("from MobileUser").list();
 	}
 
 	@Override

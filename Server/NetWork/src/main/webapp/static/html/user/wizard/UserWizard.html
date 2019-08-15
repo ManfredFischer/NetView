@@ -1,0 +1,24 @@
+<md-content class="md-padding" ng-show="showMainConfig.showAddUserWizard">
+    <div layout-gt-sm="row" layout-align="center center">
+            <md-card class="page-tab">
+                <div layout-gt-sm="row" layout-align="space-between center">
+
+
+                    <md-button class="md-raised" ng-click="selectMenu('showUser')" md-colors="{color: 'red'}" >Cancel</md-button>
+                    <md-button ng-show="showUserAddWizardConfig.showAddUserWizardBack" class="md-raised" ng-click="prevWizardAddUser()" md-colors="{color: 'green'}" >Zurück</md-button>
+                    <div flex></div>
+                    <md-button ng-show="showUserAddWizardConfig.showAddUserWizardNext" class="md-raised" ng-click="nextWizardAddUser()" md-colors="{color: 'green'}">Weiter</md-button>
+                    <md-button ng-show="showUserAddWizardConfig.showAddUserWizardAddUser" class="md-raised" ng-click="switchWizardAddUser()" md-colors="{color: 'green'}">AddUser</md-button>
+
+                </div>
+                <md-divider></md-divider>
+                <hr/>
+
+                <div ng-show="showMainConfig.showAddUserWizardInformation" wizard-addUserInformation></div>
+                <div ng-show="showMainConfig.showAddUserWizardHardware" wizard-addUserHardwareInformation></div>
+                <div ng-show="showMainConfig.showAddUserWizardOverview" wizard-addUserOverview></div>
+                <div ng-show="showMainConfig.showAddUserWizardPermission" wizard-adduserpermission></div>
+
+            </md-card>
+    </div>
+</md-content>

@@ -44,6 +44,8 @@ public class Hardware implements Serializable {
 	private String sn;
 	private String description;
 	private String categorie;
+	private String encodingname;
+	private String encodingkey;
 	private int location;
 	private String icon;
 	private Boolean verliehen;
@@ -382,5 +384,23 @@ public class Hardware implements Serializable {
 	public void setMac(String mac) {
 		this.mac = mac;
 	}
+
+	public String getEncodingkey() {
+		return encodingkey;
+	}
+
+	public void setEncodingkey(String encodingkey) {
+		this.encodingkey = encodingkey;
+	}
+
+	public String getEncodingname() {
+		return encodingname;
+	}
+
+	public void setEncodingname(String encodingname) {
+		this.encodingname = encodingname;
+	}
+
+	
 
 }

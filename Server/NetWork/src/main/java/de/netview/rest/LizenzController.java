@@ -28,6 +28,11 @@ public class LizenzController {
 	public void addLizenz(@RequestBody Lizenz lizenz) {
 		lizenzService.insertLizenz(lizenz);
 	}
+
+	@PutMapping
+	public void updateLizenz(@RequestBody Lizenz lizenz) {
+		lizenzService.updateLizenz(lizenz);
+	}
 	
 	@GetMapping
 	public @ResponseBody List<LizenzInformation> getLizenz(@RequestParam String state){

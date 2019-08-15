@@ -1,0 +1,40 @@
+<h2>Allgemeine Informationen</h2>
+
+<div layout-gt-sm="row" style="height:70px">
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Vorname</label>
+        <input ng-model="addUserWizardData.user.firstname">
+    </md-input-container>
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Nachname</label>
+        <input ng-model="addUserWizardData.user.lastname">
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row" style="height:70px" >
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Telefon</label>
+        <input ng-model="addUserWizardData.user.phone"> </md-input-container>
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Mobile</label>
+        <input ng-model="addUserWizardData.user.mobile">
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row" style="height:70px" >
+    <md-input-container style="width: 100%">
+        <label>Abteilung</label>
+        <md-select ng-Model="addUserWizardData.user.department">
+            <md-option ng-repeat="department in departmentList" value="{{ department}}">{{department.model }}</md-option>
+        </md-select>
+    </md-input-container>
+</div>
+
+<div layout-gt-sm="row" style="height:70px">
+    <md-input-container style="width: 100%">
+        <label>Standort</label>
+        <md-select ng-Model="addUserWizardData.user.location">
+            <md-option ng-repeat="location in LocationList" value="{{ location }}">{{location.displayname }}</md-option>
+        </md-select>
+    </md-input-container>
+</div>

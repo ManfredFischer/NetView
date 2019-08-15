@@ -1,0 +1,65 @@
+<div class="page">
+
+    <div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
+        <input flex-gt-sm class="css-input" placeholder="Suchen..."	ng-model="searchHostClient" ng-change="setClientsPage()">
+    </div>
+
+    <div style="background: #084B8A; color:#ffffff; padding: 5px; margin: 0 0 15 0">
+        <div class="ng-scope layout-row " style="height: 23px">
+            <div style="padding-right: 10px; padding-left: 10px; font-size: 14px">Seite
+                {{clientPage}} von {{clientMaxPage}} (Anzahl: {{aktivClientsShow}})</div>
+            <button class="buttonView buttonViewPrev"
+                    ng-click="prevPage('client')">Prev</button>
+            <button class="buttonView buttonViewNext"
+                    ng-click="nextPage('client')">Next</button>
+            <label
+                    style="padding-right: 10px; padding-left: 10px; font-size: 14px">Anzahl
+                pro Seite: <select ng-Model="clientsRows">
+                    <option ng-repeat="rows in hardwareRowsList" value="{{rows.value}}">{{rows.value}}</option>
+                </select>
+            </label>
+        </div>
+
+    </div>
+
+
+    <div layout="row" layout-wrap style="padding-left: 10px; border-bottom: 5px solid #E6E6E6;">
+        <div flex="20" style="font-size: 14px">Name</div>
+        <div flex="20" style="font-size: 14px">Vertrag</div>
+        <div flex="20" style="font-size: 14px">Kosten</div>
+        <div flex="20" style="font-size: 14px">Rabatt</div>
+        <div flex="15" style="font-size: 14px">Beschreibung</div>
+    </div>
+
+
+    <md-list ng-cloak>
+
+        <md-list-item ng-repeat="contract in ctrl.getContractList()" class="md-1-line">
+
+            <div layout="row" flex>
+                <div flex="20" style="font-size: 14px">
+                    <p style="color: black">{{ contract.name }}</p>
+                </div>
+                <div flex="20" style="font-size: 14px">
+                    <p style="color: black">{{ contract.contract }}</p>
+                </div>
+                <div flex="20" style="font-size: 14px">
+                    <p style="color: black">{{ contract.cost }}</p>
+                </div>
+                <div flex="20" style="font-size: 14px">
+                    <p style="color: black">{{ contract.discount }}</p>
+                </div>
+                <div flex="15" style="font-size: 14px">
+                    <p style="color: black">{{ contract.description }}</p>
+                </div>
+
+                <div flex class="md-list-item-text" layout="column">
+                    <md-button class="md-icon-button" ng-click="deleteContract(contract)">
+                        <img width="15px" heigth="15px"
+                             src="/NetView/static/img/papierkorb.png"> </md-icon> </md-button>
+                </div>
+            </div>
+        </md-list-item>
+    </md-list>
+
+</div>

@@ -314,6 +314,21 @@
          <column name="mac" type="VARCHAR(1020)"/>
     	</addColumn>  	
     </changeSet>
+    
+    <changeSet author="MaFischer" id="3">
+		<addColumn tableName="HARDWARE">
+         <column name="encodingkey" type="VARCHAR(1020)"/>
+    	</addColumn>   
+    	<addColumn tableName="HARDWARE">
+         <column name="encodingname" type="VARCHAR(1020)"/>
+    	</addColumn>  	
+    </changeSet>
+
+	<changeSet author="MaFischer" id="4">
+		<addColumn tableName="LIZENZ">
+			<column name="allowamount" type="BIGINT"/>
+		</addColumn>
+	</changeSet>
 	
 	
 

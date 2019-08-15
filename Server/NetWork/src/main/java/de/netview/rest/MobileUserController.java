@@ -2,6 +2,7 @@ package de.netview.rest;
 
 import java.util.List;
 
+import de.netview.data.MobileUserData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,5 +48,6 @@ public class MobileUserController {
 	private void deleteMobileUser(@PathVariable Long muid) {
 		mobileUserService.deleteMobileUser(muid);
 	}
+
 
 }

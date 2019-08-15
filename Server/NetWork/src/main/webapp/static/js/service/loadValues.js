@@ -68,6 +68,20 @@ app.service('data', function($http) {
 				});
 			});
     }
+
+	this.loadMobileUser = function ($scope) {
+		$http({
+			method: 'GET',
+			scope: $scope,
+			sync: false,
+			url: 'mobileUser'
+		}).then(
+			function successCallback(response) {
+				response.data.forEach(function (data) {
+					response.config.scope.mobileUserList.push(data);
+				});
+			});
+	}
     
     this.loadLizenz = function($scope, $state){
 		$http({
@@ -90,6 +104,9 @@ app.service('data', function($http) {
 					} else if (data.state == 3){
 						data.stateInfo = "reserviert";
 					}
+					debugger;
+					var reserved = data.reserved == null ? 0 : data.reserved.split(",").length;
+					data.lizenzState = reserved+"/"+data.hardware.length+"/"+data.allowamount;
 					response.config.scope.lizenzen.push(data);
 				});
 				

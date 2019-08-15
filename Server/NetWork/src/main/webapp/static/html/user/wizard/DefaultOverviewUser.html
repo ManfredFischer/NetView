@@ -1,0 +1,58 @@
+<div style="padding: 5px; ">
+    <h2>Überblick</h2>
+
+    <h3>Allgemeine Informationen</h3>
+    <table >
+        <tr>
+            <td style="width: 200px">User:</td>
+            <td>{{addUserWizardData.user.firstname}} {{addUserWizardData.user.lastname}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Standort:</td>
+            <td>{{addUserWizardData.user.location}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Abteilung:</td>
+            <td>{{addUserWizardData.user.department}}</td>
+        </tr>
+    </table>
+    <h2>Hardware</h2>
+    <table>
+        <tr>
+            <td style="width: 200px">Handy: </td>
+            <td>{{addUserWizardData.hardware.handy}} - {{addUserWizardData.hardware.handyInfo}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Laptop</td>
+            <td>{{addUserWizardData.hardware.laptop}} - {{addUserWizardData.hardware.laptopInfo}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Monitor Anzahl</td>
+            <td>{{addUserWizardData.hardware.monitor}} - {{addUserWizardData.hardware.monitorAmount}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Kopfhörer</td>
+            <td><td>{{addUserWizardData.hardware.kopfhoerer}}</td></td>
+        </tr>
+    </table>
+    <h2>Berechtigung</h2>
+    <table>
+        <tr>
+            <td style="width: 200px">Reservix Intern</td>
+            <td>{{addUserWizardData.permission.reservixIntern}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Reservix Extern</td>
+            <td>{{addUserWizardData.permission.reservixExtern}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Jira</td>
+            <td>{{addUserWizardData.permission.jira}}</td>
+        </tr>
+        <tr>
+            <td style="width: 200px">Confluence</td>
+            <td>{{addUserWizardData.permission.confluence}}</td>
+        </tr>
+    </table>
+
+</div>

@@ -19,6 +19,7 @@ public class LizenzInformation  implements Serializable{
 	private long state;
 	private String reserved;
 	private String categorie;
+	private Integer allowamount;
 	private List<HardwareInformation> hardware = new ArrayList<>();
 	
 	public LizenzInformation(Lizenz lizenz) {
@@ -28,13 +29,23 @@ public class LizenzInformation  implements Serializable{
 		this.state = lizenz.getState();
 		this.lid = lizenz.getLid();
 		this.reserved = lizenz.getReserved();
+		this.allowamount = lizenz.getAllowamount();
 		
 		
 		for (Hardware hardwareData : lizenz.getHardware()) {
 			this.hardware.add(new HardwareInformation(hardwareData));
 		}
 	}
-	
+
+
+	public Integer getAllowamount() {
+		return allowamount;
+	}
+
+	public void setAllowamount(Integer allowamount) {
+		this.allowamount = allowamount;
+	}
+
 	public long getLid() {
 		return lid;
 	}

@@ -71,7 +71,7 @@ public class JobMonitoring {
                         .usingJobData("creationTime", creationTime).build();
 
                 trigger = TriggerBuilder.newTrigger().withIdentity(name, group)
-                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(30).repeatForever()) 
+                        .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(10).repeatForever()) 
                         .startNow().build();
                 
                 scheduler.scheduleJob(job, trigger);

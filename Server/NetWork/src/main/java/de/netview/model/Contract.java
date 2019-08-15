@@ -28,13 +28,6 @@ public class Contract implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false, precision = 10)
 	private Long cid;
-	
-	public Long getCid() {
-		return cid;
-	}
-	public void setCid(Long cid) {
-		this.cid = cid;
-	}
 	private String name;
 	private String cost;
 	private String discount;
@@ -45,7 +38,13 @@ public class Contract implements Serializable {
 	@OneToMany(mappedBy="contract")
 	@JsonIgnore
 	private List<MobileUser> listMobileUser = new ArrayList<>();
-	
+
+	public Long getCid() {
+		return cid;
+	}
+	public void setCid(Long cid) {
+		this.cid = cid;
+	}
 	public String getName() {
 		return name;
 	}

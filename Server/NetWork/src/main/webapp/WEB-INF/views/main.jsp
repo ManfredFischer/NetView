@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ page isELIgnored="false"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -18,14 +18,15 @@
        <div my-menue></div>
      </md-toolbar>
    
-   	 <div my-lizenz></div>
-     <div my-hardware></div>
-     <div my-netz></div>
-     <div my-mobile></div>
-     <div my-software></div>
-     <div my-userdetails></div>
-     <div my-settings></div>
-     <div my-overview></div>
+   	 <div ng-show="isLizenzVewaltungSelected" my-lizenz></div>
+     <div ng-show="isNetzwerkVewaltungSelected" my-hardware></div>
+     <div ng-show="isServerVerwaltungSelected" my-netz></div>
+     <div ng-show="isMobileVewaltungSelected" my-mobile></div>
+     <div ng-show="isSoftwareSelected" my-software></div>
+     <div ng-show="isUserVerwaltungSelected" my-userdetails></div>
+     <div ng-show="isSettingsSelected" my-settings></div>
+     <div ng-show="isOverview" my-overview></div>
+     <div ng-show="showMainConfig.showAddUserWizard" my-userwizard></div>
      
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-animate.min.js"></script>

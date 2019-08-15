@@ -33,6 +33,8 @@ public class HardwareData implements Serializable {
 	private String categorie;
 	private int location;
 	private String department;
+	private String encodingkey;
+	private String encodingname;
 	private List<LizenzData> lizenz = new ArrayList<LizenzData>();
 	private List<SoftwareData> software = new ArrayList<SoftwareData>();
 	private ADUserData ownerInformation;
@@ -186,6 +188,8 @@ public class HardwareData implements Serializable {
 		this.setLocation(hardware.getLocation());
 		this.setDepartment(hardware.getDepartment());
 		this.setAktivUserPhone(hardware.getAktivuserphone());
+		this.setEncodingkey(hardware.getEncodingkey());
+		this.setEncodingname(hardware.getEncodingname());
 	}
 
 	public String getLastLogin() {
@@ -250,6 +254,22 @@ public class HardwareData implements Serializable {
 
 	public void setAktivUserPhone(String aktivUserPhone) {
 		this.aktivUserPhone = aktivUserPhone;
+	}
+
+	public String getEncodingname() {
+		return encodingname;
+	}
+
+	public void setEncodingname(String encodingname) {
+		this.encodingname = encodingname;
+	}
+
+	public String getEncodingkey() {
+		return encodingkey;
+	}
+
+	public void setEncodingkey(String encodingkey) {
+		this.encodingkey = encodingkey;
 	}
 
 }

@@ -22,19 +22,32 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Lizenz implements Serializable {
 
 	/**
-	 * 
+	 * State:
+	 *  0 = frei
+	 *  1 = verwendet
+	 *  2 = mehrfach
+	 *  3 = reservit
 	 */
 	private static final long serialVersionUID = -8904030561309253406L;
 	private long lid;
 	private String name;
 	private String key;
 	private int state;
+	private Integer allowamount;
 	private String reserved;
 	private String categorie;
 	
 	private List<Hardware> hardware = new ArrayList<>();
 	private List<LDAPUser> LDAPUser = new ArrayList<>();
-	
+
+	public Integer getAllowamount() {
+		return allowamount;
+	}
+
+	public void setAllowamount(Integer allowamount) {
+		this.allowamount = allowamount;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false, precision = 10)

@@ -33,6 +33,8 @@ public class HardwareInformation implements Serializable {
 	private Boolean verliehen;
 	private String verliehenAn;
 	private String verliehenBis;
+	private String encodingkey;
+	private String encodingname;
 
 	public String getVerliehenBis() {
 		return verliehenBis;
@@ -69,6 +71,8 @@ public class HardwareInformation implements Serializable {
 		this.setLocation(hardware.getLocation());
 		this.setIcon(hardware.getIcon());
 		this.setAktivUserPhone(hardware.getAktivuserphone());
+		this.setEncodingkey(hardware.getEncodingkey());
+		this.setEncodingname(hardware.getEncodingname());
 		
 		if (hardware.getLDAPUser() != null && hardware.getLDAPUser().size() > 0) {
 			this.setVerliehen(true);
@@ -346,6 +350,22 @@ public class HardwareInformation implements Serializable {
 
 	public void setVerliehenAn(String verliehenAn) {
 		this.verliehenAn = verliehenAn;
+	}
+
+	public String getEncodingname() {
+		return encodingname;
+	}
+
+	public void setEncodingname(String encodingname) {
+		this.encodingname = encodingname;
+	}
+
+	public String getEncodingkey() {
+		return encodingkey;
+	}
+
+	public void setEncodingkey(String encodingkey) {
+		this.encodingkey = encodingkey;
 	}
 
 }

@@ -14,6 +14,7 @@ public class LizenzData implements Serializable{
 	private String name;
 	private String key;
 	private long state;
+	private Integer allowamount;
 	private String categorie;
 	
 	public LizenzData() {
@@ -26,8 +27,17 @@ public class LizenzData implements Serializable{
 		this.setKey(lizenz.getKey());
 		this.setCategorie(lizenz.getCategorie());
 		this.setState(lizenz.getState());
+		this.setAllowamount(lizenz.getAllowamount());
 	}
-	
+
+	public Integer getAllowamount() {
+		return allowamount;
+	}
+
+	public void setAllowamount(Integer allowamount) {
+		this.allowamount = allowamount;
+	}
+
 	public long getLid() {
 		return lid;
 	}

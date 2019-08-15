@@ -32,6 +32,8 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			}
 
 			$scope.addContractView = false;
+			$scope.addHandyView = false;
+			
 			$scope.addContract = {
 					number : '',
 					sim : '',
@@ -92,7 +94,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					scope: $scope,
 					url: 'contract/'+ contract.cid,
 				}).then(function successCallback(response) {
-					$scope.removeItemFromArrayDictonariy($scope.handyModelList,handyModel.hmid, 'hmid');
+					$scope.removeItemFromArrayDictonariy($scope.contractList,contract.cid, 'cid');
 				});	
 			}
 			
@@ -195,7 +197,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					hardwareAmount : '',
 					hardwareDisableAmount : '',
 					lizenzAmount : '',
-					lizenzErrorAmount : '',
+					lizenzErrorAmount : ''
 			}
 		
 			$scope.people = [];
@@ -213,11 +215,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			$scope.userVerwaltung = false;
 			$scope.systemVerwaltung = true;
 			
-			$scope.selectedLizenzColor = '#000000';
-			$scope.selectedUserColor = '#000000';
-			$scope.selectedMobileColor = '#000000';
-			$scope.selectedServerColor = '#000000';
-			$scope.selectedHardwareColor = '#f98e22';
+
 			
 			$scope.categorien = [{
 				name : 'Server'
@@ -274,8 +272,8 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			$scope.serverVerwaltungSelectedLocation = 1;
 			$scope.isLizenzVewaltungSelected = false;
 			$scope.isNetzwerkVewaltungSelected = false;
-			$scope.isOverview = true;
-			$scope.isUserVerwaltungSelected = false;
+			$scope.isOverview = false;
+			$scope.isUserVerwaltungSelected = true;
 			$scope.isUserVerwaltungUpdateSelected = false;
 			$scope.isUserVerwaltungCreateSelected = false;
 			$scope.isServerVerwaltungSelected = false;
@@ -330,6 +328,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				$scope.lizenz = {
 						name : '',
 						key : '',
+						allowamount : '',
 						categorie : ''	
 				};
 			}
@@ -351,9 +350,6 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			]
 			$scope.showAllUsed = 'All';
 			$scope.showClientLocation = "--";
-			$scope.importHardwareFiles;
-			$scope.importLizenzFiles;
-			$scope.importMobileFiles;
 			$scope.lizenzViewPages = false;
 			$scope.lizenzPages ={};
 			$scope.lizenzPage = 1;
@@ -361,7 +357,6 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			$scope.selectedHardwareNewLizenz = -1;
 			
 			$scope.searchMobile = '';
-			$scope.mobileData = [];
 			$scope.mobilePage = 0;
 			$scope.mobileMaxPage = 0;
 			$scope.aktivMobileShow = 0;
@@ -379,6 +374,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			
 			$scope.hardwareServerPages = {};
 			$scope.hardwareClientsPages = {};
+			$scope.mobileUserList = [];
 			
 			$scope.departmentList = [{
 				did : -1,
@@ -421,17 +417,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			
 			$scope.settingsView ={}
 			
-			$scope.dialogConfig ={
-					actionUpdateShow : false,
-					actionAddShow : false,
-					actionDeleteShow : false,
-					showDialogSoftware : false,
-					showDialogHardware : false,
-					showDialogLizenzen : false,
-					showLizenzen : false,
-					showHardware : false,
-					actionMgmtShow : false
-			}
+			$scope.dialogConfig ={}
 			
 			$scope.resetViews = function (){
 				$scope.showLizenzHardwareView  = false;
@@ -445,17 +431,68 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 						showDialogLizenzen : false,
 						showLizenzen : false,
 						showHardware : false,
-						actionMgmtShow : false
+						actionMgmtShow : false,
+						actionUploadShow : false,
+						dialogUpload : false
 				}
 			}
 			
-
+			$scope.resetViews();
+			
 			$scope.addLizenz = function(){
+				debugger;
 				$http({
 					method: 'POST',
 					scope: $scope,
 					url: 'lizenz',
 					data : $scope.lizenz,
+				}).then(function successCallback(response) {
+					$scope.lizenz = {
+							name : '',
+							key : '',
+							categorie : ''	
+					}
+				});			
+			}
+
+			$scope.updateLizenz = function(){
+				$http({
+					method: 'PUT',
+					scope: $scope,
+					url: 'lizenz',
+					data : $scope.lizenz,
+				}).then(function successCallback(response) {
+
+				});
+			}
+			
+			$scope.mobileUserData = {
+					name : '',
+					number : '',
+					sim : '',
+					pin : '',
+					puk : '',
+					ultraOne : '',
+					ultraTwo : '',
+					handy : {
+						imei : '',
+						deliveryDate : '',
+						description : '',
+						handyModel : {}
+					},
+					contract : undefined
+					
+			}
+			
+			$scope.addMobileUser = function(){
+				$scope.mobileUserData.contract = JSON.parse($scope.mobileUserData.contract);
+				$scope.mobileUserData.handy.handyModel = JSON.parse($scope.mobileUserData.handy.handyModel);
+				debugger;
+				$http({
+					method: 'POST',
+					scope: $scope,
+					url: 'mobileUser',
+					data : $scope.mobileUserData,
 				}).then(function successCallback(response) {
 					$scope.lizenz = {
 							name : '',
@@ -575,53 +612,47 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 			data.loadMobile($scope);
 			data.loadHandyModel($scope);
 			data.loadContract($scope);
+			data.loadMobileUser($scope);
 			
 			$scope.showImport = function(){
-				$mdDialog.show({
-					scope: $scope.$new(),
-					templateUrl: 'static/dialog/Import.html',
-					clickOutsideToClose: true,
-					fullscreen: $scope.customFullscreen
-				});
-				
+				$scope.resetViews();
+				$scope.dialogConfig.dialogUpload = true;
+				$scope.dialogConfig.actionUploadShow = true;
+				$scope.dialogConfig.actionUploadDialog = $scope.sendImport;
+				$scope.showAbstractInformation("Upload","Upload.png");
 			}
 			
-			$scope.sendImport = function(importHardwareData, importLizenzData, importMobileData){
-				if (importHardwareData != undefined && importHardwareData.length > 0 ){
+			$scope.sendImport = function(importHardwareFiles, importLizenzFiles, importMobileFiles){
+				if ($scope.importHardwareFiles != undefined && $scope.importHardwareFiles.length > 0 ){
 				 Upload.upload({
 			        url: 'import/hardware',
-			        file: importHardwareData[0]
+			        file: $scope.importHardwareFiles[0]
 			     });
 				}
-				if (importLizenzData != undefined && importLizenzData.length > 0){
+				if ($scope.importLizenzFiles != undefined && $scope.importLizenzFiles.length > 0){
 				 Upload.upload({
 			        url: 'import/lizenz',
-			        file: importLizenzData[0]
+			        file: $scope.importLizenzData[0]
 			     });
 				}
-				if (importMobileData != undefined && importMobileData.length > 0){
+				if ($scope.importMobileFiles != undefined && $scope.importMobileFiles.length > 0){
 				 Upload.upload({
 			        url: 'import/mobile',
-			        file: importMobileData[0]
+			        file: $scope.importMobileData[0]
 			     });
 				}
 			}
-			
-			$scope.show = function(netz, server, lizenz, mobile, user, cHW, cS, cL, cM,cU){
+
+			$scope.show = function(netz, server, lizenz, mobile, user){
 				$scope.isNetzwerkVewaltungSelected = netz;
 				$scope.isUserVerwaltungSelected = user;
 				$scope.isServerVerwaltungSelected = server;
 				$scope.isLizenzVewaltungSelected = lizenz;
 				$scope.isMobileVerwaltungSelected = mobile;
-				$scope.selectedHardwareColor = cHW;
-				$scope.selectedServerColor = cS;
-				$scope.selectedLizenzColor = cL;
-				$scope.selectedUserColor = cU;
-				$scope.selectedMobileColor = cM;
 			}
-			
+
 			$scope.selectLizenzAsUsed = false;
-			
+
 			$scope.updateLizenzState = function(selectLizenzAsUsed, state){
 				
 				if (!state){
@@ -648,7 +679,95 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 						}
 				 });
 			}
-			
+
+			$scope.showMainConfig = {
+				showAddUserWizard : false,
+				showAddUserWizardInformation : false,
+				showAddUserWizardHardware : false,
+				showAddUserWizardOverview : false,
+				showAddUserWizardPermission : false
+			};
+
+			$scope.showUserAddWizardConfig = {
+				showAddUserWizardBack : false,
+				showAddUserWizardNext : true,
+				showAddUserWizardAddUser : false
+			};
+
+			$scope.startWizardAddUser = function (){
+				$scope.resetView();
+				$scope.showMainConfig.showAddUserWizard = true;
+				$scope.showMainConfig.showAddUserWizardInformation = true;
+			}
+
+			$scope.nextWizardAddUser = function (){
+				if ($scope.showMainConfig.showAddUserWizardInformation){
+					$scope.resetView();
+					$scope.showMainConfig.showAddUserWizard = true;
+					$scope.showMainConfig.showAddUserWizardPermission = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardBack = true;
+				} else if ($scope.showMainConfig.showAddUserWizardPermission){
+					$scope.resetView();
+					$scope.showMainConfig.showAddUserWizard = true;
+					$scope.showMainConfig.showAddUserWizardHardware = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardBack = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardNext = true;
+				} else if ($scope.showMainConfig.showAddUserWizardHardware){
+					$scope.resetView();
+					$scope.showMainConfig.showAddUserWizard = true;
+					$scope.showMainConfig.showAddUserWizardOverview = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardBack = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardAddUser = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardNext = false;
+				}
+			}
+
+			$scope.prevWizardAddUser = function (){
+				if ($scope.showMainConfig.showAddUserWizardHardware){
+					$scope.resetView();
+					$scope.showMainConfig.showAddUserWizard = true;
+					$scope.showMainConfig.showAddUserWizardPermission = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardBack = true;
+				} else if ($scope.showMainConfig.showAddUserWizardPermission){
+					$scope.resetView();
+					$scope.showMainConfig.showAddUserWizard = true;
+					$scope.showMainConfig.showAddUserWizardInformation = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardNext = true;
+				} else if ($scope.showMainConfig.showAddUserWizardOverview){
+					$scope.resetView();
+					$scope.showMainConfig.showAddUserWizard = true;
+					$scope.showMainConfig.showAddUserWizardHardware = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardBack = true;
+					$scope.showUserAddWizardConfig.showAddUserWizardNext = true;
+				}
+			}
+
+			$scope.addUserWizardData = {
+				user : {
+					firstname : '',
+					lastname : '',
+					phone : '',
+					mobile : '',
+					department : {},
+					location : {}
+				},
+				hardware : {
+					laptop : false,
+					laptopInfo : {},
+					handy : false,
+					handyInfo : {},
+					monitor : false,
+					monitorAmount : 0,
+					kopfhoerer : false
+				},
+				permission : {
+					reservixIntern : false,
+					reservixExtern : false,
+					confluence : false,
+					jira : false
+				}
+			};
+
 			
 			$scope.resetView = function(){
 				$scope.showUserRefreshButton = false;
@@ -668,13 +787,17 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				$scope.isSoftwareSelected = false;
 				$scope.userVerwaltung = false;
 				$scope.systemVerwaltung = false;
-				$scope.selectedHardwareColor = '#000000';
-				$scope.selectedServerColor = '#000000';
-				$scope.selectedLizenzColor = '#000000';
-				$scope.selectedUserColor = '#000000';
-				$scope.selectedMobileColor = '#000000';
-				$scope.selectedSoftwareColor = '#000000';
-				color = '#f98e22';
+				$scope.showMainConfig = {
+					showAddUserWizard : false,
+					showAddUserWizardInformation : false,
+					showAddUserWizardHardware : false,
+					showAddUserWizardOverview : false
+				};
+				$scope.showUserAddWizardConfig = {
+					showAddUserWizardBack : false,
+					showAddUserWizardNext : true,
+					showAddUserWizardAddUser : false
+				};
 			}
 
 			$scope.selectMenu = function (selectMenue) {
@@ -686,7 +809,6 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				if (selectMenue == 'showLizenz') {
 					data.loadLizenz($scope,"-1");
 					$scope.isLizenzVewaltungSelected = true;
-					$scope.selectedLizenzColor = color;
 				}else if (selectMenue == 'showSettings') {
 					$scope.isSettingsSelected = true;
 				} else if (selectMenue == 'showClients') {
@@ -696,19 +818,17 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				} else if (selectMenue == 'showServer') {
 					$scope.systemVerwaltung = true;
 					data.loadHardware($scope,'sonstiges');
-					$scope.selectedServerColor = color;
 					$scope.isServerVerwaltungSelected = true;
 				} else if (selectMenue == 'showMobile') {
 					$scope.systemVerwaltung = true;
 					$scope.isMobileVewaltungSelected = true;
 				} else if (selectMenue == 'showSoftware') {
 					$scope.systemVerwaltung = true;
-					$scope.selectedSoftwareColor = color;
 					$scope.isSoftwareSelected = true;
 				} else if (selectMenue == 'showUpdateUser') {
 					$scope.userVerwaltung = true;
 					$scope.systemVerwaltung = false;
-					$scope.show(false,false, false ,false,true, '#000000','#000000','#000000','#000000','#f98e22');					
+					$scope.show(false,false, false ,false,true);
 					$scope.isUserVerwaltungUpdateSelected = true;
 					$scope.isUserVerwaltungCreateSelected = false;
 					$scope.infoFeld = "User Aktualisieren";
@@ -716,7 +836,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				} else if (selectMenue == 'showCreateUser') {
 					$scope.userVerwaltung = true;
 					$scope.systemVerwaltung = false;
-					$scope.show(false,false, false ,false,true, '#000000','#000000','#000000','#000000','#f98e22');				
+					$scope.show(false,false, false ,false,true);
 					$scope.showUserSearch = false;
 					$scope.isUserVerwaltungUpdateSelected = false;
 					$scope.isUserVerwaltungCreateSelected = true;
@@ -725,7 +845,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				} else if (selectMenue == 'showUser') {
 					$scope.userVerwaltung = true;
 					$scope.systemVerwaltung = false;
-					$scope.show(false,false, false ,false,true, '#000000','#000000','#000000','#000000','#f98e22');
+					$scope.show(false,false, false ,false,true);
 					$scope.isUserVerwaltungUpdateSelected = false;
 					$scope.isUserVerwaltungCreateSelected = false;
 					$scope.infoFeld = "User";
@@ -733,7 +853,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				} else if (selectMenue == 'showDeleteUser') {
 					$scope.userVerwaltung = true;
 					$scope.systemVerwaltung = false;
-					$scope.show(false,false, false ,false,true, '#000000','#000000','#000000','#000000','#f98e22');
+					$scope.show(false,false, false ,false,true);
 					$scope.isUserVerwaltungUpdateSelected = false;
 					$scope.isUserVerwaltungCreateSelected = false;
 					$scope.showUserInfos = false;
@@ -796,35 +916,16 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					$scope.resetViews();
 					$scope.dialogConfig.dialogMobile = true;
 					$scope.dialogConfig.actionAddShow = true;
-					$scope.dialogConfig.actionAddDialog = $scope.addLizenz;
+					$scope.dialogConfig.actionAddDialog = $scope.addMobileUser;
 					$scope.showAbstractInformation("Mobile User hinzufuegen","Lizenz.png");
 				}
 			}
 			
 			
 			$scope.showAbstractInformation = function(title, img){
-				$scope.dialogSoftware = $scope.settingsView.showDialogSoftware;
-				$scope.dialogHardware = $scope.settingsView.showDialogHardware;
-				$scope.dialogLizenzen = $scope.settingsView.showDialogLizenzen;
-				$scope.showLizenzHardwareList = $scope.settingsView.showLizenzen;;
-				$scope.showHardware = $scope.settingsView.showHardware;
-				
+
 				$scope.titleImg = "static/img/"+img;
 				$scope.titleDialog = title;
-				
-				if ($scope.settingsView.actionAdd != undefined){
-					$scope.actionAddDialog = $scope.settingsView.actionAdd;
-					$scope.actionAddShow = true;
-				}else{
-					$scope.actionAddShow = false;
-				}
-				
-				if ($scope.settingsView.actionUpdate != undefined){
-					$scope.actionUpdateDialog = $scope.settingsView.actionUpdate;
-					$scope.actionUpdateShow = true;
-				}else{
-					$scope.actionUpdateShow = false;
-				}
 				
 				$mdDialog.show({
 						scope: $scope.$new(),
@@ -1009,7 +1110,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				$http({
 					method: 'DELETE',
 					params: {
-						'lid' : lizenz.lid,
+						'lid' : lizenz.lid
 					},
 					url: 'lizenz'
 				}).then(function successCallback(response) {
@@ -1034,7 +1135,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					method: 'DELETE',
 					params: {
 						'lid' : lizenz.lid,
-						'hid' : hardware.hid,
+						'hid' : hardware.hid
 					},
 					url: 'hardware/lizenz'
 				}).then(function successCallback(response) {
@@ -1059,7 +1160,8 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				$scope.lizenzHostList = $scope.lizenz.hardware;
 				
 				$scope.resetViews();
-				$scope.dialogConfig.actionUpdate = $scope.addLizenz;
+
+				$scope.dialogConfig.actionUpdateDialog = $scope.updateLizenz;
 				$scope.dialogConfig.actionUpdateShow = true;
 				$scope.dialogConfig.dialogLizenzen = true;
 				$scope.showLizenzHardwareView = true;
@@ -1524,7 +1626,7 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 					if (Object.keys($scope.lizenzPages).length > $scope.lizenzPage){
 						$scope.lizenzPage++;
 					}
-				}else if(view == 'moble'){
+				}else if(view == 'mobile'){
 					if (Object.keys($scope.mobilePage).length > $scope.mobilePage){
 						$scope.mobilePage++;
 					}
@@ -1810,17 +1912,19 @@ app.controller('ListCtrl', function ($scope, $mdDialog, $http,Upload, data, soft
 				 var result = [];
 				 if (lowerCaseSearch != ''){	
 					var result = new Array();
-					for (var i=0;i<$scope.mobileData.length;i++){
-						for (var key in mobileData[i]) {
-							if (mobileData[i][key] != null && mobileData[i][key].toLowerCase().indexOf(lowerCaseSearch) != -1){
-								result.push(mobileData[i]);
+					for (var i=0;i<$scope.mobileUserList.length;i++){
+						for (var key in $scope.mobileUserList[i]) {
+							if ($scope.mobileUserList[i][key] != null && $scope.mobileUserList[i][key].toLowerCase().indexOf(lowerCaseSearch) != -1){
+								result.push($scope.mobileUserList[i]);
 								break;
 							}
 						}
 					}
 				 }else{
-					 result = $scope.mobileData;
+					 result = $scope.mobileUserList;
 				 }
+
+				 return  result;
 				 
 				if ($scope.showAllLizenz){
 					$scope.lizenzMaxPage = Object.keys(result).length;

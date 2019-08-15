@@ -54,7 +54,7 @@ public class FileConverterService implements IFileConverter{
 		checkImport.put(34, 3);
 		checkImport.put(37, 5);
 
-		checkImport.put(36, 8); // mit 0 vorne dran auff¸llen! bis 5 Stellen 
+		checkImport.put(36, 8); // mit 0 vorne dran auff√ºllen! bis 5 Stellen
 		checkImport.put(39, 9);
 		checkImport.put(28, 11);
 		
@@ -185,6 +185,7 @@ public class FileConverterService implements IFileConverter{
 		
 		String bestellerID = "";
 		while (data != null) {
+			data = data.replace("\"", "");
 			spalten = new ArrayList<String>();
 			String[] felder = data.split(";");
 			for(String value : felder) {
@@ -203,8 +204,10 @@ public class FileConverterService implements IFileConverter{
 				csvImport.add(importAll.get(i));
 				warenWertResult = 0.0;
 			}
-				
-			warenWertResult+= Double.parseDouble(importAll.get(i).get(warenWertId).replace(",", "."));
+			
+			String value = importAll.get(i).get(warenWertId).replace(",", ".").toString();
+			
+			warenWertResult+= Double.parseDouble(value);
 			
 			if (i != 1)
 			 warenWert.put(bestellerID, warenWertResult+ "");
@@ -270,8 +273,8 @@ public class FileConverterService implements IFileConverter{
 		try { 
             String strDate =  new SimpleDateFormat("yyyyMMdd HHmmssSSS").format(Calendar.getInstance().getTime());  
             ArrayList<File> result = new ArrayList<File>();
-            String firstLineExport ="Firma	Kontaktperson	Strasse	Adresse2	Adresse3	Ort	Staat	Land	PLZ	Telefon	UPS_KUNDENUMMER	Email	EmailOption	Absender Firma	Email Text	Gewicht	Serviceart	Pakettyp	BillTransportationTo	BillDutyTaxTo	SplitDutyAndTax	Referenz1	Rferenz2	Referenz3	Referenz4	Referenz5	Warenbeschreibung	Anzahl Pakete	Rechnung_an _Dritte[TP]_Firma	TP_Kontakt	TP_Adr1	TP_ADR2	TP_ADR3	TP_PLZ	TP_ORT	TP_LAND	TP_STAAT	TP_TEL	TP_UPS_ACCOUNT	Rechnung Erstellen	W‰hrungskennung	Verkaufsbedingungen	Ausfuhrzweck	Zollerkl‰rung	Frachtkosten	Versicherungskosten	sonstige Tarife";
-            String firstLineWare = "Key	Warenbeschreibung	Zolltarif	Ursprungsland/-gebiet	Maﬂeinheit	St¸ckpreis	W‰hrungscode	Teilnummer	Anzahl	REWaehrung	REAusfuhrzweck	REZollerklaerung	REVerkaufsbedingung"; 
+            String firstLineExport ="Firma,Kontaktperson,Strasse,Adresse2,Adresse3,Ort,Staat,Land,PLZ,Telefon,UPS_KUNDENUMMER,Email,EmailOption,Absender_Firma,Email_Text,Gewicht,Serviceart,Pakettyp,BillTransportationTo,BillDutyTaxTo,SplitDutyAndTax,Referenz1,Rferenz2,Referenz3,Referenz4,Referenz5,Warenbeschreibung,Anzahl_Pakete,Rechnung_an_Dritte[TP]_Firma,TP_Kontakt,TP_Adr1,TP_ADR2,TP_ADR3,TP_PLZ,TP_ORT,TP_LAND,TP_STAAT,TP_TEL,TP_UPS_ACCOUNT,Rechnung_Erstellen,W√§hrungskennung,Verkaufsbedingungen,Ausfuhrzweck,Zollerkl√§rung,Frachtkosten,Versicherungskosten,sonstige_Tarife";
+            String firstLineWare = "Key,Warenbeschreibung,Zolltarif,Ursprungsland/-gebiet,Ma√üeinheit,St√ºckpreis,W√§hrungscode,Teilnummer,Anzahl,REWaehrung,REAusfuhrzweck,REZollerklaerung,REVerkaufsbedingung";
             result.add(writeFile("\\\\rsvx.it\\\\Service\\UPS\\Output\\import-"+inputType+"-"+strDate+".csv", csvExport, firstLineExport));
 			result.add(writeFile("\\\\rsvx.it\\Service\\UPS\\Output\\Waren-"+inputType+"-"+strDate+".txt", warenExport, firstLineWare));
 			
@@ -292,7 +295,7 @@ public class FileConverterService implements IFileConverter{
 			String temp = "";
 			
 			for (String spalte : zeile) {
-				temp += spalte+"	";
+				temp += spalte+",";
 			}
 			result.add(temp);
 		}

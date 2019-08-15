@@ -1,4 +1,4 @@
-<md-content ng-show="isMobileVewaltungSelected">
+<md-content >
 <div class="page">
 
 	<div layout-gt-sm="row" class="mainPage"
@@ -27,70 +27,49 @@
 	</div>
 
 	<div layout="row" layout-wrap style="padding-left: 10px; border-bottom: 5px solid #E6E6E6;">
-		<div flex="10" style="font-size: 14px">Name</div>
-		<div flex="10" style="font-size: 14px">Nummer</div>
-		<div flex="10" style="font-size: 14px">Simkarte</div>
-		<div flex="10" style="font-size: 14px">Ultracard 1</div>
-		<div flex="10" style="font-size: 14px">Ultracard 2</div>
-		<div flex style="font-size: 14px">Info</div>
-		<div flex="5" style="font-size: 14px">Grundpreis</div>
-		<div flex="5" style="font-size: 14px">Rabatt</div>
-		<div flex="5" style="font-size: 14px">Gesamt</div>
+		<div flex="20" style="font-size: 14px">Name</div>
+		<div flex="20" style="font-size: 14px">Handy</div>
+		<div flex="20" style="font-size: 14px">Sim</div>
+		<div flex="20" style="font-size: 14px">Ultracard</div>
 	</div>
 
 
 	<md-list ng-cloak> <md-list-item
 		ng-repeat="mobile in ctrl.getMobile()"
-		ng-click="showMobileInformation(mobile.mid)" class="md-1-line">
+		ng-click="showMobileInformation(mobile.mid)" class="md-2-line">
 
 	<div flex="100" layout="row" layout-wrap>
 
 
-		<div flex="10" style="font-size: 14px">
+		<div flex="20" style="font-size: 14px">
 			<div class="md-list-item-text" layout="column">
-				<p style="font-size: 10px">{{ mobile.name }}</p>
+				<p style="color:black">{{ mobile.name }}</p>
+				<p style="font-size: 10px">{{ mobile.number }}</p>
 			</div>
 		</div>
-		<div flex="10" style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.number }}</p>
-			</div>	
+
+		<div flex="20" style="font-size: 14px">
+			<div class="md-list-item-text" layout="column">
+				<p style="color:black">{{ mobile.handy.handyModel.displayName }}</p>
+				<p style="font-size: 10px">{{ mobile.handy.imei }}</p>
+			</div>
 		</div>
-		<div flex="10" style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.sim }}</p>
-			</div>	
+
+		<div flex="20" style="font-size: 14px">
+			<div class="md-list-item-text" layout="column">
+				<p style="color:black">{{  mobile.sim }}</p>
+				<p style="font-size: 10px">{{  mobile.pin }}</p>
+			</div>
 		</div>
-		<div flex="10" style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.ultraOne }}</p>
-			</div>	
+
+		<div flex="20" style="font-size: 14px">
+			<div class="md-list-item-text" layout="column">
+				<p style="color:black">{{ mobile.ultraOne }}</p>
+				<p style="font-size: 10px">{{ mobile.ultraTwo }}</p>
+			</div>
 		</div>
-		<div flex="10" style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.ultraTwo }}</p>
-			</div>	
-		</div>
-		<div flex style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.info }}</p>
-			</div>	
-		</div>
-		<div flex="5" style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.cost }}</p>
-			</div>	
-		</div>
-		<div flex="5" style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.discount }}</p>
-			</div>	
-		</div>
-		<div flex="5" style="font-size: 14px">
-		    <div class="md-list-item-text" layout="column">
-				<p style="color: black">{{ mobile.total }}</p>
-			</div>	
-		</div>
+
+
 		<div flex></div>
 		<div flex="none" style="font-size: 14px">
 			<div class="md-list-item-text" layout="column">

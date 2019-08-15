@@ -1,7 +1,6 @@
 package de.netview.service.Impl;
 
 import de.netview.dao.ILDAPUserDao;
-import de.netview.dao.Impl.SystemuserDao;
 import de.netview.data.ADUserData;
 import de.netview.data.ADUserUpdateData;
 import de.netview.data.HardwareData;
@@ -14,7 +13,6 @@ import de.netview.model.ADSetting;
 import de.netview.model.Hardware;
 import de.netview.model.LDAPUser;
 import de.netview.model.Location;
-import de.netview.model.Systemuser;
 import de.netview.service.IHardwareService;
 import de.netview.service.ILDAPService;
 import de.netview.service.ILocationService;
@@ -29,6 +27,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.*;
 import javax.transaction.Transactional;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -64,12 +63,11 @@ public class LDAPService implements ILDAPService {
 			
 			USER_BASE_NAME = adSetting.getInterneuserou();
 			DOMAIN_NAME = adSetting.getDomaine();
-			 
-			//System.setProperty("javax.net.ssl.trustStore", TRUST_STORE);
+
 			Hashtable<String, String> ldapEnv = new Hashtable<String, String>(11);
 			ldapEnv.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 			ldapEnv.put(Context.PROVIDER_URL, "ldap://" + adSetting.getServer());
-			ldapEnv.put(Context.SECURITY_PROTOCOL, "ANY");
+			//ldapEnv.put(Context.SECURITY_PROTOCOL, "SSL");
 			ldapEnv.put(Context.SECURITY_AUTHENTICATION, "simple");
 			ldapEnv.put(Context.SECURITY_PRINCIPAL, "cn="+adSetting.getBinduser()+","+adSetting.getBinduserou());
 			ldapEnv.put(Context.SECURITY_CREDENTIALS, adSetting.getPassword());

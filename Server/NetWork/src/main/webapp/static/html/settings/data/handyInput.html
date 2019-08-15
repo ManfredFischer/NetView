@@ -1,0 +1,33 @@
+<md-content class="md-padding" style="height:70%">
+    <div layout="column">
+        <div flex="8">
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Display Name</label>
+                    <input ng-model="handyModel.displayName">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Model</label>
+                    <input ng-model="handyModel.model">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Farbe</label>
+                    <input ng-model="handyModel.color">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Speicher</label>
+                    <input ng-model="handyModel.store">
+                </md-input-container>
+                <div>
+                    <md-button class="md-raised" ng-click="addHandyModel()">Speichern</md-button>
+                </div>
+            </div>
+        </div>
+        <div flex class="md-list-item-text" >
+            <div my-mobilephoneview></div>
+        </div>
+    </div>
+</md-content>

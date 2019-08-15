@@ -2,14 +2,22 @@
         
         <div class="layout-row">
         <div flex>
-         <md-input-container class="md-block" flex-gt-sm>
-                <label>Lizenz Name</label>
-                <input ng-model="lizenz.name">
-         </md-input-container>
+            <div layout-gt-sm="row" layout-align="space-between center">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Lizenz Name</label>
+                    <input ng-model="lizenz.name">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Anzahl</label>
+                    <input type="number" step="any"  ng-model="lizenz.allowamount" min="-1"  >
+                </md-input-container>
+            </div>
+
          <md-input-container class="md-block" flex-gt-sm>
             <label>Kategorie</label>
             <input ng-model="lizenz.categorie">
          </md-input-container>
+
          <md-input-container class="md-block" flex-gt-sm>
             <label>Reserviert</label>
             <input ng-model="lizenz.reserved">

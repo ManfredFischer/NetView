@@ -1,0 +1,40 @@
+<md-content class="md-padding" style="height:75%">
+    <div layout="column">
+        <div flex="8">
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Name</label>
+                    <input ng-model="newContract.name">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Vertrag</label>
+                    <input ng-model="newContract.contract">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Kosten</label>
+                    <input ng-model="newContract.cost">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Rabatt</label>
+                    <input ng-model="newContract.discount">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Beschreibung</label>
+                    <input ng-model="newContract.description">
+                </md-input-container>
+                <div>
+                    <md-button class="md-raised" ng-click="addNewContract()">Speichern</md-button>
+                </div>
+
+            </div>
+        </div>
+
+        <div flex class="md-list-item-text" >
+            <div my-contractview></div>
+        </div>
+    </div>
+</md-content>

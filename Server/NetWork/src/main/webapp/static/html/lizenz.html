@@ -1,4 +1,4 @@
-<md-content ng-show="isLizenzVewaltungSelected">
+<md-content >
         <div class="page">
                 
             
@@ -31,6 +31,7 @@
                     <div flex="20" style="font-size:14px">{{translation.infoTable.lizenzName}}</div>
                     <div flex="10" style="font-size:14px">{{translation.infoTable.categorie}}</div>
                     <div flex="10" style="font-size:14px">{{translation.infoTable.use}}</div>
+                    <div flex="10" style="font-size:14px">R/V/G</div>
                     <div flex style="font-size:14px">{{translation.infoTable.key}}</div>
             </div>
                 
@@ -44,6 +45,9 @@
                     </div>
                     <div flex="10" class="md-list-item-text flex" layout="column">
                         {{ lizenz.stateInfo }}
+                    </div>
+                    <div flex="10" class="md-list-item-text flex" layout="column">
+                        {{ lizenz.lizenzState }}
                     </div>
                     <div class="md-list-item-text flex" layout="column">
                         {{ lizenz.key }}

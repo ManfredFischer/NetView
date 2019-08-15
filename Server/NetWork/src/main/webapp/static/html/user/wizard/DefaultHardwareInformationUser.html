@@ -1,0 +1,39 @@
+<h2>Hardware</h2>
+
+<div layout-gt-sm="row">
+    <md-checkbox style="padding-left: 5px" md-no-ink aria-label="Checkbox No Ink" ng-model="addUserWizardData.hardware.laptop" class="md-primary"></md-checkbox>
+
+    <md-input-container style="width: 100%">
+        <label>Laptop</label>
+        <md-select ng-Model="addUserWizardData.hardware.laptopInfo">
+            <md-option ng-repeat="laptop in LocationList" value="{{ laptop }}">{{location.displayname }}</md-option>
+        </md-select>
+    </md-input-container>
+
+</div>
+
+ <div layout-gt-sm="row">
+    <md-checkbox style="padding-left: 5px" md-no-ink aria-label="Checkbox No Ink" ng-model="addUserWizardData.hardware.handy" class="md-primary"></md-checkbox>
+
+    <md-input-container style="width: 100%">
+        <label>Handy</label>
+        <md-select ng-Model="addUserWizardData.hardware.handyInfo">
+            <md-option ng-repeat="handy in LocationList" value="{{ handy }}">{{handy.displayname }}</md-option>
+        </md-select>
+    </md-input-container>
+
+ </div>
+
+<div layout-gt-sm="row">
+    <md-checkbox style="padding-left: 5px" md-no-ink aria-label="Checkbox No Ink" ng-model="addUserWizardData.hardware.monitor" class="md-primary"></md-checkbox>
+
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Anzahl - Monitore</label>
+        <input type="number" step="any"  ng-model="addUserWizardData.hardware.monitorAmount" min="-1"  >
+    </md-input-container>
+
+</div>
+
+<md-checkbox style="padding-left: 5px" md-no-ink aria-label="Checkbox No Ink" ng-model="addUserWizardData.hardware.kopfhoerer" class="md-primary">
+    Kophörer
+</md-checkbox>

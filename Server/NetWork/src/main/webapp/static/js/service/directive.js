@@ -12,7 +12,7 @@ app.directive('myLizenz', function() {
 	};
 }).directive('myUserdetails', function() {
 	return {
-		templateUrl : 'static/html/UserDetails.html'
+		templateUrl : 'static/html/user/UserDetails.html'
 	};
 }).directive('myMenue', function() {
 	return {
@@ -48,15 +48,15 @@ app.directive('myLizenz', function() {
 	};
 }).directive('mySettings', function() {
 	return {
-		templateUrl : 'static/html/settings.html'
+		templateUrl : 'static/html/settings/settings.html'
 	};
 }).directive('myMobilephoneview', function() {
 	return {
-		templateUrl : 'static/html/mobilePhoneViewSettings.html'
+		templateUrl : 'static/html/views/mobileView.html'
 	};
 }).directive('myContractview', function() {
 	return {
-		templateUrl : 'static/html/contractViewSettings.html'
+		templateUrl : 'static/html/views/contractView.html'
 	};
 }).directive('addHandyuser', function() {
 	return {
@@ -64,7 +64,7 @@ app.directive('myLizenz', function() {
 	};
 }).directive('settingsData', function() {
 	return {
-		templateUrl : 'static/html/settingsData.html'
+		templateUrl : 'static/html/settings/settingsData.html'
 	};
 }).directive('myOverview', function() {
 	return {
@@ -72,6 +72,38 @@ app.directive('myLizenz', function() {
 	};
 }).directive('settingsConverter', function() {
 	return {
-		templateUrl : 'static/html/settingsConverter.html'
+		templateUrl : 'static/html/settings/settingsConverter.html'
+	};
+}).directive('myUpload', function() {
+	return {
+		templateUrl : 'static/dialog/Import.html'
+	};
+}).directive('myUserwizard', function() {
+	return {
+		templateUrl : 'static/html/user/wizard/UserWizard.html'
+	};
+}).directive('wizardAdduserinformation', function() {
+	return {
+		templateUrl : 'static/html/user/wizard/DefaultInformationUser.html'
+	};
+}).directive('wizardAdduserhardwareinformation', function() {
+	return {
+		templateUrl : 'static/html/user/wizard/DefaultHardwareInformationUser.html'
+	};
+}).directive('wizardAdduseroverview', function() {
+	return {
+		templateUrl : 'static/html/user/wizard/DefaultOverviewUser.html'
+	};
+}).directive('wizardAdduserpermission', function() {
+	return {
+		templateUrl : 'static/html/user/wizard/DefaultPermissionUser.html'
+	};
+}).directive('mySettingsdatacontractinput', function() {
+	return {
+		templateUrl : 'static/html/settings/data/contractInput.html'
+	};
+}).directive('mySettingsdatahandyinput', function() {
+	return {
+		templateUrl : 'static/html/settings/data/handyInput.html'
 	};
 });
