@@ -81,6 +81,22 @@ app.service('data', function($http) {
 					response.config.scope.mobileUserList.push(data);
 				});
 			});
+	};
+
+	this.loadChangelog = function ($scope) {
+		$http({
+			method: 'GET',
+			scope: $scope,
+			sync: false,
+			url: 'changelog'
+		}).then(
+			function successCallback(response) {
+				response.data.forEach(function (data) {
+					var dateInfo = new Date(data.date);
+					data.date = dateInfo.getDay() +"."+dateInfo.getMonth()+"."+dateInfo.getFullYear()+" "+dateInfo.getHours()+":"+dateInfo.getSeconds();
+					response.config.scope.changelogList.push(data);
+				});
+			});
 	}
     
     this.loadLizenz = function($scope, $state){
@@ -104,9 +120,13 @@ app.service('data', function($http) {
 					} else if (data.state == 3){
 						data.stateInfo = "reserviert";
 					}
-					debugger;
+
 					var reserved = data.reserved == null ? 0 : data.reserved.split(",").length;
-					data.lizenzState = reserved+"/"+data.hardware.length+"/"+data.allowamount;
+					data.allowamount = data.allowamount == undefined ? 1 : data.allowamount;
+					var verfuegbar = data.allowamount - (reserved + data.hardware.length);
+					data.lizenzState = reserved+"/"+data.hardware.length+"/"+verfuegbar;
+					data.vergeben = reserved + data.hardware.length;
+					data.verfuegbar = verfuegbar;
 					response.config.scope.lizenzen.push(data);
 				});
 				
@@ -149,10 +169,7 @@ app.service('data', function($http) {
 				
 				response.config.scope.setHardwareViewPages(response.data);
 		});
-	}
-    
-    this.loadOverview = function($scope){
-    }
+	};
     
     this.loadMobile = function($scope){
 		$http({

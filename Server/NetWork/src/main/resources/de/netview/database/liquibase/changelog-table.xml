@@ -329,7 +329,63 @@
 			<column name="allowamount" type="BIGINT"/>
 		</addColumn>
 	</changeSet>
-	
-	
+
+	<changeSet author="MaFischer" id="5">
+		<createTable tableName="CHANGELOG">
+			<column name="clid" type="BIGINT" autoIncrement="true">
+				<constraints nullable="false" />
+			</column>
+			<column name="date" type="BIGINT" />
+			<column name="changelog" type="VARCHAR(1020)" />
+			<column name="username" type="VARCHAR(1020)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="6">
+		<addColumn tableName="CHANGELOG">
+			<column name="system" type="VARCHAR(1020)"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="7">
+		<addColumn tableName="CHANGELOG">
+			<column name="hid" type="BIGINT"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="8">
+		<addColumn tableName="systemuser">
+			<column name="email" type="VARCHAR(1020)"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="9">
+		<addColumn tableName="HARDWARE">
+			<column name="status" type="INTEGER"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="10">
+		<addColumn tableName="CHANGELOG">
+			<column name="title" type="CHAR(1020)"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="11">
+		<createTable tableName="LDAPGROUP">
+			<column name="lgid" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="groupname" type="VARCHAR(1020)" />
+			<column name="groupdn" type="VARCHAR(1020)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="12">
+		<createTable tableName="DEPARTMENT_LDAPGROUP">
+			<column name="did" type="BIGINT"/>
+			<column name="lgid" type="BIGINT"/>
+		</createTable>
+	</changeSet>
 
 </databaseChangeLog>

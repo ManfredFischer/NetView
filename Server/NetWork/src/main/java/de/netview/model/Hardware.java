@@ -46,6 +46,7 @@ public class Hardware implements Serializable {
 	private String categorie;
 	private String encodingname;
 	private String encodingkey;
+	private Integer status;
 	private int location;
 	private String icon;
 	private Boolean verliehen;
@@ -85,6 +86,14 @@ public class Hardware implements Serializable {
 		this.hostname = hostname;
 	}
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
 	public String getOwner() {
 		return owner;
 	}
@@ -112,6 +121,8 @@ public class Hardware implements Serializable {
 	public String getCpu() {
 		return cpu;
 	}
+
+
 
 	public void setCpu(String cpu) {
 		this.cpu = cpu;

@@ -32,15 +32,21 @@
                         {{translation.menue.org}}
                     </div>
                     <md-menu-content>
+
                     	<md-menu-item ng-if="security.verwaltungConfig.clients">
                             <md-button ng-click="selectMenu('showClients')">
-                                <img src="/NetView/static/img/Hardware.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.clients}}
+                                <img src="/NetView/static/img/clients.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.clients}}
                             </md-button>
                         </md-menu-item>
                         <md-menu-item ng-if="security.verwaltungConfig.netz">
                             <md-button ng-click="selectMenu('showServer')">
-                                <img src="/NetView/static/img/Hardware.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.netz}}
+                                <img src="/NetView/static/img/infrastruktur.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.netz}}
                             </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="security.verwaltungConfig.changelog">
+                         <md-button ng-click="selectMenu('showChangeLogView')">
+                            <img src="/NetView/static/img/Changelog.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Changelog Liste
+                         </md-button>
                         </md-menu-item>
                         <md-menu-item ng-if="security.verwaltungConfig.mobile">
                             <md-button ng-click="selectMenu('showMobile')">
@@ -49,7 +55,7 @@
                         </md-menu-item>
                         <md-menu-item ng-if="security.verwaltungConfig.lizenz">
                             <md-button ng-click="selectMenu('showLizenz')">
-                                <img src="/NetView/static/img/Lizenz.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.lizenz}}
+                                <img src="/NetView/static/img/lizenz.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.lizenz}}
                             </md-button>
                         </md-menu-item>
                         <md-menu-divider></md-menu-divider>
@@ -63,9 +69,14 @@
                                 <img src="/NetView/static/img/addLizenz.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addLizenze}}
                             </md-button>
                         </md-menu-item>
-                        <md-menu-item ng-if="security.verwaltungConfig.addLizenz">
+                        <md-menu-item ng-if="false">
                             <md-button ng-click="selectMenu('mobileUserAdd')">
-                                <img src="/NetView/static/img/addLizenz.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> Mobile User hinzufuegen
+                                <img src="/NetView/static/img/addLizenz.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> Mobile User hinzufügen
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item ng-if="security.verwaltungConfig.changelog">
+                            <md-button ng-click="selectMenu('addChangeLog')">
+                                <img src="/NetView/static/img/Changelog.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addChangelog}}
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>
@@ -153,15 +164,14 @@
                        </md-menu-content>
                 </md-menu>
             </md-menu-bar>
-            <md-menu-bar flex class="menueLeiste"></md-menu-bar>
-            
-            
+            <md-menu-bar flex class="menueLeiste">
+
+            </md-menu-bar>
+
             <md-menu-bar class="menueLeiste">
-            	    
-               
-                <md-menu>
-                    <div class="menue" ng-click="selectMenu('showSettings')" >
-                        <img src="/NetView/static/img/setting-white.png" width="15px" height="15px" style="vertical-align:middle;margin-right:5px"></img>
+                <md-menu ng-if="security.settings">
+                    <div  class="menue">
+                        <img src="/NetView/static/img/setting-white.png" width="15px" height="15px" style="vertical-align:middle;margin-right:5px" ng-click="selectMenu('showSettings')"></img>
                     </div>
                 </md-menu>
                 <md-menu>

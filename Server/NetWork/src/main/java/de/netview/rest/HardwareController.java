@@ -76,4 +76,9 @@ public class HardwareController {
 		hardwareService.changeHardwareOwner(data);
 	}
 
+	@PutMapping("/archiv")
+	public void changeHardwareStatus(@RequestParam Long hid) {
+		hardwareService.archivHardware(hid);
+	}
+
 }

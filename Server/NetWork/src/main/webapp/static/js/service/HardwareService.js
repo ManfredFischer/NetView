@@ -1,43 +1,52 @@
 app.service('hardwareService', function($http) {
 	
 	this.mainScope;
-	
-	this.getNetzwerkHost = function(modus){	
+	this.scope;
+	this.searchClients = "";
+
+
+	this.setHardwarePage = function(){
+		this.scope.hardwarePage = 1;
+	}
+
+
+	this.getNetzwerkHost = function(modus){
+		var scope = this.scope;
 		var lowerCaseSearchHost = '';
-	    var filterHardware = []
+	    var filterHardware = [];
 	    var server = false;
-	   
+
 	    if (modus.toLowerCase() == 'server'){
 		 server = true;
-		 lowerCaseSearchHost = $scope.searchHostServer.toLowerCase();
+		 lowerCaseSearchHost = scope.searchHostServer.toLowerCase();
 	    }else{
-		 lowerCaseSearchHost = $scope.searchHostClient.toLowerCase(); 
+		 lowerCaseSearchHost = scope.searchHostClient.toLowerCase();
 	    }
-	 
-	    
-	 
+
+		this.readHostValues(filterHardware,scope, server);
+
 	 	if (lowerCaseSearchHost != ''){					
 		 filterHardware = this.filterByUser(filterHardware, lowerCaseSearchHost)
 	 	}	
 		
 	 	if (server){
-			if ($scope.showAllServer){
-				$scope.hardwareServerViewPages = false;
+			if (scope.showAllServer){
+				scope.hardwareServerViewPages = false;
 				return filterHardware;
 			}
-			$scope.hardwareServerPages = [];
-			$scope.hardwareServerViewPages = $scope.setHardwareViewPages(filterHardware, $scope.hardwareServerPages);
-			$scope.hardwareMaxPage = Object.keys($scope.hardwareServerPages).length;
-			return $scope.hardwareServerPages[$scope.hardwarePage];
+			scope.hardwareServerPages = [];
+			scope.hardwareServerViewPages = scope.setHardwareViewPages(filterHardware, scope.hardwareServerPages);
+			scope.hardwareMaxPage = Object.keys(scope.hardwareServerPages).length;
+			return scope.hardwareServerPages[scope.hardwarePage];
 		 } else {
-			if ($scope.showAllClients){
-				$scope.hardwareClientViewPages = false;
+			if (scope.showAllClients){
+				scope.hardwareClientViewPages = false;
 				return filterHardware;
 			}
-			$scope.hardwareClientsPages = [];
-			$scope.hardwareClientViewPages = $scope.setHardwareViewPages(filterHardware, $scope.hardwareClientsPages);
-			$scope.clientMaxPage = Object.keys($scope.hardwareClientsPages).length;
-			return $scope.hardwareClientsPages[$scope.clientPage];
+			scope.hardwareClientsPages = [];
+			scope.hardwareClientViewPages = scope.setHardwareViewPages(filterHardware, scope.hardwareClientsPages);
+			scope.clientMaxPage = Object.keys(scope.hardwareClientsPages).length;
+			return scope.hardwareClientsPages[scope.clientPage];
 		 }
 	  
 	 }
@@ -45,7 +54,62 @@ app.service('hardwareService', function($http) {
 	this.filter = function(){
 		
 	}
-	
+
+	this.readHostValues = function (filterHardware,scope, server) {
+		for (var i=0;i<scope.hardware.length;i++){
+
+			var insert = false;
+			if (scope.hardware[i].categorie != undefined){
+
+				if (location != "--" && location != ""){
+					if (scope.hardware[i].location.toString() == location){
+						insert = true;
+					}
+				}else {
+					insert = true;
+				}
+
+				if (server){
+					if (scope.hardwareActivValue != 'All' && insert){
+						if ((scope.hardware[i].icon.toLowerCase().indexOf('green') != -1) && (scope.hardwareActivValue == 'Aktiv')){
+							insert = true;
+						} else if ((scope.hardware[i].icon.toLowerCase().indexOf('red') != -1) && (scope.hardwareActivValue == 'Inaktiv')){
+							insert = true;
+						} else if ((scope.hardware[i].icon.toLowerCase().indexOf('blanko') != -1) && (scope.hardwareActivValue == 'Unbekannt')){
+							insert = true;
+						} else {
+							insert = false;
+						}
+					}
+
+					if (scope.categorieHardwareValue != 'All' && insert){
+						if ((scope.hardware[i].categorie.toLowerCase() == scope.categorieHardwareValue.toLowerCase())){
+							insert = true;
+						} else {
+							insert = false;
+						}
+					}
+				}else {
+					if (scope.clientsActivValue != 'All' && insert){
+						if ((scope.hardware[i].icon.toLowerCase().indexOf('green') != -1) && (scope.clientsActivValue == 'Aktiv')){
+							insert = true;
+						} else if ((scope.hardware[i].icon.toLowerCase().indexOf('red') != -1) && (scope.clientsActivValue == 'Inaktiv')){
+							insert = true;
+						} else if ((scope.hardware[i].icon.toLowerCase().indexOf('blanko') != -1) && (scope.clientsActivValue == 'Unbekannt')){
+							insert = true;
+						} else {
+							insert = false;
+						}
+					}
+				}
+
+				if (insert){
+					filterHardware.push(scope.hardware[i]);
+				}
+			}
+		}
+	}
+
 	this.filterByUser = function(hardware, valueFilter){
 		var result = new Array();
 		for (var i=0;i<hardware.length;i++){
@@ -122,46 +186,45 @@ app.service('hardwareService', function($http) {
 	}
 	
 	
-	this.showHardwareInformation = function (hid) {
-		
-		this.mainScope.showHardwareViewOwner = false;
-		this.mainScope.showHardwareViewHardware = false;
-		this.mainScope.showHardwareViewLizenz = false;
-		this.mainScope.showHardwareViewHardwareList = false;
-		this.mainScope.showHardwareViewUser = false;
-		
+	this.showHardwareInformation = function (hid, editable) {
+		$scope.resetHardwareView();
+
 		$http({
 			method: 'GET',
 			scope: $scope,
 			sync: true,
 			url: 'hardware/'+hid
 		}).then(function successCallback(response) {
-			this.mainScope.data.loadLizenz(this.mainScope,"0");
+			data.loadLizenz($scope,"0");
 			$scope.hardwareInformation = response.data;
-			
-			$scope.showHardwareViewHardware = true;
+
+			$scope.showHardwareViewInformation = true;
 			$scope.showHardwareViewLizenz = true;
-			
-			
+
+
 			if ($scope.hardwareInformation.ownerInformation != undefined && $scope.hardwareInformation.ownerInformation.displayName != undefined){
-				$scope.showHardwareViewOwner = true;
+				$scope.showHardwareUserOwner = true;
 				$scope.hardwareOwner = $scope.hardwareInformation.ownerInformation;
-				
+
 			}
-			
+
 			if ($scope.hardwareInformation.inUseInformation != undefined && $scope.hardwareInformation.inUseInformation.displayName != undefined){
-				$scope.showHardwareViewUser = true;
+				$scope.showHardwareUser = true;
 				$scope.hardwareUser = $scope.hardwareInformation.inUseInformation;
 			}
 
 			$scope.hardwareLizenzen = $scope.hardwareInformation.lizenz;
 
-			$mdDialog.show({
-					scope: $scope.$new(),
-					templateUrl: 'static/dialog/hardwareView.html',
-					clickOutsideToClose: true,
-					fullscreen: $scope.customFullscreen
-			});
+			$scope.resetViews();
+
+			$scope.dialogConfig.actionUpdateShow = editable;
+			$scope.dialogConfig.actionUpdateDialog = $scope.updateHardware;
+
+			$scope.dialogConfig.actionMgmtShow = true;
+			$scope.dialogConfig.showHardware = true;
+			$scope.dialogConfig.actionTVShow = true;
+			$scope.dialogConfig.actionMgmtDialog = $scope.changeManagement;
+			$scope.showAbstractInformation($scope.hardwareInformation.hostname+" ("+$scope.hardwareInformation.lastLogin+")","Hardware.png");
 		});
 	};
 

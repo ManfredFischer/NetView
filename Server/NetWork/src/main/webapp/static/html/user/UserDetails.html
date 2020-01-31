@@ -1,8 +1,8 @@
 <md-content class="md-padding">
 
     <div layout-gt-sm="row">
-        <div flex="40">
-            <md-button class="md-raised" ng-click="startWizardAddUser()" md-colors="{color: 'green'}"> <img src="/NetView/static/img/wizard-512.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"> User Wizard</md-button>
+        <div flex="40" >
+
         </div>
 
         <div layout-gt-sm="row" layout-align="center center">
@@ -11,12 +11,14 @@
                 <md-card class="page-tab">
                     <div layout-gt-sm="row" layout-align="space-between center">
 
-                        <md-button class="md-raised" ng-click="showUserInformation(userInformation.uid)" md-colors="{color: 'green'}">Details</md-button>
+                        <md-button class="md-raised" ng-if="showUserDetails" ng-click="showUserInformation(userInformation.uid)" md-colors="{color: 'green'}">Details</md-button>
+                        <md-button class="md-raised" ng-click="startWizardAddUser()" md-colors="{color: 'green'}"> <img src="/NetView/static/img/wizard-512.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"> User Wizard</md-button>
+                        <div flex=""></div>
                         <md-button ng-show="isUserVerwaltungCreateSelected" ng-disabled="true" ng-click="createUserInformation()" class="md-raised">Hinzufügen</md-button>
                         <md-button ng-show="isUserDisableSelected" ng-disabled="true" ng-click="disableUser(false)" class="md-raised">Austritt</md-button>
                         <md-button ng-show="isUserDisableSelected" ng-disabled="true" ng-click="disableUser(true)" class="md-raised">Sofort</md-button>
-
-
+                        <md-button class="md-icon-button" ng-if="showUserTV"      ng-click="openTeamViewer()" ><img  width="25" height="25" src="static/img/Teamviewer.png" style="border-radius: 15px;"></img> </md-button>
+                        <md-button class="md-icon-button" ng-if="showUserTelefon" ng-click="openTelefon(userInformation.telephoneNumber)" ><img  width="25" height="25" src="static/img/telefon.png"></img> </md-button>
                     </div>
                     <md-divider></md-divider>
                     <hr/>
@@ -43,10 +45,11 @@
                     <div layout-gt-sm="row" style="height:70px" ng-show="showUserInfos">
                         <md-input-container class="md-block" flex-gt-sm>
                             <label>Telefon</label>
-                            <input readonly ng-model="userInformation.telephoneNumber"> </md-input-container>
+                            <input ng-click="openTelefon(userInformation.telephoneNumber)" readonly ng-model="userInformation.telephoneNumber">
+                        </md-input-container>
                         <md-input-container class="md-block" flex-gt-sm>
-                            <label>Mobile</label>
-                            <input readonly ng-model="userInformation.mobile">
+                            <md-icon md-svg-src="static/img/telefon.png"></md-icon>
+                            <input ng-click="openTelefon(userInformation.mobile)" placeholder="Mobile" aria-label="Phone Number" readonly ng-model="userInformation.mobile">
                         </md-input-container>
                     </div>
 

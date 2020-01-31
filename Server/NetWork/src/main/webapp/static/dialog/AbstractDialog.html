@@ -12,12 +12,13 @@
 		</div>
 					
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionRentShow"    ng-click="rentHardware(hw)" ><img  width="25" height="25" src="static/img/rent.png"></img> </md-button>	
-		<md-button class="md-icon-button" ng-if="dialogConfig.actionAddShow"     ng-click="dialogConfig.actionAddDialog()" ><img  width="25" height="25" src="static/img/add-white.png"></img> </md-button>
+		<md-button class="md-raised" md-colors="{color: 'green'}" ng-if="dialogConfig.actionAddShow"     ng-click="dialogConfig.actionAddDialog()" >Hinzufügen</md-button>
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionUpdateShow"  ng-click="dialogConfig.actionUpdateDialog()" ><img  width="25" height="25" src="static/img/update-white.png"></img> </md-button>
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionDeleteShow"  ng-click="dialogConfig.actionDeleteDialog()" ><img  width="25" height="25" src="static/img/delete-white.png"></img> </md-button>
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionMgmtShow"    ng-click="dialogConfig.actionMgmtDialog()" ><img  width="25" height="25" src="static/img/user-white.png"></img> </md-button>
-		<md-button class="md-icon-button" ng-if="dialogConfig.actionTVShow"  ng-click="openTeamViewer()" ><img  width="25" height="25" src="static/img/Teamviewer.png"></img> </md-button>        
-	
+		<md-button class="md-icon-button" ng-if="dialogConfig.actionTVShow"  ng-click="openTeamViewer()" ><img  width="25" height="25" src="static/img/Teamviewer.png" style="border-radius: 15px;"></img> </md-button>
+		<md-button class="md-icon-button" ng-if="dialogConfig.showTelefon"  ng-click="openTelefon()" ><img  width="25" height="25" src="static/img/telefon.png"></img> </md-button>
+
 	</div>
 	
 	<div style="padding: 5px">
@@ -25,8 +26,10 @@
 		<div ng-if="dialogConfig.dialogHardware" add-hardware></div>
 		<div ng-if="dialogConfig.dialogSoftware" add-software></div>
 		<div ng-if="dialogConfig.dialogLizenzen" add-lizenzen></div>
+		<div ng-if="dialogConfig.dialogChanglog" add-changelog></div>
 		<div ng-if="dialogConfig.dialogMobile" add-handyuser></div>
 		<div ng-if="dialogConfig.showHardware" show-hardware></div>
+		<div ng-if="dialogConfig.showChangelog" show-changelog></div>
 		<div ng-if="dialogConfig.dialogUpload" my-upload></div>
 
 	</div>

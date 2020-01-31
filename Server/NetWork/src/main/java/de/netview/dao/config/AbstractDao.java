@@ -5,6 +5,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 public abstract class AbstractDao<T> {
 
 	@Autowired
@@ -19,8 +21,9 @@ public abstract class AbstractDao<T> {
 		getSession().saveOrUpdate(entity);
 	}
 
-	public void save(T entity) {
+	public T save(T entity) {
 		getSession().save(entity);
+		return entity;
 	}
 
 
@@ -29,4 +32,11 @@ public abstract class AbstractDao<T> {
 	}
 	
 
+	public List<T> get(String entity){
+		return getSession().createQuery("from "+entity).list();
+	}
+
+	public T getById(Long id, Class<T> type){
+		return getSession().get(type,id);
+	}
 }

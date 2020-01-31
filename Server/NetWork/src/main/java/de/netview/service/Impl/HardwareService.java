@@ -1,21 +1,16 @@
 package de.netview.service.Impl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.SessionFactory;
+import de.netview.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import de.netview.config.BeanUtil;
 import de.netview.dao.IHardwareDAO;
-import de.netview.dao.ILizenzDao;
 import de.netview.dao.ISoftwareDao;
 import de.netview.data.ADUserData;
 import de.netview.data.HardwareData;
@@ -24,10 +19,6 @@ import de.netview.function.IIPSort;
 import de.netview.model.Hardware;
 import de.netview.model.Lizenz;
 import de.netview.model.Software;
-import de.netview.service.IHardwareService;
-import de.netview.service.ILDAPService;
-import de.netview.service.ILizenzService;
-import de.netview.service.ISoftwareService;
 
 @Service
 public class HardwareService implements IHardwareService {
@@ -45,6 +36,9 @@ public class HardwareService implements IHardwareService {
 	private ISoftwareService softwareService;
 
 	@Autowired
+	private IChangelogService changelogService;
+
+	@Autowired
 	private ILDAPService ldapService;
 
 	@Autowired
@@ -53,8 +47,12 @@ public class HardwareService implements IHardwareService {
 	@Transactional
 	@Override
 	public Hardware insertHardware(Hardware hardware) {
+		SimpleDateFormat datum = new SimpleDateFormat();
+		datum.applyPattern( "EEEE', 'dd. MMMM yyyy" );
 
 		hardware.setIcon("unbekannt.png");
+		hardware.setLastlogin(datum.format(new Date()));
+
 		if (!StringUtils.isEmpty(hardware.getAktivusername())) {
 			ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
 			hardware.setDepartment(userData.getDepartment());
@@ -65,70 +63,11 @@ public class HardwareService implements IHardwareService {
 
 		if (hardwareInfo != null) {
 
-			for (int i = 0; i < hardware.getSoftware().size(); i++) {
-				boolean insert = true;
-				for (int a = 0; a < hardwareInfo.getSoftware().size(); a++) {
-					if (hardwareInfo.getSoftware().get(a).getName().equals(hardware.getSoftware().get(i).getName())) {
-						insert = false;
-						break;
-					}
-				}
-
-				if (insert) {
-					Software softwareTemp = softwareDao.getSoftwareByName(hardware.getSoftware().get(i).getName());
-					if (softwareTemp == null) {
-						softwareDao.insertSoftware(hardware.getSoftware().get(i));
-						hardwareInfo.getSoftware().add(hardware.getSoftware().get(i));
-					} else {
-						hardwareInfo.getSoftware().add(softwareTemp);
-					}
-				}
-			}
-
-			for (int i = 0; i < hardware.getLizenz().size(); i++) {
-				boolean insert = true;
-				for (int a = 0; a < hardwareInfo.getLizenz().size(); a++) {
-					if (hardwareInfo.getLizenz().get(a).equals(hardware.getLizenz().get(i))) {
-						insert = false;
-						break;
-					}
-				}
-
-				if (insert) {
-					Lizenz lizenzTemp = lizenzService.getLizenzByNameAndKey(hardware.getLizenz().get(i).getName(),
-							hardware.getLizenz().get(i).getKey());
-					if (lizenzTemp == null) {
-						lizenzService.insertLizenz(hardware.getLizenz().get(i));
-						checkLizenz(hardware.getLizenz().get(i), 2);
-						hardwareInfo.getLizenz().add(hardware.getLizenz().get(i));
-					} else {
-
-						checkLizenz(lizenzTemp, 2);
-						hardwareInfo.getLizenz().add(lizenzTemp);
-					}
-				}
-			}
-
-			for (int i = 0; i < hardwareInfo.getLizenz().size(); i++) {
-				boolean remove = true;
-				for (int a = 0; a < hardware.getLizenz().size(); a++) {
-					if (hardware.getLizenz().get(a).equals(hardwareInfo.getLizenz().get(i))) {
-						remove = false;
-						break;
-					}
-				}
-
-				if (remove && ((hardwareInfo.getLizenz().get(i).getName().contains("Windows 10"))
-						|| (hardwareInfo.getLizenz().get(i).getName().contains("Microsoft Office")))) {
-					Lizenz removeLizenz = hardwareInfo.getLizenz().get(i);
-					if (hardwareInfo.getLizenz().remove(removeLizenz)) {
-						checkLizenz(removeLizenz, 1);
-					}
-				}
-			}
+			readSoftware(hardware, hardwareInfo);
+			readLizenz(hardware, hardwareInfo);
+			cleanLizenz(hardware, hardwareInfo);
 
 			hardwareInfo.wrappeValues(hardware);
-
 			hardware = hardwareInfo;
 
 		} else {
@@ -141,6 +80,74 @@ public class HardwareService implements IHardwareService {
 
 		return hardware;
 
+	}
+
+	private void cleanLizenz(Hardware hardware, Hardware hardwareInfo) {
+		for (int i = 0; i < hardwareInfo.getLizenz().size(); i++) {
+			boolean remove = true;
+			for (int a = 0; a < hardware.getLizenz().size(); a++) {
+				if (hardware.getLizenz().get(a).equals(hardwareInfo.getLizenz().get(i))) {
+					remove = false;
+					break;
+				}
+			}
+
+			if (remove && ((hardwareInfo.getLizenz().get(i).getName().contains("Windows 10"))
+					|| (hardwareInfo.getLizenz().get(i).getName().contains("Microsoft Office")))) {
+				Lizenz removeLizenz = hardwareInfo.getLizenz().get(i);
+				if (hardwareInfo.getLizenz().remove(removeLizenz)) {
+					checkLizenz(removeLizenz, 1);
+				}
+			}
+		}
+	}
+
+	private void readLizenz(Hardware hardware, Hardware hardwareInfo) {
+		for (int i = 0; i < hardware.getLizenz().size(); i++) {
+			boolean insert = true;
+			for (int a = 0; a < hardwareInfo.getLizenz().size(); a++) {
+				if (hardwareInfo.getLizenz().get(a).equals(hardware.getLizenz().get(i))) {
+					insert = false;
+					break;
+				}
+			}
+
+			if (insert) {
+				Lizenz lizenzTemp = lizenzService.getLizenzByNameAndKey(hardware.getLizenz().get(i).getName(),
+						hardware.getLizenz().get(i).getKey());
+				if (lizenzTemp == null) {
+					lizenzService.insertLizenz(hardware.getLizenz().get(i));
+					checkLizenz(hardware.getLizenz().get(i), 2);
+					hardwareInfo.getLizenz().add(hardware.getLizenz().get(i));
+				} else {
+
+					checkLizenz(lizenzTemp, 2);
+					hardwareInfo.getLizenz().add(lizenzTemp);
+				}
+			}
+		}
+	}
+
+	private void readSoftware(Hardware hardware, Hardware hardwareInfo) {
+		for (int i = 0; i < hardware.getSoftware().size(); i++) {
+			boolean insert = true;
+			for (int a = 0; a < hardwareInfo.getSoftware().size(); a++) {
+				if (hardwareInfo.getSoftware().get(a).getName().equals(hardware.getSoftware().get(i).getName())) {
+					insert = false;
+					break;
+				}
+			}
+
+			if (insert) {
+				Software softwareTemp = softwareDao.getSoftwareByName(hardware.getSoftware().get(i).getName());
+				if (softwareTemp == null) {
+					softwareDao.insertSoftware(hardware.getSoftware().get(i));
+					hardwareInfo.getSoftware().add(hardware.getSoftware().get(i));
+				} else {
+					hardwareInfo.getSoftware().add(softwareTemp);
+				}
+			}
+		}
 	}
 
 	public void insertSoftware(Hardware hardware) {
@@ -195,6 +202,17 @@ public class HardwareService implements IHardwareService {
 
 	@Override
 	@Transactional
+	public String getHostnameByOwnerLastLogin(String owner) {
+		Hardware hardware = hardwareDao.getHardwareByOwnerLastLogin(owner);
+		if (hardware == null){
+			return "";
+		}else {
+			return hardware.getHostname();
+		}
+	}
+
+	@Override
+	@Transactional
 	public List<Hardware> getAllHardware() {
 		return hardwareDao.getAllHardware();
 	}
@@ -212,6 +230,7 @@ public class HardwareService implements IHardwareService {
 		}
 
 		HardwareData hardwareData = new HardwareData(userOwner, userInUse);
+		hardwareData.setChangelogList(changelogService.getChangelogListByHID(hardware.getHid()));
 		hardwareData.wrapperHardware(hardware);
 		return hardwareData;
 	}
@@ -284,6 +303,21 @@ public class HardwareService implements IHardwareService {
 		Hardware hardware = getHardwareById(Long.parseLong(value.get("hid").toString()));
 		hardware.setOwner(value.get("uid").toString());
 		saveHardware(hardware);
+	}
+
+	@Override
+	@Transactional
+	public Hardware archivHardware(long hid) {
+		Hardware hardware = getHardwareById(hid);
+
+		if (hardware.getStatus() == null || hardware.getStatus() == 1){
+			hardware.setStatus(0);
+		}else{
+			hardware.setStatus(1);
+		}
+
+		saveHardware(hardware);
+		return hardware;
 	}
 
 	@Override

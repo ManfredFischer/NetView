@@ -1,18 +1,18 @@
    <md-content flex layout-padding>
         <md-tabs md-dynamic-height md-border-bottom>
-	      <md-tab label="Handy">
+	      <md-tab label="Handy" ng-if="false">
               <div my-settingsDataHandyInput></div>
 	      </md-tab>
-	      <md-tab label="Handy Verträge">
+            <md-tab label="Handy Verträge" ng-if="false">
               <div my-settingsDataContractInput></div>
 	      </md-tab>
+            <md-tab label="Abteilung">
+                <div my-settingsDataContractInput></div>
+            </md-tab>
+            <md-tab label="Standort">
+                <div my-settingsDataContractInput></div>
+            </md-tab>
         </md-tabs>
-        <div>
-          <md-button ng-click="toggleLeft()"
-            class="md-primary" hide-gt-md>
-            Toggle left
-          </md-button>
-        </div>
 
       <div flex></div>
 

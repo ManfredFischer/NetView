@@ -1,6 +1,8 @@
 package de.netview.config.security;
 
 
+import de.netview.service.ISystemUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     private PasswordEncoder md5PasswordEncoder;
     private UserDetailsService userService;
 
+    @Autowired
+    private ISystemUserService systemUserService;
+
     public AuthenticationProviderImpl() {
         super();
         md5PasswordEncoder = new BCryptPasswordEncoder();
@@ -27,32 +32,21 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
         try {
-
-            UserDetailsImpl details = null;
-            Boolean ldapConnection = false;
-            try {
-                details = (UserDetailsImpl) userService.loadUserByUsername(authentication.getName());
-            } catch (UsernameNotFoundException e) {
-            	ldapConnection = true;
-            }
-
-
             UsernamePasswordAuthenticationToken token = null;
-            Authentication adAuthentication = null;
-            
+            UserDetailsImpl details = null;
 
-            try {
-                adAuthentication = adAuthenticationProvider.authenticate(authentication);
-                if (adAuthentication.isAuthenticated()) {
-                    token = new UsernamePasswordAuthenticationToken(details, details.getPassword(), details.getAuthorities());
+            if (!systemUserService.tryConnectionToLDAP()){
+
+            } else if (systemUserService.isUserInGroup("g_u_verwaltung", authentication.getName())) {
+                try {
+                    details = (UserDetailsImpl) userService.loadUserByUsername(authentication.getName());
+                } catch (UsernameNotFoundException e) {
                 }
-            }catch(Exception ex){
-            }
 
-            if (!ldapConnection){
+                if (details == null) details = systemUserService.checkAD(authentication);
+
                 if (details.getPassword() != null) {
                     if (md5PasswordEncoder.matches((String) authentication.getCredentials(), details.getPassword())) {
-
                         token = new UsernamePasswordAuthenticationToken(details, details.getPassword(),
                                 details.getAuthorities());
 
@@ -66,7 +60,6 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                         private static final long serialVersionUID = 1L;
                     };
                 }
-
             }
 
             return token;
@@ -76,10 +69,6 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                 private static final long serialVersionUID = 1L;
             };
         }
-    }
-
-    public UserDetailsService getUserService() {
-        return userService;
     }
 
     public void setAdAuthenticationProvider(ActiveDirectoryLdapAuthenticationProvider adAuthenticationProvider) {

@@ -1,6 +1,11 @@
 <div style="padding: 5px; ">
     <h2>Überblick</h2>
-
+    <table >
+        <tr>
+            <td style="width: 200px">Kopiern von:</td>
+            <td>{{addUserWizardData.duplicateFrom}}</td>
+        </tr>
+    </table>
     <h3>Allgemeine Informationen</h3>
     <table >
         <tr>
@@ -15,24 +20,13 @@
             <td style="width: 200px">Abteilung:</td>
             <td>{{addUserWizardData.user.department}}</td>
         </tr>
-    </table>
-    <h2>Hardware</h2>
-    <table>
         <tr>
-            <td style="width: 200px">Handy: </td>
-            <td>{{addUserWizardData.hardware.handy}} - {{addUserWizardData.hardware.handyInfo}}</td>
+            <td style="width: 200px">Telefon:</td>
+            <td>{{addUserWizardData.user.phone}}</td>
         </tr>
         <tr>
-            <td style="width: 200px">Laptop</td>
-            <td>{{addUserWizardData.hardware.laptop}} - {{addUserWizardData.hardware.laptopInfo}}</td>
-        </tr>
-        <tr>
-            <td style="width: 200px">Monitor Anzahl</td>
-            <td>{{addUserWizardData.hardware.monitor}} - {{addUserWizardData.hardware.monitorAmount}}</td>
-        </tr>
-        <tr>
-            <td style="width: 200px">Kopfhörer</td>
-            <td><td>{{addUserWizardData.hardware.kopfhoerer}}</td></td>
+            <td style="width: 200px">Mobile:</td>
+            <td>{{addUserWizardData.user.mobile}}</td>
         </tr>
     </table>
     <h2>Berechtigung</h2>

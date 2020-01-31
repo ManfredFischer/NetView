@@ -1,5 +1,12 @@
 <h2>Allgemeine Informationen</h2>
 
+<md-autocomplete md-item-text="item.displayName" md-search-text="addUserWizardData.duplicateFrom"
+                 md-items="item in querySearch(addUserWizardData.duplicateFrom)" placeholder="Kopieren von..." md-selected-item-change="selectUpdateUser(addUserWizardData.duplicateFrom)">
+    <md-item-template>
+        <span md-highlight-text="addUserWizardData.duplicateFrom" md-highlight-flags="^i">{{item.displayName}}</span>
+    </md-item-template>
+</md-autocomplete>
+
 <div layout-gt-sm="row" style="height:70px">
     <md-input-container class="md-block" flex-gt-sm>
         <label>Vorname</label>
@@ -25,7 +32,7 @@
     <md-input-container style="width: 100%">
         <label>Abteilung</label>
         <md-select ng-Model="addUserWizardData.user.department">
-            <md-option ng-repeat="department in departmentList" value="{{ department}}">{{department.model }}</md-option>
+            <md-option ng-repeat="department in departmentList" value="{{ department.displayname}}">{{department.displayname }}</md-option>
         </md-select>
     </md-input-container>
 </div>
@@ -34,7 +41,7 @@
     <md-input-container style="width: 100%">
         <label>Standort</label>
         <md-select ng-Model="addUserWizardData.user.location">
-            <md-option ng-repeat="location in LocationList" value="{{ location }}">{{location.displayname }}</md-option>
+            <md-option ng-repeat="location in LocationList" value="{{ location.displayname }}">{{location.displayname }}</md-option>
         </md-select>
     </md-input-container>
 </div>

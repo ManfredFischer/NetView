@@ -36,6 +36,16 @@ public class HardwareInformation implements Serializable {
 	private String encodingkey;
 	private String encodingname;
 
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	private Integer status;
+
 	public String getVerliehenBis() {
 		return verliehenBis;
 	}
@@ -49,6 +59,7 @@ public class HardwareInformation implements Serializable {
 		this.hostname = hardware.getHostname();
 		this.ip = hardware.getIp();
 		this.description = hardware.getDescription();
+		this.status = hardware.getStatus();
 		this.owner = hardware.getOwner();
 		if (hardware.getAktivusername() != null) {
 			String[] user = hardware.getAktivusername().split(".");

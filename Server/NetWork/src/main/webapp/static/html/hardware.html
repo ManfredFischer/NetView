@@ -6,13 +6,6 @@
 
 		<input flex-gt-sm class="css-input" placeholder="Suchen..."	ng-model="searchHostClient" ng-change="setClientsPage()">
 
-		<md-input-container flex-gt-sm style="max-width:300px"
-			ng-show="{{systemVerwaltung}}"> <label>{{translation.default.location}}</label>
-		<md-select aria-label="ShowHideAccountant" ng-Model="showLocation"
-			ng-change="setClientsPage()"> <md-option
-			ng-repeat="location in LocationList" value="{{ location.lid }}">{{location.displayname}}
-		</md-option> </md-select> </md-input-container>
-
 		<md-input-container flex-gt-sm style="max-width:150px"	ng-show="{{systemVerwaltung}}"> <label>Aktiv</label>
 		 <md-select aria-label="ShowHideAccountant" ng-Model="clientsActivValue" ng-change="setClientsPage()"> 
 		  <md-option ng-repeat="aktiv in aktivList" value="{{ aktiv.value }}">
@@ -20,6 +13,10 @@
 		  </md-option> 
 		 </md-select> 
 		</md-input-container>
+
+		<md-checkbox md-no-ink aria-label="Checkbox No Ink" ng-model="hardwareLager" class="md-primary">
+			Lager
+		</md-checkbox>
 	</div>
 
 	<div style="background: #084B8A; color:#ffffff; padding: 5px; margin: 0 0 15 0">
@@ -48,17 +45,17 @@
 	</div>
 
 
-	<md-list ng-cloak> 
+	<md-list ng-cloak>
 	 <md-list-item
-		ng-repeat="hw in ctrl.getNetzwerkHost('client')"
+		ng-repeat="hw in ctrl.getNetzwerkClients('client')"
 		ng-click="showHardwareInformation(hw.hid,false)" class="md-2-line">
 
 	  <div flex="100" layout="row" layout-wrap>
-	  
+
 		<div flex="10" style="font-size: 14px">
 			<div class="md-list-item-text" layout="column">
 				<p style="color: black"><img width="10px" heigth="10px" style="" src="static\img\{{hw.icon}}"> {{ hw.hostname }}</p>
-				<p style="font-size: 10px">{{ hw.owner }}</p>
+				<p style="font-size: 10px">{{ hw.lastLogin }}</p>
 			</div>
 		</div>
 		<div flex="10" style="font-size: 14px">
@@ -66,7 +63,7 @@
 				<p style="color: black">{{ hw.aktivUsername }}</p>
 				<p style="font-size: 10px">{{ hw.aktivUserPhone }}</p>
 			</div>
-				
+
 		</div>
 		<div flex="40" style="font-size: 14px">
 		 <div layout="row">
@@ -81,6 +78,7 @@
 		  </div>
 		</div>
 		<div flex></div>
+
 		<div flex ng-if="false" style="font-size: 14px">
 			<div class="md-list-item-text" layout="column">
 				<div layout-gt-sm="row" layout-align="left left">
@@ -117,17 +115,37 @@
 				</md-icon> </md-button>
 			</div>
 		</div>
-		<div flex="none" style="font-size: 14px">
-			<div class="md-list-item-text" layout="column">
-				<md-button class="md-icon-button" ng-click="delHardware(hw)">
-				<img width="15px" heigth="15px"
-					src="/NetView/static/img/papierkorb.png"> </md-icon> </md-button>
-			</div>
-		</div>
+
+		  <div flex="none" ng-if="!hardwareLager" style="font-size: 14px">
+			  <div class="md-list-item-text" layout="column">
+				  <md-button class="md-icon-button" ng-click="archivHardware(hw,true)">
+					  <img width="20px" heigth="20px"	src="/NetView/static/img/archiv.png"> </md-icon>
+				  </md-button>
+			  </div>
+		  </div>
+		  <div flex="none" ng-if="hardwareLager" style="font-size: 14px">
+			  <div class="md-list-item-text" layout="column">
+				  <md-button class="md-icon-button" ng-click="archivHardware(hw,false)">
+					  <img width="15px" heigth="15px"	src="/NetView/static/img/green.png"> </md-icon>
+				  </md-button>
+			  </div>
+		  </div>
+		  <div flex="none" ng-if="hardwareLager" style="font-size: 14px">
+			  <div class="md-list-item-text" layout="column">
+				  <md-button class="md-icon-button" ng-click="delHardware(hw)">
+					  <img width="15px" heigth="15px"	src="/NetView/static/img/papierkorb.png"> </md-icon>
+				  </md-button>
+			  </div>
+		  </div>
+		  <div flex="none" style="font-size: 14px">
+			  <div class="md-list-item-text" layout="column">
+				  <md-button class="md-icon-button" ng-click="openTeamViewer(hw)">
+					  <img width="20px" heigth="20px"	src="/NetView/static/img/Teamviewer.png"> </md-icon>
+				  </md-button>
+			  </div>
+		  </div>
 	  </div>
-	 </md-list-item> 
+	 </md-list-item>
 	</md-list>
-
-
 </div>
 </md-content>

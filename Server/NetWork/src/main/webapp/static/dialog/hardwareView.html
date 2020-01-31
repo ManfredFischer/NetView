@@ -31,12 +31,12 @@
                         <div layout-gt-sm="row">
                             <md-input-container class="md-block" flex-gt-sm>
                                 <label>Telefon</label>
-                                <input readonly ng-model="hardwareUser.telephoneNumber">
+                                <input readonly ng-click="openTelefon(hardwareUser.telephoneNumber)" ng-model="hardwareUser.telephoneNumber">
                             </md-input-container>
 
                             <md-input-container class="md-block" flex-gt-sm>
                                 <label>Mobile</label>
-                                <input readonly ng-model="hardwareUser.mobile">
+                                <input readonly ng-click="openTelefon(hardwareUser.mobile)" ng-model="hardwareUser.mobile">
                             </md-input-container>
                         </div>
                         <div layout-gt-sm="row" ng-if="false">
@@ -60,10 +60,24 @@
                             </md-input-container>
                         </div>
 
-                        <md-input-container class="md-block" >
-                            <label>Token</label>
-                            <input ng-model="hardwareUserDetails.token">
-                        </md-input-container>
+
+
+                        <div layout-gt-sm="row">
+                            <md-input-container class="md-block" >
+                                <label>Token</label>
+                                <input ng-model="hardwareUserDetails.token">
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Handy Pin</label>
+                                <input ng-model="hardwareUserDetails.token">
+                            </md-input-container>
+
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Handy Puk</label>
+                                <input ng-model="hardwareUserDetails.token">
+                            </md-input-container>
+                        </div>
 
                         <md-input-container class="md-block">
                             <label>Beschreibung</label>
@@ -110,12 +124,12 @@
                 <div layout-gt-sm="row">
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Telefon</label>
-                        <input readonly ng-model="hardwareOwner.telephoneNumber">
+                        <input readonly ng-click="openTelefon(hardwareUser.telephoneNumber)" ng-model="hardwareOwner.telephoneNumber">
                     </md-input-container>
 
                     <md-input-container class="md-block" flex-gt-sm>
                         <label>Mobile</label>
-                        <input readonly ng-model="hardwareOwner.mobile">
+                        <input readonly g-click="openTelefon(hardwareOwner.mobile)" ng-model="hardwareOwner.mobile">
                     </md-input-container>
                 </div>
                 <div layout-gt-sm="row" ng-if="false">
@@ -183,23 +197,20 @@
                     </md-input-container>
                 </div>
 
+                <div layout-gt-sm="row">
+                    <md-input-container flex class="md-block" flex-gt-sm>
+                        <label>Verschluesselung Name</label>
+                        <input ng-model="hardwareInformation.encodingname">
+                    </md-input-container>
+
+                    <md-input-container flex class="md-block" flex-gt-sm>
+                        <label>Verschluesselung Key</label>
+                        <input ng-model="hardwareInformation.encodingkey">
+                    </md-input-container>
+                </div>
+
              </div>
             </md-tab>
-
-              <md-tab label="Verschluesselung">
-                  <div layout-gt-sm="row" layout-align="space-between center">
-                      <md-input-container flex-gt-sm>
-                          <label>Verschluesselung Name</label>
-                          <input ng-model="hardwareInformation.encodingname">
-                      </md-input-container>
-                  </div>
-                  <div layout-gt-sm="row" layout-align="space-between center">
-                      <md-input-container flex-gt-sm>
-                          <label>Verschl�sselung Key</label>
-                          <input ng-model="hardwareInformation.encodingkey">
-                      </md-input-container>
-                  </div>
-              </md-tab>
 
             <md-tab ng-if="showLizenzDetails" label="Lizenzen">
         
@@ -213,51 +224,72 @@
                 </div>
                 
                 <div style="padding:5px" layout-gt-sm="row" layout-align="space-between center">
-            			<md-input-container style="width: 90%">
+            			<md-input-container style="width: 80%">
                 		 <label>Lizenz</label>
                 		  <md-select ng-Model="selectedHardwareNewLizenz" >
                     		<md-option ng-repeat="lizenz in lizenzenFrei" value="{{ lizenz }}">{{lizenz.name }}</md-option>
                 		  </md-select>
             			</md-input-container>
-            			<md-button class="md-icon-button" ng-click="addLizenzToHardware(selectedHardwareNewLizenz, hardwareInformation,hardwareLizenzen, lizenzenFrei)">
-                           <img src="/NetView/static/img/add.png" width="25px" height="25px" style="vertical-align:middle;margin-right:5px"></img> 
+            			<md-button class="md-raised" md-colors="{color: 'green'}" ng-click="addLizenzToHardware(selectedHardwareNewLizenz, hardwareInformation,hardwareLizenzen, lizenzenFrei)">
+                           Hinzufügen
                         </md-button>
-
         		</div>
-            	<div style="padding:10px">
-                <div class="ng-scope layout-row " style="padding-left:10px">
-                    <div flex="30 " class="flex ">Name</div>
-                    <div class="flex ">Key</div>
+
+                <div  class="virtualRepeatdemoDeferredLoading">
+                        <md-virtual-repeat-container id="vertical-container">
+                            <div md-virtual-repeat="item in ctrl.dynamicItemsLizenzHardware" md-on-demand="" class="repeated-item">
+                                <div layout-gt-sm="row">
+                                    <div flex>{{item.name}}</div>
+                                    <div flex="none" layout="column">
+                                        <md-button  class="md-icon-button" ng-click="delHardwareLizenz(lizenz, hardwareInformation)" >
+                                            <img width="10px" heigth="10px" src="/NetView/static/img/papierkorb.png"></md-icon>
+                                        </md-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </md-virtual-repeat-container>
                 </div>
-                <hr />
-                <md-list ng-controller="ListCtrl" ng-cloak>
-                		<md-list-item ng-repeat="lizenz in hardwareLizenzen" class="md-1-line">                	 
-                    	  <div flex="30" class="md-list-item-text" layout="column">
-                          {{ lizenz.name }}
+              </md-tab>
+              <md-tab label="Changelog">
+                  <div style="padding-top:10px">
+                          <div  class="virtualRepeatdemoDeferredLoading">
+                              <md-content layout="column">
+                                  <md-virtual-repeat-container id="vertical-container">
+                                      <div md-virtual-repeat="item in ctrl.dynamicItemsChangelogHardware" md-on-demand="" ng-click="showHardwareChangelog(item)" class="repeated-item" flex="">
+                                          <div layout-gt-sm="row">
+                                              <div flex=30>{{item.date}}</div>
+                                              <div flex=40>{{item.title}}</div>
+                                              <div flex=30>{{item.username}}</div>
+                                          </div>
+                                      </div>
+                                  </md-virtual-repeat-container>
+                              </md-content>
                           </div>
-                          <div flex="60" class="md-list-item-text flex" layout="column">
-                           {{ lizenz.key }}
-                          </div> 
-                          <div flex="10" class="md-list-item-text" layout="column">
-                     		<md-button  class="md-icon-button" ng-click="delHardwareLizenz(lizenz, hardwareInformation)" >
-								<img width="15px" heigth="15px" src="/NetView/static/img/papierkorb.png"></md-icon>
-					 		</md-button>
-                    	</div>                          
-                  </md-list-item>
-            	</md-list>
-            	</div>
-        </md-tab>
 
-
-            
+                          <md-input-container ng-if="changelogHWView" class="md-block" flex-gt-sm>
+                              <label>Changelog</label>
+                              <textarea readonly ng-model="changelogHWData" rows="5" md-select-on-focus></textarea>
+                          </md-input-container>
+                  </div>
+              </md-tab>
+              <md-tab label="add Changelog">
+                  <div style="padding-top:10px" layout-gt-sm="row" >
+                      <md-input-container class="md-block" flex-gt-sm>
+                          <label>Titel</label>
+                          <input ng-model="changelogInformation.title">
+                      </md-input-container>
+                      <div>
+                          <md-button class="md-raised" md-colors="{color: 'green'}" ng-click="addChangelogHardware(hardwareInformation)">Speichern</md-button>
+                      </div>
+                  </div>
+                  <md-input-container class="md-block" flex-gt-sm>
+                      <label>Changelog</label>
+                      <textarea ng-model="changelogInformation.changelog" rows="5" md-select-on-focus></textarea>
+                  </md-input-container>
+              </md-tab>
           </md-tabs>
-          
         </md-tab>
 
-        
-
-        
-        
         <md-tab ng-if="showHardwareOwner" label="Hardware Owner">
 
             <div style="background: white;padding: 10px">
@@ -281,7 +313,6 @@
                                 <input readonly ng-model="hardwareOwner.sn">
                             </md-input-container>
                         </div>
-
                         <div layout-gt-sm="row">
                             <md-input-container flex="70" class="md-block" flex-gt-sm>
                                 <label>CPU</label>
@@ -293,7 +324,6 @@
                                 <input readonly ng-model="hardwareOwner.ram">
                             </md-input-container>
                         </div>
-
                         <div layout-gt-sm="row">
                             <md-input-container flex="50" class="md-block" flex-gt-sm>
                                 <label>Aktiver User</label>
@@ -305,30 +335,59 @@
                                 <input readonly ng-model="hardwareOwner.bs">
                             </md-input-container>
                         </div>
-                    </md-tab>
-                    <md-tab label="Verschluesselung">
-                        <div layout-gt-sm="row" layout-align="space-between center">
-                            <md-input-container flex-gt-sm>
+                        <div layout-gt-sm="row">
+                            <md-input-container flex class="md-block" flex-gt-sm>
                                 <label>Verschluesselung Name</label>
                                 <input ng-model="hardwareOwner.encodingname">
                             </md-input-container>
-                        </div>
-                        <div layout-gt-sm="row" layout-align="space-between center">
-                            <md-input-container flex-gt-sm>
+
+                            <md-input-container flex class="md-block" flex-gt-sm>
                                 <label>Verschluesselung Key</label>
                                 <input ng-model="hardwareOwner.encodingkey">
                             </md-input-container>
                         </div>
                     </md-tab>
+                    <md-tab label="Changelog">
+                        <div style="padding-top:10px">
+                            <div  class="virtualRepeatdemoDeferredLoading">
+                                <md-content layout="column">
+                                    <md-virtual-repeat-container id="vertical-container">
+                                        <div md-virtual-repeat="item in ctrl.dynamicItemsChangelogHardwareOwner" md-on-demand="" ng-click="showHardwareOwnerChangelog(item)" class="repeated-item" flex="">
+                                            <div layout-gt-sm="row">
+                                                <div flex=30>{{item.date}}</div>
+                                                <div flex=40>{{item.title}}</div>
+                                                <div flex=30>{{item.username}}</div>
+                                            </div>
+                                        </div>
+                                    </md-virtual-repeat-container>
+                                </md-content>
+                            </div>
+
+                            <md-input-container ng-if="changelogHWView" class="md-block" flex-gt-sm>
+                                <label>Changelog</label>
+                                <textarea readonly ng-model="changelogHWData" rows="5" md-select-on-focus></textarea>
+                            </md-input-container>
+                        </div>
+                    </md-tab>
+                    <md-tab label="add Changelog">
+                        <div style="padding-top:10px" layout-gt-sm="row" >
+                            <md-input-container class="md-block" flex-gt-sm>
+                                <label>Titel</label>
+                                <input ng-model="changelogInformation.title">
+                            </md-input-container>
+                            <div>
+                                <md-button class="md-raised" ng-click="addChangelogHardware(hardwareOwner)">Speichern</md-button>
+                            </div>
+                        </div>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Changelog</label>
+                            <textarea ng-model="changelogInformation.changelog" rows="5" md-select-on-focus></textarea>
+                        </md-input-container>
+                    </md-tab>
                 </md-tabs>
-                
-
-
         </md-tab>
 
-
-
-        <md-tab ng-if="true" label="Mobile">
+        <md-tab ng-if="false" label="Mobile">
             <div style="background: white;">
                 
                  <md-input-container class="md-block" flex-gt-sm>
@@ -377,7 +436,7 @@
         
         <md-tab ng-if="false" label="Software">
           <md-tabs md-dynamic-height="" md-dynamic-width="" md-border-bottom="">
-           <md-tab ng-if="showHardwareViewOwner" label="Verf�gbar">
+           <md-tab ng-if="showHardwareViewOwner" label="Verfügbar">
            </md-tab>
            <md-tab ng-if="showHardwareViewOwner" label="in Arbeit">
            </md-tab>

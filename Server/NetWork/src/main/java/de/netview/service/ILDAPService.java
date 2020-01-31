@@ -3,19 +3,30 @@ package de.netview.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 
 import de.netview.data.ADUserData;
-import de.netview.data.ADUserUpdateData;
+import de.netview.data.WizardUser;
 import de.netview.data.LDAPUserData;
+import de.netview.model.LDAPGroup;
 import de.netview.model.LDAPUser;
-import de.netview.model.Systemuser;
 
 public interface ILDAPService {
 
     List getLDAPADUsers();
-    void createLDAPNewUser(ADUserUpdateData adUserUpdateData);
-    void updateLDAPUser(ADUserUpdateData adUserUpdateData) throws Exception;
+
+    List<LDAPGroup> getLDAPGroups();
+
+    boolean tryConnectionToLDAP();
+
+    void addUserToGroup(String userDn, String groupDn) throws NamingException;
+
+    List<String> getLDAPUserGroups(String username);
+    List<String> getLDAPUserGroupsWithPath(String username, Boolean withAllPath);
+
+    void createLDAPNewUser(WizardUser wizardUser);
+    void updateLDAPUser(WizardUser wizardUser) throws Exception;
     void updateLDAPUserPassword(String username, String password);
     Attributes getLDAPUserAttributes(String username);
 	ADUserData getLDAPUserByName(String name);

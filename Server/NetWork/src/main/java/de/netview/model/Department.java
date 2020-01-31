@@ -1,13 +1,11 @@
 package de.netview.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "DEPARTMENT")
@@ -21,11 +19,16 @@ public class Department implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique = true, nullable = false, precision = 10)
-	public Long did;
-	public String displayname;
-	public String name;
-	public String position;
-	
+	private Long did;
+	private String displayname;
+	private String name;
+	private String position;
+
+	@ManyToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY)
+	@JoinTable(name = "department_ldapgroup", joinColumns = { @JoinColumn(name = "did", nullable = false) }, inverseJoinColumns = {
+			@JoinColumn(name = "lgid", nullable = false) })
+	private List<LDAPGroup> groups = new ArrayList();
+
 	
 	public Long getDid() {
 		return did;
@@ -50,5 +53,29 @@ public class Department implements Serializable {
 	}
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+	public List<LDAPGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<LDAPGroup> groups) {
+		this.groups = groups;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Department that = (Department) o;
+		return Objects.equals(did, that.did) &&
+				Objects.equals(displayname, that.displayname) &&
+				Objects.equals(name, that.name) &&
+				Objects.equals(position, that.position);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(did, displayname, name, position);
 	}
 }

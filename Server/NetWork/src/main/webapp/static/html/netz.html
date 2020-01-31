@@ -18,15 +18,10 @@
                  <md-option ng-repeat="categorie in categorieList" value="{{ categorie.value }}">{{categorie.value }}
                  </md-option>
                 </md-select>
-             </md-input-container> 
-             
-             <md-input-container flex-gt-sm style="max-width:300px" ng-show="{{systemVerwaltung}}" >
-                <label>{{translation.default.location}}</label>
-                <md-select aria-label="ShowHideAccountant" ng-Model="showLocation" ng-change="setHardwarePage()">
-                 <md-option ng-repeat="location in LocationList" value="{{ location.lid }}">{{location.displayname }}
-                 </md-option>
-                </md-select>
-             </md-input-container> 
+             </md-input-container>
+
+
+
           </div>
           
            <div style="background:#084B8A;color:#ffffff;padding:5px;margin:0 0 15 0">
@@ -85,19 +80,21 @@
 							</md-icon> </md-button>
 						</div>
 					</div>
-                    <div flex="none" style="font-size: 14px">
+                    <div flex="none" ng-if="hardwareLager" style="font-size: 14px">
 						<div class="md-list-item-text" layout="column">
-							<md-button class="md-icon-button" ng-click="delHardware(hw)">
-								<img width="15px" heigth="15px"	src="/NetView/static/img/papierkorb.png"> </md-icon> 
+							<md-button class="md-icon-button" ng-click="archivHardware(hw)">
+								<img width="20px" heigth="20px"	src="/NetView/static/img/archiv.png"> </md-icon>
 							</md-button>
 						</div>
 					</div>
+                    <div flex="none" ng-if="hardwareLager" style="font-size: 14px">
+                        <div class="md-list-item-text" layout="column">
+                            <md-button class="md-icon-button" ng-click="delHardware(hw)">
+                                <img width="15px" heigth="15px"	src="/NetView/static/img/papierkorb.png"> </md-icon>
+                            </md-button>
+                        </div>
+                    </div>
                 </md-list-item>
             </md-list>
-            
-            
-            
-           
-		
-	</div>
+	    </div>
     </md-content>

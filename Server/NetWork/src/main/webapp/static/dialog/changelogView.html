@@ -1,0 +1,24 @@
+<md-input-container  class="md-block" flex-gt-sm>
+    <label>Datum</label>
+    <md-datepicker ng-model="changelogView.date" aria-label="Enter date"></md-datepicker>
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Titel</label>
+    <input readonly ng-model="changelogView.title">
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Username</label>
+    <input readonly ng-model="changelogView.username">
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Hardware / Hostname</label>
+    <input readonly ng-model="changelogView.system">
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Changelog</label>
+    <textarea readonly ng-model="changelogView.changelog" rows="5" md-select-on-focus></textarea>
+</md-input-container>

@@ -1,21 +1,23 @@
 package de.netview.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "SYSTEMUSER")
-public class Systemuser {
+public class Systemuser implements Serializable {
 
 
     private Long uid;
     private String username;
+    private String email;
     private String password;
 
     @Id
-    @GeneratedValue
-    @Column(name = "uid", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(unique = true, nullable = false, precision = 10)
     public Long getUid() {
         return uid;
     }
@@ -38,5 +40,13 @@ public class Systemuser {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

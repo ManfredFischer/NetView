@@ -39,10 +39,12 @@
   <div layout-gt-sm="row" layout-align="space-between center">
    <div flex></div>
    <md-button class="md-raised" ng-click="cancel()" style="height:20px" md-colors="{color: 'red'}">Nein</md-button>
-   <md-button class="md-raised" ng-click="deleteHardwareDialog()" style="height:20px" md-colors="{color: 'green'}">Ja</md-button>
+   <md-button class="md-raised" ng-click="deleteHardwareDialog()" ng-if="configMessageDialog.hardwareDelete" style="height:20px" md-colors="{color: 'green'}">Ja</md-button>
+   <md-button class="md-raised" ng-click="archivHardwareDialog()" ng-if="configMessageDialog.hardwareArchiv" style="height:20px" md-colors="{color: 'green'}">Ja</md-button>
   </div>               
   
  </div>
+
  
 </div>
 </div>

@@ -19,7 +19,7 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 
 	@Override
 	public Hardware getHardwareByName(String hostname) {
-		return  (Hardware) getSession().createQuery("from Hardware where hostname = :hostname").setParameter("hostname", hostname).uniqueResult();	
+		return  (Hardware) getSession().createQuery("from Hardware where UPPER(hostname) = UPPER(:hostname)").setParameter("hostname", hostname).uniqueResult();
 	}
 	
 	@Override
@@ -34,6 +34,17 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 		}
 		return getSession().createQuery("from Hardware where categorie != 'Client'").list();
 	}
+
+	@Override
+	public Hardware getHardwareByOwnerLastLogin(String user) {
+		List hardwareList =  getSession().createQuery("from Hardware where UPPER(aktivusername) = UPPER(:user) ORDER BY lastlogin ASC").setParameter("user", user).list();
+		if (hardwareList == null || hardwareList.isEmpty()){
+			return null;
+		}else{
+			return (Hardware) hardwareList.get(hardwareList.size()-1);
+		}
+
+	}
 	
 	@Override
 	public List<Hardware> getAllHardware() {
@@ -47,7 +58,7 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 
 	@Override
 	public Hardware getHardwareById(Long hid) {
-		return  (Hardware) getSession().createQuery("from Hardware where hid = :hid").setParameter("hid", hid).uniqueResult();	
+		return  (Hardware) getSession().createQuery("from Hardware where hid = :hid ").setParameter("hid", hid).uniqueResult();
 	}
 	
 	@Override

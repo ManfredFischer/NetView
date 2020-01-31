@@ -26,22 +26,12 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Systemuser systemuser = userService.getSystemuserByUsername(username);
-        System.out.println("Systemuser : "+ systemuser);
+
         if(systemuser == null){
-            System.out.println("Systemuser not found");
             throw new UsernameNotFoundException("Username not found");
         }
         return new UserDetailsImpl(systemuser);
     }
 
-
-    private List<GrantedAuthority> getGrantedAuthorities(Systemuser systemuser){
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-        /*for(Profile profile : systemuser.getProfiles()){
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+profile.getName()));
-        }*/
-        return authorities;
-    }
 
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.netview.model.Changelog;
 import de.netview.model.Hardware;
 import de.netview.model.Lizenz;
 import de.netview.model.Software;
@@ -30,6 +31,7 @@ public class HardwareData implements Serializable {
 	private String cpu;
 	private String ram;
 	private String sn;
+	private Integer status;
 	private String categorie;
 	private int location;
 	private String department;
@@ -37,8 +39,18 @@ public class HardwareData implements Serializable {
 	private String encodingname;
 	private List<LizenzData> lizenz = new ArrayList<LizenzData>();
 	private List<SoftwareData> software = new ArrayList<SoftwareData>();
+	private List<Changelog> changelogList = new ArrayList<Changelog>();
 	private ADUserData ownerInformation;
 	private ADUserData inUseInformation;
+
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 	
 	public HardwareData() {
 		super();
@@ -48,6 +60,14 @@ public class HardwareData implements Serializable {
 		super();
 		this.ownerInformation = ownerInformation;
 		this.inUseInformation = inUseInformation;
+	}
+
+	public List<Changelog> getChangelogList() {
+		return changelogList;
+	}
+
+	public void setChangelogList(List<Changelog> changelogList) {
+		this.changelogList = changelogList;
 	}
 
 	public String getOwner() {

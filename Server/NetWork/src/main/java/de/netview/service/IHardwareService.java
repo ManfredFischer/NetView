@@ -6,7 +6,8 @@ import java.util.Map;
 import de.netview.data.HardwareData;
 import de.netview.data.HardwareInformation;
 import de.netview.model.Hardware;
-import de.netview.model.Lizenz;
+
+import javax.transaction.Transactional;
 
 public interface IHardwareService {
 
@@ -28,11 +29,15 @@ public interface IHardwareService {
 
 	HardwareData getHardwareDataById(long hid);
 
-	Hardware getHardwareByOwner(String owner);
+    @Transactional
+    abstract Hardware getHardwareByOwner(String owner);
 
 	void saveHardware(Hardware hardware);
 
-	List<Hardware> getAllHardware();
+    @Transactional
+    String getHostnameByOwnerLastLogin(String owner);
+
+    List<Hardware> getAllHardware();
 
 	List<Hardware> getHardwareByOwnerList(String owner);
 
@@ -41,5 +46,7 @@ public interface IHardwareService {
 	Hardware getHardwareById(long hid);
 
 	void changeHardwareOwner(Map value);
+
+	Hardware archivHardware(long hid);
 
 }

@@ -95,4 +95,11 @@
         </insert>
     </changeSet>
 
+    <changeSet id="100" author="mafischer">
+        <insert tableName="LOCATION">
+            <column name="lid" value="8" />
+            <column name="displayname" value="Lager" />
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>
