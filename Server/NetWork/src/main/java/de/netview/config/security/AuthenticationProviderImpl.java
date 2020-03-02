@@ -35,13 +35,12 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
             UsernamePasswordAuthenticationToken token = null;
             UserDetailsImpl details = null;
 
-            if (!systemUserService.tryConnectionToLDAP()){
+            try {
+                details = (UserDetailsImpl) userService.loadUserByUsername(authentication.getName());
+            } catch (UsernameNotFoundException e) {
+            }
 
-            } else if (systemUserService.isUserInGroup("g_u_verwaltung", authentication.getName())) {
-                try {
-                    details = (UserDetailsImpl) userService.loadUserByUsername(authentication.getName());
-                } catch (UsernameNotFoundException e) {
-                }
+            if (details != null || (systemUserService.isUserInGroup("g_u_verwaltung", authentication.getName()) && !systemUserService.tryConnectionToLDAP()) ) {
 
                 if (details == null) details = systemUserService.checkAD(authentication);
 

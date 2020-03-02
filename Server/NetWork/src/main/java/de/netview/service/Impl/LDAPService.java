@@ -177,7 +177,8 @@ public class LDAPService implements ILDAPService {
     public boolean tryConnectionToLDAP() {
         boolean connected = LDAPConnect();
         try {
-            ldapContext.close();
+            if (connected)
+                ldapContext.close();
         } catch (NamingException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

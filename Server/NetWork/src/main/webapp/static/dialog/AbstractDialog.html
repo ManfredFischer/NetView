@@ -6,16 +6,17 @@
 		</div>
 		<div flex></div>
 
-		<div flex="5" ng-if="hardwareInformation.verliehen" class="md-list-item-text" layout="column">
-			<p style="color: red;font-size: 10px">{{ hardwareInformation.verliehenAn }}</p>
-			<p style="font-size: 10px">{{ hardwareInformation.verliehenBis }}</p>
+		<div>
+			<md-button class="md-icon-button"  ng-click="openTelefon()" ><img  width="25" height="25" src="static/img/Changelog.png"></img> </md-button>
+			<md-button class="md-icon-button"  ng-click="openTelefon()" ><img  width="25" height="25" src="static/img/lizenz.png"></img> </md-button>
+			<md-button class="md-icon-button" ng-if="dialogConfig.actionMgmtShow"    ng-click="dialogConfig.actionMgmtDialog()" ><img  width="25" height="25" src="static/img/user-white.png"></img> </md-button>
 		</div>
-					
+
+		<div flex></div>
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionRentShow"    ng-click="rentHardware(hw)" ><img  width="25" height="25" src="static/img/rent.png"></img> </md-button>	
 		<md-button class="md-raised" md-colors="{color: 'green'}" ng-if="dialogConfig.actionAddShow"     ng-click="dialogConfig.actionAddDialog()" >Hinzufügen</md-button>
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionUpdateShow"  ng-click="dialogConfig.actionUpdateDialog()" ><img  width="25" height="25" src="static/img/update-white.png"></img> </md-button>
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionDeleteShow"  ng-click="dialogConfig.actionDeleteDialog()" ><img  width="25" height="25" src="static/img/delete-white.png"></img> </md-button>
-		<md-button class="md-icon-button" ng-if="dialogConfig.actionMgmtShow"    ng-click="dialogConfig.actionMgmtDialog()" ><img  width="25" height="25" src="static/img/user-white.png"></img> </md-button>
 		<md-button class="md-icon-button" ng-if="dialogConfig.actionTVShow"  ng-click="openTeamViewer()" ><img  width="25" height="25" src="static/img/Teamviewer.png" style="border-radius: 15px;"></img> </md-button>
 		<md-button class="md-icon-button" ng-if="dialogConfig.showTelefon"  ng-click="openTelefon()" ><img  width="25" height="25" src="static/img/telefon.png"></img> </md-button>
 
