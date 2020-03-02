@@ -1,5 +1,5 @@
 <md-content >
-<div class="page">
+<div class="page" ng-controller="mainClients as ctrl">
 
 	<div layout-gt-sm="row" class="mainPage"
 		layout-align="space-between center">
@@ -47,7 +47,7 @@
 
 	<md-list ng-cloak>
 	 <md-list-item
-		ng-repeat="hw in ctrl.getNetzwerkClients('client')"
+		ng-repeat="hw in ctrl.getClientsHardware('client')"
 		ng-click="showHardwareInformation(hw.hid,false)" class="md-2-line">
 
 	  <div flex="100" layout="row" layout-wrap>

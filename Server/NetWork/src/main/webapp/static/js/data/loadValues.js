@@ -163,11 +163,27 @@ app.service('data', function($http) {
 			url: 'hardware'
 		}).then(function successCallback(response) {
 			response.config.scope.hardware = [];
-				response.data.forEach(function (data) {
-					response.config.scope.hardware.push(data);
-				});
-				
-				response.config.scope.setHardwareViewPages(response.data);
+			response.data.forEach(function (data) {
+				response.config.scope.hardware.push(data);
+			});
+
+			response.config.scope.setHardwareViewPages(response.data);
+		});
+	};
+
+	this.loadClients = function($hardware, categorie){
+		$http({
+			method: 'GET',
+			hardware: $hardware,
+			params : {
+				"categorie" : categorie
+			},
+			url: 'hardware'
+		}).then(function successCallback(response) {
+			response.config.hardware = [];
+			response.data.forEach(function (data) {
+				response.config.hardware.push(data);
+			});
 		});
 	};
     

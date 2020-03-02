@@ -31,6 +31,7 @@
     <script type="text/javascript" src="<c:url value='/static/js/directive/view.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/directive/wizard.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/main.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/static/js/controller/clientsHardware.js' />"></script>
 
     <md-toolbar style="background-color: transparent;">
         <div my-menue></div>
