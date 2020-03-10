@@ -70,40 +70,45 @@ public class LDAPService implements ILDAPService {
     @Override
     public List getLDAPADUsers() {
 
-        List<ADUserData> result = new ArrayList<>();
-        try {
-            ArrayList<ADUserData> ADUserDataList = (ArrayList<ADUserData>) getLDAPUserByFilter("(objectClass=*)");
-            ArrayList<Location> LocationList = (ArrayList<Location>) locationService.getLocation();
-            ArrayList<HardwareInformation> hardwareList = (ArrayList<HardwareInformation>) hardwareService.getAllHardware("clients");
+        if (AllInformation.getADUsers().isEmpty()) {
+            List<ADUserData> result = new ArrayList<>();
+            try {
+                ArrayList<ADUserData> ADUserDataList = (ArrayList<ADUserData>) getLDAPUserByFilter("(objectClass=*)");
+                ArrayList<Location> LocationList = (ArrayList<Location>) locationService.getLocation();
+                ArrayList<HardwareInformation> hardwareList = (ArrayList<HardwareInformation>) hardwareService.getAllHardware("clients");
 
-            for (ADUserData aDUserdata : ADUserDataList) {
-                for (Location location : LocationList) {
-                    if (!StringUtils.isEmpty(location.getCity()) && !StringUtils.isEmpty(location.getStreet())) {
-                        if (location.getCity().equals(aDUserdata.getCity())
-                                && location.getStreet().equals(aDUserdata.getStreetAddress())) {
-                            aDUserdata.setLid(location.getLid());
+                for (ADUserData aDUserdata : ADUserDataList) {
+                    for (Location location : LocationList) {
+                        if (!StringUtils.isEmpty(location.getCity()) && !StringUtils.isEmpty(location.getStreet())) {
+                            if (location.getCity().equals(aDUserdata.getCity())
+                                    && location.getStreet().equals(aDUserdata.getStreetAddress())) {
+                                aDUserdata.setLid(location.getLid());
+                                break;
+                            }
+                        }
+                    }
+
+                    for (HardwareInformation hardware : hardwareList) {
+                        if (hardware.getOwner() != null && hardware.getOwner().equalsIgnoreCase(aDUserdata.getFirstname() + "." + aDUserdata.getLastname())) {
+                            aDUserdata.setHardware(hardware);
                             break;
                         }
                     }
+
+                    result.add(aDUserdata);
                 }
 
-                for (HardwareInformation hardware : hardwareList) {
-                    if (hardware.getOwner() != null && hardware.getOwner().equalsIgnoreCase(aDUserdata.getFirstname() + "." + aDUserdata.getLastname())) {
-                        aDUserdata.setHardware(hardware);
-                        break;
-                    }
-                }
 
-                result.add(aDUserdata);
+            } catch (Exception e) {
+                System.out.printf(e.getMessage());
             }
 
 
-        } catch (Exception e) {
-            System.out.printf(e.getMessage());
+            AllInformation.setADUsers(result);
+
         }
 
-
-        return result;
+        return AllInformation.getADUsers();
     }
 
     @Override

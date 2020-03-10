@@ -222,18 +222,6 @@
                         </md-select>
                     </md-input-container>
                 </div>
-                
-                <div style="padding:5px" layout-gt-sm="row" layout-align="space-between center">
-            			<md-input-container style="width: 80%">
-                		 <label>Lizenz</label>
-                		  <md-select ng-Model="selectedHardwareNewLizenz" >
-                    		<md-option ng-repeat="lizenz in lizenzenFrei" value="{{ lizenz }}">{{lizenz.name }}</md-option>
-                		  </md-select>
-            			</md-input-container>
-            			<md-button class="md-raised" md-colors="{color: 'green'}" ng-click="addLizenzToHardware(selectedHardwareNewLizenz, hardwareInformation,hardwareLizenzen, lizenzenFrei)">
-                           Hinzufügen
-                        </md-button>
-        		</div>
 
                 <div  class="virtualRepeatdemoDeferredLoading">
                         <md-virtual-repeat-container id="vertical-container">
@@ -271,21 +259,6 @@
                               <textarea readonly ng-model="changelogHWData" rows="5" md-select-on-focus></textarea>
                           </md-input-container>
                   </div>
-              </md-tab>
-              <md-tab label="add Changelog">
-                  <div style="padding-top:10px" layout-gt-sm="row" >
-                      <md-input-container class="md-block" flex-gt-sm>
-                          <label>Titel</label>
-                          <input ng-model="changelogInformation.title">
-                      </md-input-container>
-                      <div>
-                          <md-button class="md-raised" md-colors="{color: 'green'}" ng-click="addChangelogHardware(hardwareInformation)">Speichern</md-button>
-                      </div>
-                  </div>
-                  <md-input-container class="md-block" flex-gt-sm>
-                      <label>Changelog</label>
-                      <textarea ng-model="changelogInformation.changelog" rows="5" md-select-on-focus></textarea>
-                  </md-input-container>
               </md-tab>
           </md-tabs>
         </md-tab>
@@ -368,21 +341,6 @@
                                 <textarea readonly ng-model="changelogHWData" rows="5" md-select-on-focus></textarea>
                             </md-input-container>
                         </div>
-                    </md-tab>
-                    <md-tab label="add Changelog">
-                        <div style="padding-top:10px" layout-gt-sm="row" >
-                            <md-input-container class="md-block" flex-gt-sm>
-                                <label>Titel</label>
-                                <input ng-model="changelogInformation.title">
-                            </md-input-container>
-                            <div>
-                                <md-button class="md-raised" ng-click="addChangelogHardware(hardwareOwner)">Speichern</md-button>
-                            </div>
-                        </div>
-                        <md-input-container class="md-block" flex-gt-sm>
-                            <label>Changelog</label>
-                            <textarea ng-model="changelogInformation.changelog" rows="5" md-select-on-focus></textarea>
-                        </md-input-container>
                     </md-tab>
                 </md-tabs>
         </md-tab>

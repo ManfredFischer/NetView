@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import de.netview.data.AllInformation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,15 +65,17 @@ public class LizenzService implements ILizenzService {
     @Override
     @Transactional
     public List<LizenzInformation> getLizenz(String state) {
-        List<LizenzInformation> result = new ArrayList<>();
+        if (AllInformation.getLizenz().isEmpty()) {
+            List result = new ArrayList<>();
 
-        List<Lizenz> lizenzen = lizenzDao.getLizenz(state);
-        checkLizenz(lizenzen);
-        for (Lizenz lizenz : lizenzen) {
-            result.add(new LizenzInformation(lizenz));
+            List<Lizenz> lizenzen = lizenzDao.getLizenz(state);
+            checkLizenz(lizenzen);
+            for (Lizenz lizenz : lizenzen) {
+                result.add(new LizenzInformation(lizenz));
+            }
+            AllInformation.setLizenz(result);
         }
-
-        return result;
+        return AllInformation.getLizenz();
     }
 
     public void checkLizenz(List<Lizenz> lizenzen) {

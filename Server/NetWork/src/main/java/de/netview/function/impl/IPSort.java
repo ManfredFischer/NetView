@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import de.netview.data.HardwareInformation;
 import de.netview.function.IIPSort;
 
-@Service
-public class IPSort implements IIPSort {
 
-	@Override
-	public List<HardwareInformation> sortHardware(ArrayList<HardwareInformation> hardwareInformationList) {
+public class IPSort{
+
+
+	public static List<HardwareInformation> sortHardware(List<HardwareInformation> hardwareInformationList) {
 		ArrayList<HardwareInformation> result = new ArrayList<HardwareInformation>();
 		ArrayList<String> ips = new ArrayList<String>();
 		ArrayList<HardwareInformation> dontCheck = new ArrayList<HardwareInformation>();
@@ -58,7 +58,7 @@ public class IPSort implements IIPSort {
 		return result;
 	}
 
-	private ArrayList<String> sort32BitIPs(ArrayList<String> bit32) {
+	private static ArrayList<String> sort32BitIPs(ArrayList<String> bit32) {
 		ArrayList<String> newBit32 = new ArrayList<String>();
 		ArrayList<BigInteger> bigInt32Bit = new ArrayList<BigInteger>();
 
@@ -150,7 +150,7 @@ public class IPSort implements IIPSort {
 		return newBit32;
 	}
 
-	private BigInteger convert32Bit(String[] array) {
+	private static BigInteger convert32Bit(String[] array) {
 		int[] tempArray = new int[array.length];
 		ArrayList<BigInteger> tempBigIntList = new ArrayList<BigInteger>();
 		int i = 0;

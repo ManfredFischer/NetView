@@ -18,7 +18,7 @@
 
 <form action="login" method="post">
     <div class="page">
-        <md-card md-theme-watch style="padding: 10px">
+        <md-card md-theme-watch style="padding: 10px;background-color:#FCFCFC;border-radius: 10px">
             <md-card-actions layout="row" layout-align="end center">
                 <div layout-gt-sm="column">
                     <input type="text" required name="username" class="css-input" ng-model="username"

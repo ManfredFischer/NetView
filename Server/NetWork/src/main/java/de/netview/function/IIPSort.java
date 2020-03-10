@@ -6,5 +6,5 @@ import java.util.List;
 import de.netview.data.HardwareInformation;
 
 public interface IIPSort {
-		List<HardwareInformation> sortHardware(ArrayList<HardwareInformation> hardwareInformationList);
+		List<HardwareInformation> sortHardware(List<HardwareInformation> hardwareInformationList);
 }

@@ -1,29 +1,29 @@
-app.service('data', function($http) {
+app.service('data', function($http,initService) {
+	this.initService = initService;
+	this.clientsHardware = {
+		lastUpdate : '',
+		result : []
+	};
+
     this.loadLocation = function ($scope) {
     	$http({
 			method: 'GET',
 			scope: $scope,
+			this : this,
 			url: 'location'
 		}).then(function successCallback(response) {
-				response.data.forEach(function (data) {
-					response.config.scope.LocationList.push(data);
-				});
-			},
-			// @ts-ignore
-			function errorCallback(response) {
-				$mdDialog.show($mdDialog.alert()
-					.title('Fehler').textContent(
-						'Fehler beim Laden der Daten')
-					.ariaLabel('Error').ok('OK')
-					.targetEvent(event));
-			}
+			response.data.forEach(function (data) {
+				response.config.scope.LocationList.push(data);
+			});
+			response.config.this.initService.finishTransaction("location",response);
+		 }
 		);
-    }
+    };
     this.loadUser = function ($scope) {
 		$http({
 			method: 'GET',
 			scope: $scope,
-			sync: false,
+			this : this,
 			url: 'ldap/user'
 		}).then(
 			function successCallback(response) {
@@ -33,61 +33,19 @@ app.service('data', function($http) {
 					} else {
 						data.lid = 1;
 					}
-					data.img = 'static/img/Mitarbeiter/' + data.firstname + ' ' + data.lastname + '.jpg'
 
 					response.config.scope.people.push(data);
 
 				});
+				response.config.this.initService.finishTransaction("users",response);
 			});
-    }
-    
-    this.loadContract = function ($scope) {
-		$http({
-			method: 'GET',
-			scope: $scope,
-			sync: false,
-			url: 'contract'
-		}).then(
-			function successCallback(response) {
-				response.data.forEach(function (data) {
-				  response.config.scope.contractList.push(data);
-				});
-			});
-    }
-    
-    this.loadHandyModel = function ($scope) {
-		$http({
-			method: 'GET',
-			scope: $scope,
-			sync: false,
-			url: 'handyModel'
-		}).then(
-			function successCallback(response) {
-				response.data.forEach(function (data) {
-					response.config.scope.handyModelList.push(data);
-				});
-			});
-    }
-
-	this.loadMobileUser = function ($scope) {
-		$http({
-			method: 'GET',
-			scope: $scope,
-			sync: false,
-			url: 'mobileUser'
-		}).then(
-			function successCallback(response) {
-				response.data.forEach(function (data) {
-					response.config.scope.mobileUserList.push(data);
-				});
-			});
-	};
+    };
 
 	this.loadChangelog = function ($scope) {
 		$http({
 			method: 'GET',
 			scope: $scope,
-			sync: false,
+			this : this,
 			url: 'changelog'
 		}).then(
 			function successCallback(response) {
@@ -96,13 +54,14 @@ app.service('data', function($http) {
 					data.date = dateInfo.getDay() +"."+dateInfo.getMonth()+"."+dateInfo.getFullYear()+" "+dateInfo.getHours()+":"+dateInfo.getSeconds();
 					response.config.scope.changelogList.push(data);
 				});
+				response.config.this.initService.finishTransaction("changelog",response);
 			});
 	}
-    
     this.loadLizenz = function($scope, $state){
 		$http({
 			method: 'GET',
 			scope: $scope,
+			this : this,
 			params : {
 				"state" : $state
 			},
@@ -131,34 +90,56 @@ app.service('data', function($http) {
 				});
 				
 				$scope.setLizenzViewPages(response.config.scope.lizenzen);
+				response.config.this.initService.finishTransaction("lizenz",response);
 			}
 		 );
 	}
-    
-    this.loadDepartment = function($scope){
-    	/*$http({
-			method: 'GET',
-			scope: $scope,
-			url: 'department'
-		}).then(function successCallback(response) {
-				response.config.scope.departmentList = [{
-					did : -1,
-					displayname : 'neue Abteilung'
-				}];
-				
+
+	this.loadHardware = function($scope, categorie){
+		if ($scope == undefined){
+			$http({
+				method: 'GET',
+				scope : this,
+				sync: false,
+				params : {
+					"categorie" : categorie
+				},
+				url: 'hardware'
+			}).then(function successCallback(response) {
 				response.data.forEach(function (data) {
-					response.config.scope.departmentList.push(data);
+					response.config.scope.clientsHardware.result.push(data);
+				});
+			});
+		}else {
+			if (this.clientsHardware.result.length != 0) {
+				$scope.hardware = this.clientsHardware.result;
+			} else {
+				$http({
+					method: 'GET',
+					scope: $scope,
+					params: {
+						"categorie": categorie
+					},
+					url: 'hardware'
+				}).then(function successCallback(response) {
+					response.config.scope.hardware = [];
+					response.data.forEach(function (data) {
+						response.config.scope.hardware.push(data);
+					});
+
+					response.config.scope.setHardwareViewPages(response.data);
 				});
 			}
-		);*/
-	}
-    
-    this.loadHardware = function($scope, categorie){
+		}
+	};
+
+	this.loadClientsHardware = function($scope){
 		$http({
 			method: 'GET',
 			scope: $scope,
+			this : this,
 			params : {
-				"categorie" : categorie
+				"categorie" : "clients"
 			},
 			url: 'hardware'
 		}).then(function successCallback(response) {
@@ -167,37 +148,27 @@ app.service('data', function($http) {
 				response.config.scope.hardware.push(data);
 			});
 
-			response.config.scope.setHardwareViewPages(response.data);
+			response.config.this.initService.finishTransaction("clientsHardware",response);
 		});
 	};
 
-	this.loadClients = function($hardware, categorie){
-		$http({
-			method: 'GET',
-			hardware: $hardware,
-			params : {
-				"categorie" : categorie
-			},
-			url: 'hardware'
-		}).then(function successCallback(response) {
-			response.config.hardware = [];
-			response.data.forEach(function (data) {
-				response.config.hardware.push(data);
-			});
-		});
-	};
-    
-    this.loadMobile = function($scope){
+	this.loadNetzHardware = function($scope){
 		$http({
 			method: 'GET',
 			scope: $scope,
-			url: 'mobile'
+			this : this,
+			params : {
+				"categorie" : "sonstiges"
+			},
+			url: 'hardware'
 		}).then(function successCallback(response) {
-				response.data.forEach(function (data) {
-					response.config.scope.mobile.push(data);
-				});
+			response.config.scope.hardware = [];
+			response.data.forEach(function (data) {
+				response.config.scope.hardware.push(data);
+			});
+
+			response.config.this.initService.finishTransaction("netzHardware",response);
 		});
-	}
-    
+	};
 	
 });

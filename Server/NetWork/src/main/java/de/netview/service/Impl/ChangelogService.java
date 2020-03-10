@@ -1,6 +1,7 @@
 package de.netview.service.Impl;
 
 import de.netview.dao.IChangelogDao;
+import de.netview.data.AllInformation;
 import de.netview.model.Changelog;
 import de.netview.model.Hardware;
 import de.netview.service.IChangelogService;
@@ -41,7 +42,10 @@ public class ChangelogService implements IChangelogService {
     @Override
     @Transactional
     public List<Changelog> getChangelogList() {
-        return changelogDao.getChangelogList();
+        if (AllInformation.getChangelog().isEmpty()){
+            AllInformation.setChangelog(changelogDao.getChangelogList());
+        }
+        return AllInformation.getChangelog();
     }
 
 

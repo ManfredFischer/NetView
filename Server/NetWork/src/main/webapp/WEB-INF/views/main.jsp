@@ -22,8 +22,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.8/angular-material.min.js"></script>
     <script type="text/javascript" src="<c:url value='/static/js/initial.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/data/loadValues.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/static/js/service/hardwareService.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/service/SoftwareService.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/static/js/service/HardwareService.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/service/UserService.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/directive/main.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/directive/dialog.js' />"></script>
@@ -31,9 +31,22 @@
     <script type="text/javascript" src="<c:url value='/static/js/directive/view.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/directive/wizard.js' />"></script>
     <script type="text/javascript" src="<c:url value='/static/js/main.js' />"></script>
-    <script type="text/javascript" src="<c:url value='/static/js/controller/clientsHardware.js' />"></script>
 
-    <md-toolbar style="background-color: transparent;">
+    <script type="text/javascript" src="<c:url value='/static/js/controller/clientsController.js' />"></script>
+    <script type="text/javascript" src="<c:url value='/static/js/controller/netzController.js' />"></script>
+
+    <div ng-show="ctrl.checkLoading.aktiv">
+        <br>
+        <div style="padding-left: 50px;position: absolute;top:50px;">
+            <img src="static/img/reservix-logo.png">
+        </div>
+
+        <div layout="row" layout-sm="column" layout-align="space-around" style="position: absolute;top:40%;vertical-align: center;width: 100%">
+            <md-progress-circular md-mode="indeterminate"></md-progress-circular>
+        </div>
+    </div>
+    <div ng-show="!ctrl.checkLoading.aktiv">
+      <md-toolbar style="background-color: transparent;">
         <div my-menue></div>
         <div layout-gt-sm="row" ng-show="showMainConfig.showLocation">
             <div flex-gt-sm></div>
@@ -43,23 +56,23 @@
                 </select>
             </div>
         </div>
-    </md-toolbar>
+      </md-toolbar>
 
-    <div style="padding-left: 50px;position: absolute">
-        <img src="static/img/reservix-logo.png">
+        <div style="padding-left: 50px;position: absolute">
+            <img src="static/img/reservix-logo.png">
+        </div>
+
+        <div ng-show="isLizenzVewaltungSelected" my-lizenz></div>
+        <div ng-show="isNetzwerkVewaltungSelected" my-hardware></div>
+        <div ng-show="isServerVerwaltungSelected" my-netz></div>
+        <div ng-show="isMobileVewaltungSelected" my-mobile></div>
+        <div ng-show="isSoftwareSelected" my-software></div>
+        <div ng-show="isUserVerwaltungSelected" my-userdetails></div>
+        <div ng-show="isSettingsSelected" my-settings></div>
+        <div ng-show="showMainConfig.showChangeLogView" my-changelogview></div>
+        <div ng-show="showMainConfig.showGoogle" my-overview></div>
+        <div ng-show="showMainConfig.showAddUserWizard" my-userwizard></div>
     </div>
-
-    <div ng-show="isLizenzVewaltungSelected" my-lizenz></div>
-    <div ng-show="isNetzwerkVewaltungSelected" my-hardware></div>
-    <div ng-show="isServerVerwaltungSelected" my-netz></div>
-    <div ng-show="isMobileVewaltungSelected" my-mobile></div>
-    <div ng-show="isSoftwareSelected" my-software></div>
-    <div ng-show="isUserVerwaltungSelected" my-userdetails></div>
-    <div ng-show="isSettingsSelected" my-settings></div>
-    <div ng-show="showMainConfig.showChangeLogView" my-changelogview></div>
-    <div ng-show="showMainConfig.showGoogle" my-overview></div>
-    <div ng-show="showMainConfig.showAddUserWizard" my-userwizard></div>
-
 </body>
 
 </html>

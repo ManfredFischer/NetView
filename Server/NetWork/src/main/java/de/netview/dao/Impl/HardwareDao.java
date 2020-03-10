@@ -2,6 +2,7 @@ package de.netview.dao.Impl;
 
 import java.util.List;
 
+import de.netview.data.AllInformation;
 import org.springframework.stereotype.Repository;
 
 import de.netview.dao.IHardwareDAO;
@@ -14,7 +15,13 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 
 	@Override
 	public void saveOrUpdateHardware(Hardware hardware) {
-		getSession().saveOrUpdate(hardware);		
+		getSession().saveOrUpdate(hardware);
+
+		if (hardware.getCategorie().equalsIgnoreCase("client")) {
+			AllInformation.addClientsHardwareInformation(hardware);
+		} else {
+			AllInformation.addNetzHardwareInformation(hardware);
+		}
 	}
 
 	@Override
