@@ -9,6 +9,7 @@ import de.netview.data.HardwareInformation;
 import de.netview.function.impl.IPSort;
 import de.netview.model.Hardware;
 import de.netview.model.Lizenz;
+import de.netview.model.Location;
 import de.netview.model.Software;
 import de.netview.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class HardwareService implements IHardwareService {
     private ISoftwareService softwareService;
 
     @Autowired
+    private ILocationService locationService;
+
+    @Autowired
     private IChangelogService changelogService;
 
     @Autowired
@@ -46,11 +50,10 @@ public class HardwareService implements IHardwareService {
     @Transactional
     @Override
     public Hardware insertHardware(Hardware hardware) {
-        SimpleDateFormat datum = new SimpleDateFormat();
-        datum.applyPattern("EEEE', 'dd. MMMM yyyy");
+        SimpleDateFormat lastLogin = new SimpleDateFormat();
+        lastLogin.applyPattern("EEEE', 'dd. MMMM yyyy");
 
-        hardware.setIcon("unbekannt.png");
-        hardware.setLastlogin(datum.format(new Date()));
+        hardware.setLastlogin(lastLogin.format(new Date()));
 
         if (!StringUtils.isEmpty(hardware.getAktivusername())) {
             ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
@@ -61,7 +64,6 @@ public class HardwareService implements IHardwareService {
         Hardware hardwareInfo = hardwareDao.getHardwareByName(hardware.getHostname());
 
         if (hardwareInfo != null) {
-
             readSoftware(hardware, hardwareInfo);
             readLizenz(hardware, hardwareInfo);
             cleanLizenz(hardware, hardwareInfo);
@@ -72,6 +74,26 @@ public class HardwareService implements IHardwareService {
             hardware.setHid(null);
             insertSoftware(hardware);
             insertLizenz(hardware);
+        }
+
+        if (!StringUtils.isEmpty(hardware.getOwner())){
+            ADUserData userData = ldapService.getLDAPUserByName(hardware.getOwner());
+            Location location = locationService.getLocationByCity(userData.getCity());
+            hardware.setLocation(location.getLid().intValue());
+            hardware.setStatus(1);
+        } else {
+            if (!StringUtils.isEmpty(hardware.getAktivusername())
+                    && !hardware.getAktivusername().startsWith("a_")
+                    && !hardware.getAktivusername().startsWith("admin")
+                    && !hardware.getAktivusername().startsWith("Admin")){
+                ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
+                Location location = locationService.getLocationByCity(userData.getCity());
+                hardware.setLocation(location.getLid().intValue());
+                hardware.setOwner(hardware.getAktivusername());
+                hardware.setStatus(1);
+            }else{
+                hardware.setStatus(2);
+            }
         }
 
         hardwareDao.saveOrUpdateHardware(hardware);

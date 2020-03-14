@@ -34,4 +34,16 @@ public class LocationDAO extends AbstractDao<Location> implements ILocationDAO{
         }
 	}
 
+	@Override
+	public Location getLocationByCity(String city) {
+		List<Location> locationList = getSession().createQuery("from Location where city = :city").setParameter("city", city).list();
+		if (locationList == null) {
+			return null;
+		} else {
+			if (locationList.isEmpty()) {
+				return null;
+			}
+			return locationList.get(0);
+		}
+	}
 }

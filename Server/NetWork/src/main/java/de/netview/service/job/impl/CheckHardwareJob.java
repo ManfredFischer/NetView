@@ -43,18 +43,14 @@ public class CheckHardwareJob extends AJob {
 		try {
             TransactionSynchronizationManager.bindResource(sessionFactory, new SessionHolder(session));
             
-            System.out.println("####### Start Check Hardware");
-            
+
             List<Hardware> hardwareList = hardwareService.getAllHardware();
             for (Hardware hardware : hardwareList) {
             	hardwareCheck.checkHostname(hardware);
             }
-            
-            System.out.println("####### End Check Hardware - Erfolgreich");
-            
+
 
         } catch (Exception error) {
-        	System.out.println("####### End Check Hardware - FEHLER");
         	error.printStackTrace();            
         } finally {
             session.close();

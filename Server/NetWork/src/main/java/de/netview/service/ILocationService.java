@@ -8,4 +8,5 @@ public interface ILocationService {
 
 	public List getLocation();
 	public Location getLocationById(Long lid);
+	Location getLocationByCity(String city);
 }

@@ -266,7 +266,7 @@ public class LDAPService implements ILDAPService {
             for (Map.Entry<String, String> attribute : dataMap.entrySet()) {
                 newAttributes.put(new BasicAttribute(attribute.getKey(), attribute.getValue()));
             }
-            newAttributes.put(new BasicAttribute("userPassword", "{MD5}" + SystemuserService.cryptWithMD5("Start123!")));
+            newAttributes.put(new BasicAttribute("userPassword", "{MD5}" + SystemUserService.cryptWithMD5("Start123!")));
             newAttributes.put(new BasicAttribute("userPrincipalName", username + "@reservix.de"));
             newAttributes.put(new BasicAttribute("cn", adUserUpdateData.getUser().getFirstname() + " " + adUserUpdateData.getUser().getLastname()));
             String userDN = "cn=" + adUserUpdateData.getUser().getFirstname() + " " + adUserUpdateData.getUser().getLastname() + ",OU=wizard," + USER_BASE_NAME;

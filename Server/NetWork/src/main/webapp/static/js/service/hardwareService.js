@@ -1,6 +1,25 @@
 app.service('hardwareService', function($http,data,initService) {
     this.initService = initService;
 
+    this.stateList = [
+        {
+            name : 'All',
+            value : 0
+        },{
+            name : 'Aktiv',
+            value : 1
+        },{
+            name : 'Prüfen',
+            value : 2
+        }, {
+            name : 'Lager',
+            value : 3
+        },{
+            name : 'Archiv',
+            value : 4
+        }
+    ];
+
     this.loadHardware = function(scope, categorie){
         $http({
             method: 'GET',
@@ -47,18 +66,6 @@ app.service('hardwareService', function($http,data,initService) {
                 }
             } else {
                 insert = true;
-            }
-
-            if (aktivStatus != 'All' && insert) {
-                if ((hardwareList[i].icon.toLowerCase().indexOf('green') != -1) && ($scope.clientsActivValue == 'Aktiv')) {
-                    insert = true;
-                } else if ((hardwareList[i].icon.toLowerCase().indexOf('red') != -1) && ($scope.clientsActivValue == 'Inaktiv')) {
-                    insert = true;
-                } else if ((hardwareList[i].icon.toLowerCase().indexOf('blanko') != -1) && ($scope.clientsActivValue == 'Unbekannt')) {
-                    insert = true;
-                } else {
-                    insert = false;
-                }
             }
 
             if (insert) {

@@ -29,4 +29,9 @@ public class LocationService implements ILocationService {
 		return locationDAO.getLocationById(lid);
 	}
 
+	@Override
+	public Location getLocationByCity(String city) {
+		return locationDAO.getLocationByCity(city);
+	}
+
 }

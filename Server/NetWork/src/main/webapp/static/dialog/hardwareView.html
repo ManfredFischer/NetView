@@ -213,7 +213,6 @@
             </md-tab>
 
             <md-tab ng-if="showLizenzDetails" label="Lizenzen">
-        
         		<div layout-gt-sm="row" ng-if="showHardwareViewHardwareList">
                     <md-input-container style="width: 100%">
                         <label>Hardware</label>
@@ -222,7 +221,6 @@
                         </md-select>
                     </md-input-container>
                 </div>
-
                 <div  class="virtualRepeatdemoDeferredLoading">
                         <md-virtual-repeat-container id="vertical-container">
                             <div md-virtual-repeat="item in ctrl.dynamicItemsLizenzHardware" md-on-demand="" class="repeated-item">
@@ -258,6 +256,19 @@
                               <label>Changelog</label>
                               <textarea readonly ng-model="changelogHWData" rows="5" md-select-on-focus></textarea>
                           </md-input-container>
+                  </div>
+              </md-tab>
+              <md-tab label="Dokumente">
+                  <div  class="virtualRepeatdemoDeferredLoading">
+                      <md-content layout="column">
+                          <md-virtual-repeat-container id="vertical-container">
+                              <div md-virtual-repeat="item in ctrl.dynamicItemsChangelogHardware" md-on-demand="" ng-click="showHardwareChangelog(item)" class="repeated-item" flex="">
+                                  <div layout-gt-sm="row">
+                                      <div flex=30>{{item.date}}</div>
+                                  </div>
+                              </div>
+                          </md-virtual-repeat-container>
+                      </md-content>
                   </div>
               </md-tab>
           </md-tabs>

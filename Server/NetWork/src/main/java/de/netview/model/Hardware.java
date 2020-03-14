@@ -51,6 +51,10 @@ public class Hardware implements Serializable {
 	private String icon;
 	private Boolean verliehen;
 	private Long verliehenBis;
+	private Long receivedate;
+	private String bill;
+	private String deliverynote;
+	private String billnumber;
 	private List<Lizenz> lizenz = new ArrayList<Lizenz>();
 	private List<Software> software = new ArrayList<Software>();
 	private List<LDAPUser> LDAPUser = new ArrayList<LDAPUser>();
@@ -412,6 +416,35 @@ public class Hardware implements Serializable {
 		this.encodingname = encodingname;
 	}
 
-	
+	public Long getReceivedate() {
+		return receivedate;
+	}
 
+	public void setReceivedate(Long receivedate) {
+		this.receivedate = receivedate;
+	}
+
+	public String getBill() {
+		return bill;
+	}
+
+	public void setBill(String bill) {
+		this.bill = bill;
+	}
+
+	public String getDeliverynote() {
+		return deliverynote;
+	}
+
+	public void setDeliverynote(String deliverynote) {
+		this.deliverynote = deliverynote;
+	}
+
+	public String getBillnumber() {
+		return billnumber;
+	}
+
+	public void setBillnumber(String billnumber) {
+		this.billnumber = billnumber;
+	}
 }

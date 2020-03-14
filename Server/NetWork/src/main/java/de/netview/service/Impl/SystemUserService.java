@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class SystemuserService implements ISystemUserService {
+public class SystemUserService implements ISystemUserService {
 
     @Autowired
     private SystemuserDao userDao;

@@ -388,4 +388,13 @@
 		</createTable>
 	</changeSet>
 
+	<changeSet author="MaFischer" id="13">
+		<addColumn tableName="HARDWARE">
+			<column name="billnumber" type="VARCHAR(1020)"/>
+			<column name="receivedate" type="BIGINT"/>
+			<column name="bill" type="VARCHAR(1020)"/>
+			<column name="deliverynote" type="VARCHAR(1020)"/>
+		</addColumn>
+	</changeSet>
+
 </databaseChangeLog>

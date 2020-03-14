@@ -5,7 +5,7 @@
          <input flex-gt-sm class="css-input" placeholder="Search..." ng-model="searchHostServer" ng-change="setHardwarePage()">
 
          <md-input-container flex-gt-sm style="max-width:150px" ng-show="{{systemVerwaltung}}" >
-            <label>Aktiv</label>
+            <label>Status</label>
             <md-select aria-label="ShowHideAccountant" ng-Model="hardwareActivValue" ng-change="setHardwarePage()">
              <md-option ng-repeat="aktiv in aktivList" value="{{ aktiv.value }}">{{aktiv.value}}
              </md-option>
@@ -19,9 +19,6 @@
              </md-option>
             </md-select>
          </md-input-container>
-
-
-
       </div>
 
        <div style="background:#084B8A;color:#ffffff;padding:5px;margin:0 0 15 0">
@@ -48,9 +45,6 @@
 
         <md-list ng-cloak>
             <md-list-item ng-repeat="hw in ctrl.getNetzHardware()"  ng-click="showHardwareInformation(hw.hid,true)" class="md-1-line">
-                <div flex="none">
-                    <img width="25px" heigth="25px" src="static\img\{{hw.icon}}" style="margin-right:25px"></md-icon>
-                </div>
                 <div flex="15" class="md-list-item-text" layout="column">
                     {{ hw.hostname }}
                 </div>

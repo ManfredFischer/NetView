@@ -4,6 +4,12 @@ app.controller('clientsController', function ($scope, hardwareService) {
     hardwareService.loadHardware($scope,'clients');
     $scope.hardwareClientsPages = [];
 
+    $scope.stateListClients = hardwareService.stateList;
+    $scope.clientsState = {
+        name : 'All',
+        value : 0
+    };
+
     this.getClientsHardware = function(){
         var lowerCaseSearchHost = $scope.searchHostClient.toLowerCase();
         var filterHardware = hardwareService.filterHardware($scope,$scope.hardware,$scope.clientsLager, $scope.clientsActivValue)
