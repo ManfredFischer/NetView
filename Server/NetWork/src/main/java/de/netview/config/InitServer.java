@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Service
 public class InitServer {
 
     private SessionFactory sessionFactory;
