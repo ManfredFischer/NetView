@@ -23,6 +23,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static de.netview.data.enums.HardwareStatus.AKTIV;
+import static de.netview.data.enums.HardwareStatus.ARCHIV;
+
 @Service
 public class HardwareService implements IHardwareService {
 
@@ -59,6 +62,8 @@ public class HardwareService implements IHardwareService {
             ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
             hardware.setDepartment(userData.getDepartment());
             hardware.setAktivuserphone(userData.getTelephoneNumber());
+            Location location = locationService.getLocationByCity(userData.getCity());
+            hardware.setAktivlocation(location.getLid().intValue());
         }
 
         Hardware hardwareInfo = hardwareDao.getHardwareByName(hardware.getHostname());
@@ -79,8 +84,7 @@ public class HardwareService implements IHardwareService {
         if (!StringUtils.isEmpty(hardware.getOwner())){
             ADUserData userData = ldapService.getLDAPUserByName(hardware.getOwner());
             Location location = locationService.getLocationByCity(userData.getCity());
-            hardware.setLocation(location.getLid().intValue());
-            hardware.setStatus(1);
+            hardware.setOwnerlocation(location.getLid().intValue());
         } else {
             if (!StringUtils.isEmpty(hardware.getAktivusername())
                     && !hardware.getAktivusername().startsWith("a_")
@@ -88,13 +92,12 @@ public class HardwareService implements IHardwareService {
                     && !hardware.getAktivusername().startsWith("Admin")){
                 ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
                 Location location = locationService.getLocationByCity(userData.getCity());
-                hardware.setLocation(location.getLid().intValue());
+                hardware.setOwnerlocation(location.getLid().intValue());
                 hardware.setOwner(hardware.getAktivusername());
-                hardware.setStatus(1);
-            }else{
-                hardware.setStatus(2);
             }
         }
+
+        hardware.setStatus(AKTIV.getValue());
 
         hardwareDao.saveOrUpdateHardware(hardware);
 
@@ -338,9 +341,9 @@ public class HardwareService implements IHardwareService {
         Hardware hardware = getHardwareById(hid);
 
         if (hardware.getStatus() == null || hardware.getStatus() == 1) {
-            hardware.setStatus(0);
+            hardware.setStatus(ARCHIV.getValue());
         } else {
-            hardware.setStatus(1);
+            hardware.setStatus(AKTIV.getValue());
         }
 
         saveHardware(hardware);

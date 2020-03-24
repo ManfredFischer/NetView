@@ -6,10 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import de.netview.model.Changelog;
-import de.netview.model.Hardware;
-import de.netview.model.Lizenz;
-import de.netview.model.Software;
+import de.netview.model.*;
 
 public class HardwareData implements Serializable {
 
@@ -33,7 +30,6 @@ public class HardwareData implements Serializable {
 	private String sn;
 	private Integer status;
 	private String categorie;
-	private int location;
 	private String department;
 	private String encodingkey;
 	private String encodingname;
@@ -42,7 +38,33 @@ public class HardwareData implements Serializable {
 	private List<Changelog> changelogList = new ArrayList<Changelog>();
 	private ADUserData ownerInformation;
 	private ADUserData inUseInformation;
+	private int aktivlocation;
+	private int ownerlocation;
+	private List<Document> documents = new ArrayList();
 
+	public int getAktivlocation() {
+		return aktivlocation;
+	}
+
+	public void setAktivlocation(int aktivlocation) {
+		this.aktivlocation = aktivlocation;
+	}
+
+	public int getOwnerlocation() {
+		return ownerlocation;
+	}
+
+	public void setOwnerlocation(int ownerlocation) {
+		this.ownerlocation = ownerlocation;
+	}
+
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
+	}
 
 	public Integer getStatus() {
 		return status;
@@ -205,11 +227,13 @@ public class HardwareData implements Serializable {
 		this.setDescription(hardware.getDescription());
 		this.setIp(hardware.getIp());
 		this.setCategorie(hardware.getCategorie());
-		this.setLocation(hardware.getLocation());
 		this.setDepartment(hardware.getDepartment());
 		this.setAktivUserPhone(hardware.getAktivuserphone());
 		this.setEncodingkey(hardware.getEncodingkey());
 		this.setEncodingname(hardware.getEncodingname());
+		this.setAktivlocation(hardware.getAktivlocation());
+		this.setOwnerlocation(hardware.getOwnerlocation());
+		this.setDocuments(hardware.getDocuments());
 	}
 
 	public String getLastLogin() {
@@ -234,14 +258,6 @@ public class HardwareData implements Serializable {
 
 	public void setCategorie(String categorie) {
 		this.categorie = categorie;
-	}
-
-	public int getLocation() {
-		return location;
-	}
-
-	public void setLocation(int location) {
-		this.location = location;
 	}
 
 	public ADUserData getInUseInformation() {

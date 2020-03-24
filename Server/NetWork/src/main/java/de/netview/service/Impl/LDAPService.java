@@ -2,6 +2,7 @@ package de.netview.service.Impl;
 
 import de.netview.dao.ILDAPUserDao;
 import de.netview.data.*;
+import de.netview.data.enums.HardwareStatus;
 import de.netview.function.impl.StringOwnUtils;
 import de.netview.model.*;
 import de.netview.service.*;
@@ -20,6 +21,7 @@ import java.util.*;
 public class LDAPService implements ILDAPService {
 
     static String USER_BASE_NAME = "OU=intern,OU=Users,OU=Reservix,DC=rsvx,DC=it";
+    static String CLIENTS_BASE_NAME = "OU=Clients,OU=Reservix,DC=rsvx,DC=it";
     static String GROUP_BASE_NAME = "OU=Groups,OU=Reservix,DC=rsvx,DC=it";
     static String DOMAIN_NAME = "reservix.de";
     DirContext ldapContext;
@@ -64,6 +66,20 @@ public class LDAPService implements ILDAPService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    @Override
+    public Hardware checkHardwareByDomain(Hardware hardware){
+        Map hardwareInformation = getHardwareByHostname(hardware.getHostname());
+
+        if (hardwareInformation.isEmpty()){
+            hardware.setStatus(HardwareStatus.PRUEFEN.getValue());
+        } else {
+            hardware.setStatus(HardwareStatus.AKTIV.getValue());
+            hardware.setLastlogin(hardwareInformation.get("lastlogon").toString());
+            hardware.setBs(hardwareInformation.get("operatingSystem").toString());
+        }
+        return hardware;
     }
 
 
@@ -132,6 +148,35 @@ public class LDAPService implements ILDAPService {
 
         }
         return ldapGroups;
+    }
+
+    private Map getHardwareByHostname(String hostname){
+        LDAPConnect();
+        Map result = new HashMap();
+        try {
+            SearchControls searchControls = new SearchControls();
+            searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+            NamingEnumeration values = ldapContext.search(CLIENTS_BASE_NAME, "(name="+hostname+")", searchControls);
+
+            while (values.hasMoreElements()) {
+                SearchResult searchResult = (SearchResult) values.next();
+                Attributes attributes = searchResult.getAttributes();
+                result.put("lastlogon", checkAndConvertObjectAttribute(attributes.get("lastLogon")));
+                result.put("operatingSystem",checkAndConvertObjectAttribute(attributes.get("operatingSystem")));
+            }
+
+        }catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ldapContext.close();
+        } catch (NamingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     private List<ADUserData> getLDAPUserByFilter(String filter) {

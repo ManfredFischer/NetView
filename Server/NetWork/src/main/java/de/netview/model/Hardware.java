@@ -4,17 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -47,20 +37,46 @@ public class Hardware implements Serializable {
 	private String encodingname;
 	private String encodingkey;
 	private Integer status;
-	private int location;
+	private int aktivlocation;
+	private int ownerlocation;
 	private String icon;
 	private Boolean verliehen;
 	private Long verliehenBis;
 	private Long receivedate;
-	private String bill;
-	private String deliverynote;
-	private String billnumber;
 	private List<Lizenz> lizenz = new ArrayList<Lizenz>();
 	private List<Software> software = new ArrayList<Software>();
 	private List<LDAPUser> LDAPUser = new ArrayList<LDAPUser>();
 
 	public void setSoftware(List<Software> software) {
 		this.software = software;
+	}
+
+	@OneToMany(mappedBy="hardware")
+	@JsonIgnore
+	private List<Document> documents = new ArrayList();
+
+	public int getAktivlocation() {
+		return aktivlocation;
+	}
+
+	public void setAktivlocation(int aktivlocation) {
+		this.aktivlocation = aktivlocation;
+	}
+
+	public int getOwnerlocation() {
+		return ownerlocation;
+	}
+
+	public void setOwnerlocation(int ownerlocation) {
+		this.ownerlocation = ownerlocation;
+	}
+
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
 	}
 
 	@ManyToMany(cascade=CascadeType.REFRESH, fetch = FetchType.LAZY)
@@ -126,8 +142,6 @@ public class Hardware implements Serializable {
 		return cpu;
 	}
 
-
-
 	public void setCpu(String cpu) {
 		this.cpu = cpu;
 	}
@@ -147,6 +161,7 @@ public class Hardware implements Serializable {
 	public void setSn(String sn) {
 		this.sn = sn;
 	}
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -302,14 +317,6 @@ public class Hardware implements Serializable {
 		this.categorie = categorie;
 	}
 
-	public int getLocation() {
-		return location;
-	}
-
-	public void setLocation(int location) {
-		this.location = location;
-	}
-	
 	@JsonIgnore
 	public void wrappeValues(Hardware hardware) {
 		this.aktivdate = hardware.getAktivdate();
@@ -322,7 +329,6 @@ public class Hardware implements Serializable {
 		this.hostname = hardware.getHostname();
 		this.ip = hardware.getIp();
 		this.lastlogin = hardware.getLastlogin();
-		this.location = hardware.getLocation();
 		this.model = hardware.getModel();
 		this.ram = hardware.getRam();
 		this.sn = hardware.getSn();
@@ -330,6 +336,8 @@ public class Hardware implements Serializable {
 		this.icon = hardware.icon;
 		this.aktivuserphone = hardware.aktivuserphone;
 		this.LDAPUser = hardware.LDAPUser;
+		this.aktivlocation = hardware.getAktivlocation();
+		this.ownerlocation = hardware.getOwnerlocation();
 	}
 
 	public String getDepartment() {
@@ -422,29 +430,5 @@ public class Hardware implements Serializable {
 
 	public void setReceivedate(Long receivedate) {
 		this.receivedate = receivedate;
-	}
-
-	public String getBill() {
-		return bill;
-	}
-
-	public void setBill(String bill) {
-		this.bill = bill;
-	}
-
-	public String getDeliverynote() {
-		return deliverynote;
-	}
-
-	public void setDeliverynote(String deliverynote) {
-		this.deliverynote = deliverynote;
-	}
-
-	public String getBillnumber() {
-		return billnumber;
-	}
-
-	public void setBillnumber(String billnumber) {
-		this.billnumber = billnumber;
 	}
 }

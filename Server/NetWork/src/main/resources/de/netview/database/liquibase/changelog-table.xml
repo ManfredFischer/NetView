@@ -388,13 +388,29 @@
 		</createTable>
 	</changeSet>
 
+
 	<changeSet author="MaFischer" id="13">
+		<createTable tableName="DOCUMENT">
+			<column name="did" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="date" type="VARCHAR(1020)" />
+			<column name="number" type="VARCHAR(1020)" />
+			<column name="path" type="VARCHAR(1020)" />
+		</createTable>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="14">
 		<addColumn tableName="HARDWARE">
-			<column name="billnumber" type="VARCHAR(1020)"/>
-			<column name="receivedate" type="BIGINT"/>
-			<column name="bill" type="VARCHAR(1020)"/>
-			<column name="deliverynote" type="VARCHAR(1020)"/>
+			<column name="aktivlocation" type="INTEGER"/>
+			<column name="ownerlocation" type="INTEGER"/>
 		</addColumn>
 	</changeSet>
+
+	<changeSet author="MaFischer" id="15">
+		<dropColumn columnName="location"
+					tableName="hardware"/>
+	</changeSet>
+
 
 </databaseChangeLog>

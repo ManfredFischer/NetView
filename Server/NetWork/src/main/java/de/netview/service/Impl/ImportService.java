@@ -60,14 +60,7 @@ public class ImportService implements IImportService {
 				hardware.setDescription(attribute[8]);
 				hardware.setMac(attribute[9]);
 
-				List<Location> locationList = locationService.getLocation();
-
-				for (Location location : locationList) {
-					if (location.getCity().toString().equalsIgnoreCase(attribute[10].toString())) {
-						hardware.setLocation(Integer.parseInt(location.getLid().toString()));
-						break;
-					}
-				}
+				hardware.setOwnerlocation(locationService.getLocationByCity(attribute[10].toString()).getLid().intValue());
 
 				hardware.setCategorie(attribute[11]);
 				hardware.setBs(attribute[12]);

@@ -2246,7 +2246,7 @@ function MdAriaService($$rAF, $log, $window, $interpolate) {
         case 'time':
         case 'tr':
         case 'track':
-        case 'tt':
+        case 'de.netview.data.tt':
         case 'ul':
         case 'var':
           return false;

@@ -17,6 +17,10 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 	public void saveOrUpdateHardware(Hardware hardware) {
 		getSession().saveOrUpdate(hardware);
 
+		if (hardware.getCategorie() == null){
+			hardware.setCategorie("client");
+		}
+
 		if (hardware.getCategorie().equalsIgnoreCase("client")) {
 			AllInformation.addClientsHardwareInformation(hardware);
 		} else {

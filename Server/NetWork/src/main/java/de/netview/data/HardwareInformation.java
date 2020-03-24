@@ -5,8 +5,11 @@ import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import de.netview.model.Document;
 import de.netview.model.Hardware;
 
 public class HardwareInformation implements Serializable {
@@ -27,7 +30,6 @@ public class HardwareInformation implements Serializable {
 	private String ram;
 	private String sn;
 	private String categorie;
-	private int location;
 	private String department;
 	private String icon;
 	private Boolean verliehen;
@@ -35,6 +37,24 @@ public class HardwareInformation implements Serializable {
 	private String verliehenBis;
 	private String encodingkey;
 	private String encodingname;
+	private int aktivlocation;
+	private int ownerlocation;
+
+	public int getAktivlocation() {
+		return aktivlocation;
+	}
+
+	public void setAktivlocation(int aktivlocation) {
+		this.aktivlocation = aktivlocation;
+	}
+
+	public int getOwnerlocation() {
+		return ownerlocation;
+	}
+
+	public void setOwnerlocation(int ownerlocation) {
+		this.ownerlocation = ownerlocation;
+	}
 
 	public Integer getStatus() {
 		return status;
@@ -79,11 +99,12 @@ public class HardwareInformation implements Serializable {
 		this.sn = hardware.getSn();
 		this.categorie = hardware.getCategorie();
 		this.department = hardware.getDepartment();
-		this.setLocation(hardware.getLocation());
 		this.setIcon(hardware.getIcon());
 		this.setAktivUserPhone(hardware.getAktivuserphone());
 		this.setEncodingkey(hardware.getEncodingkey());
 		this.setEncodingname(hardware.getEncodingname());
+		this.setAktivlocation(hardware.getAktivlocation());
+		this.setOwnerlocation(hardware.getOwnerlocation());
 		
 		if (hardware.getLDAPUser() != null && hardware.getLDAPUser().size() > 0) {
 			this.setVerliehen(true);
@@ -321,14 +342,6 @@ public class HardwareInformation implements Serializable {
 
 	public void setDepartment(String department) {
 		this.department = department;
-	}
-
-	public int getLocation() {
-		return location;
-	}
-
-	public void setLocation(int location) {
-		this.location = location;
 	}
 
 	public String getIcon() {
