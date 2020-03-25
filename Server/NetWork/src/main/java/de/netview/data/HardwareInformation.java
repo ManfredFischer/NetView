@@ -7,6 +7,7 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import de.netview.data.enums.HardwareStatus;
 import de.netview.model.Hardware;
 
 public class HardwareInformation implements Serializable {
@@ -27,24 +28,23 @@ public class HardwareInformation implements Serializable {
 	private String ram;
 	private String sn;
 	private String categorie;
-	private int location;
+	private int ownerLocation;
+	private int aktivLocation;
 	private String department;
-	private String icon;
 	private Boolean verliehen;
 	private String verliehenAn;
 	private String verliehenBis;
 	private String encodingkey;
 	private String encodingname;
+	private HardwareStatus status;
 
-	public Integer getStatus() {
+	public HardwareStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(HardwareStatus status) {
 		this.status = status;
 	}
-
-	private Integer status;
 
 	public String getVerliehenBis() {
 		return verliehenBis;
@@ -79,8 +79,8 @@ public class HardwareInformation implements Serializable {
 		this.sn = hardware.getSn();
 		this.categorie = hardware.getCategorie();
 		this.department = hardware.getDepartment();
-		this.setLocation(hardware.getLocation());
-		this.setIcon(hardware.getIcon());
+		this.setOwnerLocation(hardware.getOwnerlocation());
+		this.setAktivLocation(hardware.getAktivlocation());
 		this.setAktivUserPhone(hardware.getAktivuserphone());
 		this.setEncodingkey(hardware.getEncodingkey());
 		this.setEncodingname(hardware.getEncodingname());
@@ -323,20 +323,20 @@ public class HardwareInformation implements Serializable {
 		this.department = department;
 	}
 
-	public int getLocation() {
-		return location;
+	public int getOwnerLocation() {
+		return ownerLocation;
 	}
 
-	public void setLocation(int location) {
-		this.location = location;
+	public void setOwnerLocation(int ownerLocation) {
+		this.ownerLocation = ownerLocation;
 	}
 
-	public String getIcon() {
-		return icon;
+	public int getAktivLocation() {
+		return aktivLocation;
 	}
 
-	public void setIcon(String icon) {
-		this.icon = icon;
+	public void setAktivLocation(int aktivLocation) {
+		this.aktivLocation = aktivLocation;
 	}
 
 	public String getAktivUserPhone() {

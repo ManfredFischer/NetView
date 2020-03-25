@@ -21,6 +21,7 @@ public class LDAPService implements ILDAPService {
 
     static String USER_BASE_NAME = "OU=intern,OU=Users,OU=Reservix,DC=rsvx,DC=it";
     static String GROUP_BASE_NAME = "OU=Groups,OU=Reservix,DC=rsvx,DC=it";
+    static String CLIENTS_BASE_NAME = "OU=Clients,OU=Reservix,DC=rsvx,DC=it";
     static String DOMAIN_NAME = "reservix.de";
     DirContext ldapContext;
 
@@ -66,6 +67,35 @@ public class LDAPService implements ILDAPService {
         }
     }
 
+    @Override
+     public Map getHardwareByHostname(String hostname){
+        LDAPConnect();
+        Map result = new HashMap();
+        try {
+            SearchControls searchControls = new SearchControls();
+            searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE);
+            NamingEnumeration values = ldapContext.search(CLIENTS_BASE_NAME, "(name="+hostname+")", searchControls);
+
+            while (values.hasMoreElements()) {
+                SearchResult searchResult = (SearchResult) values.next();
+                Attributes attributes = searchResult.getAttributes();
+                result.put("lastlogon", checkAndConvertObjectAttribute(attributes.get("lastLogon")));
+                result.put("operatingSystem",checkAndConvertObjectAttribute(attributes.get("operatingSystem")));
+            }
+
+        }catch (NamingException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            ldapContext.close();
+        } catch (NamingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
     @Override
     public List getLDAPADUsers() {

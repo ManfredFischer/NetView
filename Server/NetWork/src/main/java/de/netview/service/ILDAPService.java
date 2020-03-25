@@ -9,10 +9,13 @@ import javax.naming.directory.Attributes;
 import de.netview.data.ADUserData;
 import de.netview.data.WizardUser;
 import de.netview.data.LDAPUserData;
+import de.netview.model.Hardware;
 import de.netview.model.LDAPGroup;
 import de.netview.model.LDAPUser;
 
 public interface ILDAPService {
+
+    Map getHardwareByHostname(String hostname);
 
     List getLDAPADUsers();
 

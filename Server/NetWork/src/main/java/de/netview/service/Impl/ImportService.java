@@ -64,7 +64,7 @@ public class ImportService implements IImportService {
 
 				for (Location location : locationList) {
 					if (location.getCity().toString().equalsIgnoreCase(attribute[10].toString())) {
-						hardware.setLocation(Integer.parseInt(location.getLid().toString()));
+						hardware.setOwnerlocation(Integer.parseInt(location.getLid().toString()));
 						break;
 					}
 				}

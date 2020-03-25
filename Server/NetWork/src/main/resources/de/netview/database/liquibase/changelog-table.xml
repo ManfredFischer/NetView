@@ -390,11 +390,33 @@
 
 	<changeSet author="MaFischer" id="13">
 		<addColumn tableName="HARDWARE">
-			<column name="billnumber" type="VARCHAR(1020)"/>
-			<column name="receivedate" type="BIGINT"/>
-			<column name="bill" type="VARCHAR(1020)"/>
-			<column name="deliverynote" type="VARCHAR(1020)"/>
+			<column name="ownerlocation" type="BIGINT"/>
+			<column name="aktivlocation" type="BIGINT"/>
 		</addColumn>
+	</changeSet>
+
+	<changeSet author="liquibase-docs" id="14">
+		<dropColumn columnName="location"
+					schemaName="public"
+					tableName="HARDWARE"/>
+	</changeSet>
+
+	<changeSet author="liquibase-docs" id="15">
+		<dropColumn columnName="icon"
+					schemaName="public"
+					tableName="HARDWARE"/>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="16">
+		<createTable tableName="DOCUMENT">
+			<column name="did" type="BIGINT">
+				<constraints nullable="false" />
+			</column>
+			<column name="hid" type="BIGINT"/>
+			<column name="number" type="VARCHAR(1020)"/>
+			<column name="date" type="BIGINT"/>
+			<column name="file" type="BLOB"/>
+		</createTable>
 	</changeSet>
 
 </databaseChangeLog>

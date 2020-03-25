@@ -6,6 +6,7 @@ import de.netview.data.ADUserData;
 import de.netview.data.AllInformation;
 import de.netview.data.HardwareData;
 import de.netview.data.HardwareInformation;
+import de.netview.function.impl.DateUtil;
 import de.netview.function.impl.IPSort;
 import de.netview.model.Hardware;
 import de.netview.model.Lizenz;
@@ -22,6 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static de.netview.data.enums.HardwareStatus.AKTIV;
+import static de.netview.data.enums.HardwareStatus.ARCHIV;
 
 @Service
 public class HardwareService implements IHardwareService {
@@ -50,24 +54,15 @@ public class HardwareService implements IHardwareService {
     @Transactional
     @Override
     public Hardware insertHardware(Hardware hardware) {
-        SimpleDateFormat lastLogin = new SimpleDateFormat();
-        lastLogin.applyPattern("EEEE', 'dd. MMMM yyyy");
 
-        hardware.setLastlogin(lastLogin.format(new Date()));
-
-        if (!StringUtils.isEmpty(hardware.getAktivusername())) {
-            ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
-            hardware.setDepartment(userData.getDepartment());
-            hardware.setAktivuserphone(userData.getTelephoneNumber());
-        }
-
+        ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
         Hardware hardwareInfo = hardwareDao.getHardwareByName(hardware.getHostname());
+        Location location = locationService.getLocationByCity(userData.getCity());
 
         if (hardwareInfo != null) {
             readSoftware(hardware, hardwareInfo);
             readLizenz(hardware, hardwareInfo);
             cleanLizenz(hardware, hardwareInfo);
-
             hardwareInfo.wrappeValues(hardware);
             hardware = hardwareInfo;
         } else {
@@ -76,23 +71,26 @@ public class HardwareService implements IHardwareService {
             insertLizenz(hardware);
         }
 
+        hardware.setLastlogin(DateUtil.getDateNow());
+        hardware.setStatus(AKTIV);
+
+        if (!StringUtils.isEmpty(hardware.getAktivusername())) {
+            if (checkAdminLogin(userData)) {
+                hardware.setDepartment(userData.getDepartment());
+                hardware.setAktivuserphone(userData.getTelephoneNumber());
+                hardware.setAktivlocation(location.getLid().intValue());
+            }
+        }
+
         if (!StringUtils.isEmpty(hardware.getOwner())){
-            ADUserData userData = ldapService.getLDAPUserByName(hardware.getOwner());
-            Location location = locationService.getLocationByCity(userData.getCity());
-            hardware.setLocation(location.getLid().intValue());
-            hardware.setStatus(1);
+            if (checkAdminLogin(userData)) {
+                hardware.setOwnerlocation(location.getLid().intValue());
+            }
         } else {
             if (!StringUtils.isEmpty(hardware.getAktivusername())
-                    && !hardware.getAktivusername().startsWith("a_")
-                    && !hardware.getAktivusername().startsWith("admin")
-                    && !hardware.getAktivusername().startsWith("Admin")){
-                ADUserData userData = ldapService.getLDAPUserByName(hardware.getAktivusername());
-                Location location = locationService.getLocationByCity(userData.getCity());
-                hardware.setLocation(location.getLid().intValue());
+                    && checkAdminLogin(userData)){
+                hardware.setOwnerlocation(location.getLid().intValue());
                 hardware.setOwner(hardware.getAktivusername());
-                hardware.setStatus(1);
-            }else{
-                hardware.setStatus(2);
             }
         }
 
@@ -100,6 +98,10 @@ public class HardwareService implements IHardwareService {
 
         return hardware;
 
+    }
+
+    private boolean checkAdminLogin(ADUserData userData){
+        return !userData.getDisplayName().toLowerCase().startsWith("a_") && !userData.getDisplayName().toLowerCase().startsWith("admin");
     }
 
     private void cleanLizenz(Hardware hardware, Hardware hardwareInfo) {
@@ -337,10 +339,10 @@ public class HardwareService implements IHardwareService {
     public Hardware archivHardware(long hid) {
         Hardware hardware = getHardwareById(hid);
 
-        if (hardware.getStatus() == null || hardware.getStatus() == 1) {
-            hardware.setStatus(0);
+        if (hardware.getStatus() == null || hardware.getStatus() == AKTIV) {
+            hardware.setStatus(ARCHIV);
         } else {
-            hardware.setStatus(1);
+            hardware.setStatus(AKTIV);
         }
 
         saveHardware(hardware);

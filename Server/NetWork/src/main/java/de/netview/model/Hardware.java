@@ -4,26 +4,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.netview.data.enums.HardwareStatus;
 
 @Entity
 @Table(name = "HARDWARE")
 public class Hardware implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 236138963642103844L;
 	private Long hid;
@@ -46,18 +37,16 @@ public class Hardware implements Serializable {
 	private String categorie;
 	private String encodingname;
 	private String encodingkey;
-	private Integer status;
-	private int location;
-	private String icon;
+	private HardwareStatus status;
+	private int ownerlocation;
+	private int aktivlocation;
 	private Boolean verliehen;
 	private Long verliehenBis;
-	private Long receivedate;
-	private String bill;
-	private String deliverynote;
-	private String billnumber;
+
 	private List<Lizenz> lizenz = new ArrayList<Lizenz>();
 	private List<Software> software = new ArrayList<Software>();
 	private List<LDAPUser> LDAPUser = new ArrayList<LDAPUser>();
+
 
 	public void setSoftware(List<Software> software) {
 		this.software = software;
@@ -90,11 +79,11 @@ public class Hardware implements Serializable {
 		this.hostname = hostname;
 	}
 
-	public Integer getStatus() {
+	public HardwareStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(HardwareStatus status) {
 		this.status = status;
 	}
 
@@ -302,14 +291,22 @@ public class Hardware implements Serializable {
 		this.categorie = categorie;
 	}
 
-	public int getLocation() {
-		return location;
+	public int getOwnerlocation() {
+		return ownerlocation;
 	}
 
-	public void setLocation(int location) {
-		this.location = location;
+	public void setOwnerlocation(int ownerlocation) {
+		this.ownerlocation = ownerlocation;
 	}
-	
+
+	public int getAktivlocation() {
+		return aktivlocation;
+	}
+
+	public void setAktivlocation(int aktivlocation) {
+		this.aktivlocation = aktivlocation;
+	}
+
 	@JsonIgnore
 	public void wrappeValues(Hardware hardware) {
 		this.aktivdate = hardware.getAktivdate();
@@ -322,12 +319,12 @@ public class Hardware implements Serializable {
 		this.hostname = hardware.getHostname();
 		this.ip = hardware.getIp();
 		this.lastlogin = hardware.getLastlogin();
-		this.location = hardware.getLocation();
+		this.ownerlocation = hardware.getOwnerlocation();
+		this.aktivlocation = hardware.getAktivlocation();
 		this.model = hardware.getModel();
 		this.ram = hardware.getRam();
 		this.sn = hardware.getSn();
 		this.department = hardware.department;
-		this.icon = hardware.icon;
 		this.aktivuserphone = hardware.aktivuserphone;
 		this.LDAPUser = hardware.LDAPUser;
 	}
@@ -338,14 +335,6 @@ public class Hardware implements Serializable {
 
 	public void setDepartment(String department) {
 		this.department = department;
-	}
-
-	public String getIcon() {
-		return icon;
-	}
-
-	public void setIcon(String icon) {
-		this.icon = icon;
 	}
 
 	public String getAktivuserphone() {
@@ -414,37 +403,5 @@ public class Hardware implements Serializable {
 
 	public void setEncodingname(String encodingname) {
 		this.encodingname = encodingname;
-	}
-
-	public Long getReceivedate() {
-		return receivedate;
-	}
-
-	public void setReceivedate(Long receivedate) {
-		this.receivedate = receivedate;
-	}
-
-	public String getBill() {
-		return bill;
-	}
-
-	public void setBill(String bill) {
-		this.bill = bill;
-	}
-
-	public String getDeliverynote() {
-		return deliverynote;
-	}
-
-	public void setDeliverynote(String deliverynote) {
-		this.deliverynote = deliverynote;
-	}
-
-	public String getBillnumber() {
-		return billnumber;
-	}
-
-	public void setBillnumber(String billnumber) {
-		this.billnumber = billnumber;
 	}
 }

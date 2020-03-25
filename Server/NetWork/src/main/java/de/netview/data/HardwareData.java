@@ -6,10 +6,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import de.netview.model.Changelog;
-import de.netview.model.Hardware;
-import de.netview.model.Lizenz;
-import de.netview.model.Software;
+import de.netview.data.enums.HardwareStatus;
+import de.netview.model.*;
 
 public class HardwareData implements Serializable {
 
@@ -31,27 +29,37 @@ public class HardwareData implements Serializable {
 	private String cpu;
 	private String ram;
 	private String sn;
-	private Integer status;
+	private HardwareStatus status;
 	private String categorie;
-	private int location;
+	private int ownerLocation;
+	private int aktivLocation;
 	private String department;
 	private String encodingkey;
 	private String encodingname;
-	private List<LizenzData> lizenz = new ArrayList<LizenzData>();
-	private List<SoftwareData> software = new ArrayList<SoftwareData>();
-	private List<Changelog> changelogList = new ArrayList<Changelog>();
 	private ADUserData ownerInformation;
 	private ADUserData inUseInformation;
 
+	private List<Document> documents = new ArrayList<>();
+	private List<LizenzData> lizenz = new ArrayList<LizenzData>();
+	private List<SoftwareData> software = new ArrayList<SoftwareData>();
+	private List<Changelog> changelogList = new ArrayList<Changelog>();
 
-	public Integer getStatus() {
+	public List<Document> getDocuments() {
+		return documents;
+	}
+
+	public void setDocuments(List<Document> documents) {
+		this.documents = documents;
+	}
+
+	public HardwareStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(Integer status) {
+	public void setStatus(HardwareStatus status) {
 		this.status = status;
 	}
-	
+
 	public HardwareData() {
 		super();
 	}
@@ -205,7 +213,8 @@ public class HardwareData implements Serializable {
 		this.setDescription(hardware.getDescription());
 		this.setIp(hardware.getIp());
 		this.setCategorie(hardware.getCategorie());
-		this.setLocation(hardware.getLocation());
+		this.setOwnerLocation(hardware.getOwnerlocation());
+		this.setAktivLocation(hardware.getAktivlocation());
 		this.setDepartment(hardware.getDepartment());
 		this.setAktivUserPhone(hardware.getAktivuserphone());
 		this.setEncodingkey(hardware.getEncodingkey());
@@ -236,12 +245,20 @@ public class HardwareData implements Serializable {
 		this.categorie = categorie;
 	}
 
-	public int getLocation() {
-		return location;
+	public int getOwnerLocation() {
+		return ownerLocation;
 	}
 
-	public void setLocation(int location) {
-		this.location = location;
+	public void setOwnerLocation(int ownerLocation) {
+		this.ownerLocation = ownerLocation;
+	}
+
+	public int getAktivLocation() {
+		return aktivLocation;
+	}
+
+	public void setAktivLocation(int aktivLocation) {
+		this.aktivLocation = aktivLocation;
 	}
 
 	public ADUserData getInUseInformation() {
