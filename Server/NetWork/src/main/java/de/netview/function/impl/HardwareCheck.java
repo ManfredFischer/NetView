@@ -36,14 +36,10 @@ public class HardwareCheck implements IHardwareCheck {
             hardware.setStatus(PRUEFEN);
         } else {
             hardware.setStatus(AKTIV);
-            hardware.setLastlogin(hardwareInformation.get("lastlogon").toString());
+            hardware.setLastlogin((Long.parseLong(hardwareInformation.get("lastlogon").toString()) / 10000L) - +11644473600000L);
             hardware.setBs(hardwareInformation.get("operatingSystem").toString());
-        }
 
-        if (hardware.getStatus() == AKTIV) {
-            StringUtils.isEmpty(hardware.getLastlogin());
-            long fileTime = (Long.parseLong(hardware.getLastlogin()) / 10000L) - +11644473600000L;
-            if (new Date(fileTime).toInstant().isBefore(ZonedDateTime.now().plusDays(-30).toInstant())) {
+            if (DateUtil.isDateBefor(hardware.getLastlogin(), -30)) {
                 hardware.setStatus(ARCHIV);
             } else {
                 if (StringUtils.isEmpty(hardware.getOwner())) {

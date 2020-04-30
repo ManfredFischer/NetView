@@ -1,0 +1,42 @@
+<div class="pageChangelog" ng-controller="lizenzController as ctrl">
+    <div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
+
+         <input flex-gt-sm class="css-input" placeholder="Search..." ng-model="searchLizenz" ng-change="setHardwarePage()">
+
+         <md-input-container flex-gt-sm style="max-width:150px;margin-right:25px">
+            <label>{{translation.infoTable.use}}</label>
+            <md-select aria-label="ShowHideAccountant" ng-Model="lizenzStateFilter" ng-change="setLizenzPage()">
+             <md-option ng-repeat="use in useList" value="{{ use.name }}">{{use.name }}
+             </md-option>
+            </md-select>
+         </md-input-container>
+    </div>
+
+    <div style="background:#084B8A;color:#ffffff;padding:5px;margin:0 0 15 0">
+        <div class="ng-scope layout-row " style="height: 23px">
+             <div style="padding-right: 10px; padding-left: 10px; font-size: 14px">Seite	{{lizenzPage}} von {{lizenzMaxPage}} (Anzahl: {{lizenzPageAmount}})</div>
+             <button class="buttonView buttonViewPrev" ng-click="prevPage('lizenz')">Prev</button>
+             <button class="buttonView buttonViewNext" ng-click="nextPage('lizenz')">Next</button>
+        </div>
+   </div>
+
+    <div class="ng-scope layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
+            <div flex="20" style="font-size:14px">{{translation.infoTable.lizenzName}}</div>
+            <div flex="20" style="font-size:14px">{{translation.infoTable.use}}</div>
+            <div flex style="font-size:14px">{{translation.infoTable.key}}</div>
+    </div>
+
+
+    <div ng-repeat="lizenz in ctrl.getLizenz()" ng-click="showLizenzInformation(lizenz)" flex="100"  layout="row" class="changelogList" >
+        <div flex="20" >
+            {{ lizenz.name }}
+        </div>
+        <div flex="20" >
+            {{ lizenz.stateInfo }}
+        </div>
+        <div>
+            {{ lizenz.key }}
+        </div>
+        <div flex></div>
+    </div>
+</div>

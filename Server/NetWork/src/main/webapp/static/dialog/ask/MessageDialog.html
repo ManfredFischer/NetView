@@ -1,50 +1,27 @@
-<div>
- <div layout="row" class="dialogAbstract"
-		layout-align="space-between center">
-		<div layout-gt-sm="row" class="dialogTitle">
-			{{configMessageDialog.titleMessageDialog}}
-		</div>
-		        
-	</div>
-
-
- <div style="margin:15px">
- 
-
- <div ng-if="configMessageDialog.dialogUserMessage">
- 
-  <div layout-gt-sm="row" layout-align="space-between center">
-  
-  	<md-autocomplete md-search-text-change="selectMessagUser(searchMessageUserText)" md-selected-item-change="selectMessagUser(searchMessageUserText)" md-item-text="item.displayName" md-search-text="searchMessageUserText"
-	     md-items="item in querySearch(searchMessageUserText)" placeholder="Username...">
-	     <md-item-template >
-	         <span md-highlight-text="searchMedddssageUserText"  md-highlight-flags="^i">{{item.displayName}}</span>
-	     </md-item-template>
-	 </md-autocomplete>
-     <md-button class="md-raised" ng-if="configMessageDialog.rentHardwareDilog" ng-click="rentHardwareDialog(ctrl.messageUserDate)" style="height:20px" md-colors="{color: 'green'}">OK</md-button>
-  </div>
-  <div ng-if="configMessageDialog.setHardwareManagerDilog" layout-gt-sm="row" layout-align="center" style="margin:15 0 0 0">  	
-     <md-button class="md-raised" ng-click="changeManagemerHardwareDialogCancel()" style="height:20px" md-colors="{color: 'red'}">Cancel</md-button>
-     <md-button class="md-raised" ng-click="changeManagemerHardwareDialog()" style="height:20px" md-colors="{color: 'green'}">OK</md-button>
-  </div>
-  <div>
-   <md-datepicker ng-model="ctrl.messageUserDate" ng-if="configMessageDialog.showMessageDialogDate"  md-placeholder="Verliehen bis"></md-datepicker>
-  </div>
- </div>
- 
- <div ng-if="configMessageDialog.dialogYesNoMessage">
-   <h3>
-    {{dialogMessage}}
-   </h3>
-  <div layout-gt-sm="row" layout-align="space-between center">
-   <div flex></div>
-   <md-button class="md-raised" ng-click="cancel()" style="height:20px" md-colors="{color: 'red'}">Nein</md-button>
-   <md-button class="md-raised" ng-click="deleteHardwareDialog()" ng-if="configMessageDialog.hardwareDelete" style="height:20px" md-colors="{color: 'green'}">Ja</md-button>
-   <md-button class="md-raised" ng-click="archivHardwareDialog()" ng-if="configMessageDialog.hardwareArchiv" style="height:20px" md-colors="{color: 'green'}">Ja</md-button>
-  </div>               
-  
- </div>
-
- 
+<div layout="row" class="dialogAbstract" layout-align="space-between center">
+    <div layout-gt-sm="row" class="dialogTitle">
+        {{configMessageDialog.titleMessageDialog}}
+    </div>
 </div>
+
+<div style="padding: 0 10 0 10" ng-show="configMessageDialog.message">
+    <p>{{configMessageDialog.message}}</p>
+</div>
+
+<div ng-if="configMessageDialog.dialogYesNoMessage.show" layout-gt-sm="row" layout-align="space-between center">
+    <div flex></div>
+    <md-button class="md-raised" ng-click="configMessageDialog.dialogYesNoMessage.noAction()"  style="height:20px" md-colors="{color: 'red'}">Nein</md-button>
+    <md-button class="md-raised" ng-click="configMessageDialog.dialogYesNoMessage.yesAction()" style="height:20px" md-colors="{color: 'green'}">Ja</md-button>
+</div>
+
+<div ng-if="configMessageDialog.dialogLizenzMessage.show">
+    <message-lizenz />
+</div>
+
+<div ng-if="configMessageDialog.dialogUserMessage.show">
+    <message-user />
+</div>
+
+<div ng-if="configMessageDialog.dialogChangelog">
+    <message-changelog />
 </div>

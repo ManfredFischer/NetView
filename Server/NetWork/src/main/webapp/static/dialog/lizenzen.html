@@ -1,59 +1,55 @@
-<div style="padding:5px">
-        
-        <div class="layout-row">
-        <div flex>
-
-        <md-input-container class="md-block" flex-gt-sm>
-            <label>Lizenz Name</label>
-            <input ng-model="lizenz.name">
+<div  class="layout-row">
+    <div flex style="padding-top:20px;padding-left: 10;padding-right: 10">
+        <md-input-container class="md-block" style="margin: 0">
+            <label>Name</label>
+            <input ng-model="abstractDialogData.lizenz.name">
         </md-input-container>
 
-        <div layout-gt-sm="row" layout-align="space-between center">
-            <md-input-container class="md-block" flex-gt-sm>
+        <div layout-gt-sm="row" layout-align="space-between center" style="margin: 0">
+            <md-input-container style="margin: 0">
                 <label>Vergeben</label>
-                <input readonly type="number" ng-model="lizenz.vergeben">
+                <input type="number" ng-model="abstractDialogData.lizenz.vergeben">
             </md-input-container>
-            <md-input-container class="md-block" flex-gt-sm>
+            <md-input-container style="margin: 0">
                 <label>Verfügbar</label>
-                <input readonly type="number" ng-model="lizenz.verfuegbar" >
+                <input type="number" ng-model="abstractDialogData.lizenz.verfuegbar" >
             </md-input-container>
-            <md-input-container class="md-block" flex-gt-sm>
-                <label>Anzahl</label>
-                <input type="number" step="any"  ng-model="lizenz.allowamount" >
+            <md-input-container style="margin: 0">
+                <label>Frei</label>
+                <input type="number" step="any"  ng-model="abstractDialogData.lizenz.free" >
             </md-input-container>
         </div>
 
-         <md-input-container class="md-block">
+         <md-input-container style="margin: 0;width: 100%">
             <label>Kategorie</label>
-            <input ng-model="lizenz.categorie">
+            <input ng-model="abstractDialogData.lizenz.categorie">
          </md-input-container>
 
-         <md-input-container class="md-block" flex-gt-sm>
+         <md-input-container style="margin: 0;width: 100%">
             <label>Reserviert</label>
-            <input ng-model="lizenz.reserved">
+            <input ng-model="abstractDialogData.lizenz.reserved">
          </md-input-container>
-         <md-input-container class="md-block" flex-gt-sm>
+
+         <md-input-container style="margin: 0;width: 100%">
           <label>Lizenz Key</label>
-          <textarea ng-model="lizenz.key" rows="5" md-select-on-focus></textarea>
+          <textarea ng-model="abstractDialogData.lizenz.key" rows="5" md-select-on-focus></textarea>
          </md-input-container>
-        </div>
+    </div>
         
-        <div flex ng-if="showLizenzHardwareView">
-          <div class="layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
-                    <div flex="45" style="font-size:14px">{{translation.infoTable.hostname}}</div>
-                    <div flex="55" style="font-size:14px">{{translation.infoTable.user}}</div>
-          </div>
-           
-          <md-list ng-cloak>
-                <md-list-item ng-repeat="hw in lizenzHostList" class="md-1-line">
-                    <div flex="45" class="md-list-item-text" layout="column">
-                        {{ hw.hostname }}
-                    </div> 
-                    <div flex="55" class="md-list-item-text" layout="column">
-                        {{ hw.aktivUsername }}
-                    </div> 
-                </md-list-item>
-          </md-list>
-         </div>
-        </div>
+    <div flex ng-if="abstractDialogData.showLizenzHardwareView">
+      <div class="layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
+        <div flex="45" style="font-size:14px">{{translation.infoTable.hostname}}</div>
+        <div flex="55" style="font-size:14px">{{translation.infoTable.user}}</div>
+      </div>
+
+
+        <md-list-item ng-repeat="hw in abstractDialogData.lizenzHostList" class="md-1-line">
+            <div flex="45" class="md-list-item-text" layout="column" ng-click="abstractDialogData.openHardware(hw)">
+                {{ hw.hostname }}
+            </div>
+            <div flex="55" class="md-list-item-text" layout="column">
+                {{ hw.aktivUsername }}
+            </div>
+        </md-list-item>
+    </div>
 </div>

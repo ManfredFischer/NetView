@@ -2,17 +2,9 @@ app.directive('addSoftware', function() {
     return {
         templateUrl : 'static/dialog/software.html'
     };
-}).directive('addLizenzen', function() {
+}).directive('showLizenzen', function() {
     return {
         templateUrl : 'static/dialog/lizenzen.html'
-    };
-}).directive('addChangelog', function() {
-    return {
-        templateUrl : 'static/dialog/changelog.html'
-    };
-}).directive('showChangelog', function() {
-    return {
-        templateUrl : 'static/dialog/changelogView.html'
     };
 }).directive('showHardware', function() {
     return {
@@ -22,8 +14,12 @@ app.directive('addSoftware', function() {
     return {
         templateUrl : 'static/dialog/addHandyUser.html'
     };
-}).directive('myUpload', function() {
+}).directive('showImport', function() {
     return {
         templateUrl : 'static/dialog/Import.html'
+    };
+}).directive('addHardware', function() {
+    return {
+        templateUrl : 'static/dialog/hardware.html'
     };
 });

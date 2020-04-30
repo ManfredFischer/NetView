@@ -19,5 +19,4 @@ public enum HardwareStatus {
         return hardwareStatus.getValue() == getValue();
     }
 
-
 }

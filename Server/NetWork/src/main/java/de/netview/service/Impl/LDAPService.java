@@ -99,13 +99,11 @@ public class LDAPService implements ILDAPService {
 
     @Override
     public List getLDAPADUsers() {
-
-        if (AllInformation.getADUsers().isEmpty()) {
-            List<ADUserData> result = new ArrayList<>();
+        List users = AllInformation.getUsers();
+        if (users.isEmpty()) {
             try {
                 ArrayList<ADUserData> ADUserDataList = (ArrayList<ADUserData>) getLDAPUserByFilter("(objectClass=*)");
                 ArrayList<Location> LocationList = (ArrayList<Location>) locationService.getLocation();
-                ArrayList<HardwareInformation> hardwareList = (ArrayList<HardwareInformation>) hardwareService.getAllHardware("clients");
 
                 for (ADUserData aDUserdata : ADUserDataList) {
                     for (Location location : LocationList) {
@@ -117,28 +115,15 @@ public class LDAPService implements ILDAPService {
                             }
                         }
                     }
-
-                    for (HardwareInformation hardware : hardwareList) {
-                        if (hardware.getOwner() != null && hardware.getOwner().equalsIgnoreCase(aDUserdata.getFirstname() + "." + aDUserdata.getLastname())) {
-                            aDUserdata.setHardware(hardware);
-                            break;
-                        }
-                    }
-
-                    result.add(aDUserdata);
+                    users.add(aDUserdata);
                 }
 
-
             } catch (Exception e) {
-                System.out.printf(e.getMessage());
             }
 
-
-            AllInformation.setADUsers(result);
-
+            return AllInformation.setUsers(users);
         }
-
-        return AllInformation.getADUsers();
+        return users;
     }
 
     @Override
@@ -434,9 +419,12 @@ public class LDAPService implements ILDAPService {
     @Override
     public ADUserData getLDAPUserByName(String name) {
         List<ADUserData> user = getLDAPUserByFilter("(SAMAccountName=" + name + ")");
+
         if (user.isEmpty()) {
             return null;
         } else {
+            ADUserData adUserData = user.get(0);
+            adUserData.setDetails(new UserDetails(ldapUserDao.getLDAPUserByName(name.toLowerCase())));
             return user.get(0);
         }
     }
@@ -472,7 +460,7 @@ public class LDAPService implements ILDAPService {
         userdata.setOwnerHardware(hardwareOwnerList);
         userdata.setAktivHardware(hardwareAktivList);
         userdata.setLizenz(hardwareAktivLizenzList);
-        userdata.setLdapUser(new LDAPUserInformation(ldapUserDao.getLDAPUserByName(username)));
+        userdata.setLdapUser(new UserDetails(ldapUserDao.getLDAPUserByName(username)));
         userdata.setUserData(adUser);
 
         return userdata;
@@ -482,14 +470,7 @@ public class LDAPService implements ILDAPService {
     @Override
     @Transactional
     public void addOrUpdateLDAPUser(LDAPUser ldapUser) {
-        LDAPUser ldapUserOrg = ldapUserDao.getLDAPUserByName(ldapUser.getUsername());
-        if (ldapUserOrg != null) {
-            ldapUserOrg.setDescription(ldapUser.getDescription());
-            ldapUserOrg.setToken(ldapUser.getToken());
-        } else {
-            ldapUserOrg = ldapUser;
-        }
-        ldapUserDao.addOrUpdateLDAPUser(ldapUserOrg);
+        ldapUserDao.addOrUpdateLDAPUser(ldapUser);
     }
 
     @Override
@@ -519,6 +500,7 @@ public class LDAPService implements ILDAPService {
 
         hardware.setVerliehen(true);
         hardware.setVerliehenBis(Long.valueOf(value.get("date").toString()));
+        hardware.setVerliehenAn(ldapUser);
         hardwareService.saveHardware(hardware);
     }
 

@@ -14,8 +14,4 @@ app.directive('wizardAdduserinformation', function() {
     return {
         templateUrl : 'static/html/user/wizard/DefaultPermissionUser.html'
     };
-}).directive('myUserwizard', function() {
-    return {
-        templateUrl : 'static/html/user/wizard/UserWizard.html'
-    };
 });

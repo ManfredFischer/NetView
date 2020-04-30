@@ -5,6 +5,7 @@ import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.List;
 
+import de.netview.data.enums.HardwareStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,9 +77,9 @@ public class HardwareController {
 		hardwareService.changeHardwareOwner(data);
 	}
 
-	@PutMapping("/archiv")
-	public void changeHardwareStatus(@RequestParam Long hid) {
-		hardwareService.archivHardware(hid);
+	@PutMapping("/status")
+	public void changeHardwareStatus(@RequestParam Long hid,@RequestParam HardwareStatus status) {
+		hardwareService.setHardwareStatus(hid,status);
 	}
 
 }

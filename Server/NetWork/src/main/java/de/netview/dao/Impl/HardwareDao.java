@@ -3,6 +3,7 @@ package de.netview.dao.Impl;
 import java.util.List;
 
 import de.netview.data.AllInformation;
+import de.netview.data.HardwareInformation;
 import org.springframework.stereotype.Repository;
 
 import de.netview.dao.IHardwareDAO;
@@ -16,11 +17,12 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 	@Override
 	public void saveOrUpdateHardware(Hardware hardware) {
 		getSession().saveOrUpdate(hardware);
-
+		HardwareInformation hardwareInformation = new HardwareInformation(hardware);
+		hardwareInformation.setRentDetails();
 		if (hardware.getCategorie().equalsIgnoreCase("client")) {
-			AllInformation.addClientsHardwareInformation(hardware);
+			AllInformation.updateOrRemoveClients(hardwareInformation,false);
 		} else {
-			AllInformation.addNetzHardwareInformation(hardware);
+			AllInformation.updateOrRemoveServer(hardwareInformation, false);
 		}
 	}
 
@@ -60,7 +62,15 @@ public class HardwareDao extends AbstractDao<Hardware> implements IHardwareDAO{
 
 	@Override
 	public void deleteHardware(Hardware hardware) {
+
+		if (hardware.getCategorie().equalsIgnoreCase("client")) {
+			AllInformation.updateOrRemoveClients(new HardwareInformation(hardware),true);
+		} else {
+			AllInformation.updateOrRemoveServer(new HardwareInformation(hardware), true);
+		}
+
 		getSession().delete(hardware);
+
 	}
 
 	@Override

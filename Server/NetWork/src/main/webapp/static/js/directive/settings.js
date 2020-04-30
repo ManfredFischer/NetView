@@ -1,8 +1,4 @@
-app.directive('mySettings', function() {
-    return {
-        templateUrl : 'static/html/settings/settings.html'
-    };
-}).directive('settingsData', function() {
+app.directive('settingsData', function() {
     return {
         templateUrl : 'static/html/settings/settingsData.html'
     };

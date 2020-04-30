@@ -3,8 +3,6 @@ package de.netview.data;
 import java.io.Serializable;
 import java.util.List;
 
-import de.netview.model.LDAPUser;
-
 public class LDAPUserData implements Serializable {
 	
 	private static final long serialVersionUID = 2635072207562734288L;
@@ -12,7 +10,7 @@ public class LDAPUserData implements Serializable {
 	private List aktivHardware;
 	private List ownerHardware;
 	private List lizenz;
-	private LDAPUserInformation ldapUser;
+	private UserDetails ldapUser;
 		
 	public ADUserData getUserData() {
 		return userData;
@@ -38,10 +36,10 @@ public class LDAPUserData implements Serializable {
 	public void setLizenz(List lizenz) {
 		this.lizenz = lizenz;
 	}
-	public LDAPUserInformation getLdapUser() {
+	public UserDetails getLdapUser() {
 		return ldapUser;
 	}
-	public void setLdapUser(LDAPUserInformation ldapUser) {
+	public void setLdapUser(UserDetails ldapUser) {
 		this.ldapUser = ldapUser;
 	}
 

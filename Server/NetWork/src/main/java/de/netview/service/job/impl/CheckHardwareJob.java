@@ -46,7 +46,7 @@ public class CheckHardwareJob extends AJob {
 
             List<Hardware> hardwareList = hardwareService.getAllHardware();
             for (Hardware hardware : hardwareList) {
-            	hardwareCheck.checkHostname(hardware);
+            	//hardwareCheck.checkHostname(hardware);
             }
 
 

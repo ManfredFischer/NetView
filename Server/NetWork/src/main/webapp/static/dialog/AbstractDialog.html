@@ -2,36 +2,85 @@
 	<div layout="row" class="dialogAbstract"
 		layout-align="space-between center">
 		<div layout-gt-sm="row" class="dialogTitle">
-			<img ng-src="{{titleImg}}" class="dialogTitleImg"></img> <span>{{titleDialog}} </span>
+			<img ng-src="{{titleImg}}" class="dialogTitleImg"></img>
+		</div>
+		<div layout-gt-sm="column">
+			<div>{{titleDialog}} </div>
+			<div style="font-size: 10px">{{subTitleDialog}} </div>
 		</div>
 		<div flex></div>
 
 		<div>
-			<md-button class="md-icon-button"  ng-click="openTelefon()" ><img  width="25" height="25" src="static/img/ChangeLog-white.png"></img> </md-button>
-			<md-button class="md-icon-button"  ng-click="openTelefon()" ><img  width="25" height="25" src="static/img/AddLizens-white.png"></img> </md-button>
-			<md-button class="md-icon-button" ng-if="dialogConfig.actionMgmtShow"    ng-click="dialogConfig.actionMgmtDialog()" ><img  width="25" height="25" src="static/img/user-white.png"></img> </md-button>
+			<md-button class="md-icon-button" ng-if="dialogAction.changelog.show" ng-click="dialogAction.changelog.action()" >
+				<md-tooltip>
+					Changelog hinzufügen
+				</md-tooltip>
+				<img  width="25" height="25" src="static/img/ChangeLog-white.png"></img>
+			</md-button>
+
+			<md-button class="md-icon-button" ng-if="dialogAction.lizenz.show" ng-click="dialogAction.lizenz.action()" >
+				<md-tooltip>
+					Lizenz hinzufügen
+				</md-tooltip>
+				<img  width="25" height="25" src="static/img/AddLizens-white.png"></img>
+			</md-button>
+			<md-button class="md-icon-button" ng-if="dialogAction.responsible.show" ng-click="dialogAction.responsible.action()" >
+				<md-tooltip>
+					Verantwortlicher hinzufügen
+				</md-tooltip>
+				<img  width="25" height="25" src="static/img/user-white.png"></img>
+			</md-button>
 		</div>
 
 		<div flex></div>
-		<md-button class="md-icon-button" ng-if="dialogConfig.actionRentShow"    ng-click="rentHardware(hw)" ><img  width="25" height="25" src="static/img/rent.png"></img> </md-button>	
-		<md-button class="md-raised" md-colors="{color: 'green'}" ng-if="dialogConfig.actionAddShow"     ng-click="dialogConfig.actionAddDialog()" >Hinzufügen</md-button>
-		<md-button class="md-icon-button" ng-if="dialogConfig.actionUpdateShow"  ng-click="dialogConfig.actionUpdateDialog()" ><img  width="25" height="25" src="static/img/update-white.png"></img> </md-button>
-		<md-button class="md-icon-button" ng-if="dialogConfig.actionDeleteShow"  ng-click="dialogConfig.actionDeleteDialog()" ><img  width="25" height="25" src="static/img/delete-white.png"></img> </md-button>
-		<md-button class="md-icon-button" ng-if="dialogConfig.actionTVShow"  ng-click="openTeamViewer()" ><img  width="25" height="25" src="static/img/Teamviewer.png" style="border-radius: 15px;"></img> </md-button>
-		<md-button class="md-icon-button" ng-if="dialogConfig.showTelefon"  ng-click="openTelefon()" ><img  width="25" height="25" src="static/img/telefon.png"></img> </md-button>
+
+		<md-button class="md-icon-button" ng-if="dialogAction.update.show" ng-click="dialogAction.update.action()" >
+			<md-tooltip>
+				Aktualisieren
+			</md-tooltip>
+			<img  width="25" height="25" src="static/img/update-white.png"></img>
+		</md-button>
+		<md-button class="md-icon-button" ng-if="dialogAction.teamviewer.show" 	ng-click="dialogAction.teamviewer.action()" >
+			<md-tooltip>
+				Remotezugriff starten
+			</md-tooltip>
+			<img  width="25" height="25" src="static/img/Teamviewer.png" style="border-radius: 15px;"></img>
+		</md-button>
+
+		<md-menu ng-if="dialogAction.telefon.show">
+			<md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open()">
+				<md-tooltip>
+					Mitarbeiter anrufen
+				</md-tooltip>
+				<img  width="25" height="25" src="static/img/telefonieren-weis.png" style="border-radius: 15px;"></img>
+			</md-button>
+			<md-menu-content>
+				<md-menu-item ng-show="telefon.value != ''" ng-repeat="telefon in dialogAction.telefon.value">
+					<md-button  ng-click="openTelefon(telefon.value)">
+						<img  width="14" height="14" src="static/img/telefon-schwarz.png"></img> {{telefon.name}}
+					</md-button>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+
+		<md-button class="md-icon-button" ng-click="openTelefon(dialogAction.telefon.number)" ng-if="dialogAction.telefon.number">
+			<md-tooltip>
+				Mitarbeiter anrufen
+			</md-tooltip>
+			<img  width="25" height="25" src="static/img/telefon-weis.png" style="border-radius: 15px;"></img>
+		</md-button>
+
+
+		<!--<md-button class="md-raised" ng-click="userInformation.saveUserDetails(userInformation.user.details)" md-colors="{color: 'green'}">Speichern</md-button>-->
+
 
 	</div>
 	
 	<div style="padding: 5px">
 
-		<div ng-if="dialogConfig.dialogHardware" add-hardware></div>
-		<div ng-if="dialogConfig.dialogSoftware" add-software></div>
-		<div ng-if="dialogConfig.dialogLizenzen" add-lizenzen></div>
-		<div ng-if="dialogConfig.dialogChanglog" add-changelog></div>
-		<div ng-if="dialogConfig.dialogMobile" add-handyuser></div>
-		<div ng-if="dialogConfig.showHardware" show-hardware></div>
-		<div ng-if="dialogConfig.showChangelog" show-changelog></div>
-		<div ng-if="dialogConfig.dialogUpload" my-upload></div>
+		<div ng-if="showConfig.details.hardware" show-hardware></div>
+		<div ng-if="showConfig.details.lizenz" show-lizenzen></div>
 
+		<div ng-if="showConfig.dialog.addHardware" add-hardware></div>
 	</div>
 </div>

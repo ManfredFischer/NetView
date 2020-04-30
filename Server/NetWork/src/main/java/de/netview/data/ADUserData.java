@@ -1,8 +1,6 @@
 package de.netview.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ADUserData implements Serializable {
 
@@ -20,11 +18,18 @@ public class ADUserData implements Serializable {
     private String streetAddress;
     private String country;
     private String city;
-    private HardwareInformation hardware;
+    private UserDetails details;
     private Long lid = -1L;
 
+    public UserDetails getDetails() {
+        return details;
+    }
 
-	public Long getLid() {
+    public void setDetails(UserDetails details) {
+        this.details = details;
+    }
+
+    public Long getLid() {
 		return lid;
 	}
 
@@ -138,13 +143,6 @@ public class ADUserData implements Serializable {
         this.lastname = lastname;
     }
 
-	public HardwareInformation getHardware() {
-		return hardware;
-	}
-
-	public void setHardware(HardwareInformation hardware) {
-		this.hardware = hardware;
-	}
 
 	public String getMail() {
 		return mail;

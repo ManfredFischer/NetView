@@ -1,14 +1,17 @@
 package de.netview.data;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import de.netview.config.BeanUtil;
 import de.netview.data.enums.HardwareStatus;
+import de.netview.function.impl.DateUtil;
 import de.netview.model.Hardware;
+import de.netview.model.LDAPUser;
+import de.netview.service.ILDAPService;
+import de.netview.service.Impl.LDAPService;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.Serializable;
+import java.util.Objects;
 
 public class HardwareInformation implements Serializable {
 
@@ -18,10 +21,13 @@ public class HardwareInformation implements Serializable {
 	private String ip;
 	private String description;
 	private String owner;
+	private String ownerPhone;
+	private String ownerMobile;
 	private String aktivUsername;
 	private String aktivUserPhone;
-	private String aktivDate;
-	private String lastLogin;
+	private String aktivUserMobile;
+	private Long date;
+	private Long lastLogin;
 	private String model;
 	private String bs;
 	private String cpu;
@@ -34,9 +40,51 @@ public class HardwareInformation implements Serializable {
 	private Boolean verliehen;
 	private String verliehenAn;
 	private String verliehenBis;
+	private String verliehenTel;
+	private String verliehenMobile;
 	private String encodingkey;
 	private String encodingname;
 	private HardwareStatus status;
+
+	public String getOwnerMobile() {
+		return ownerMobile;
+	}
+
+	public void setOwnerMobile(String ownerMobile) {
+		this.ownerMobile = ownerMobile;
+	}
+
+	public String getAktivUserMobile() {
+		return aktivUserMobile;
+	}
+
+	public void setAktivUserMobile(String aktivUserMobile) {
+		this.aktivUserMobile = aktivUserMobile;
+	}
+
+	public String getVerliehenTel() {
+		return verliehenTel;
+	}
+
+	public void setVerliehenTel(String verliehenTel) {
+		this.verliehenTel = verliehenTel;
+	}
+
+	public String getVerliehenMobile() {
+		return verliehenMobile;
+	}
+
+	public void setVerliehenMobile(String verliehenMobile) {
+		this.verliehenMobile = verliehenMobile;
+	}
+
+	public String getOwnerPhone() {
+		return ownerPhone;
+	}
+
+	public void setOwnerPhone(String ownerPhone) {
+		this.ownerPhone = ownerPhone;
+	}
 
 	public HardwareStatus getStatus() {
 		return status;
@@ -70,7 +118,7 @@ public class HardwareInformation implements Serializable {
 				this.aktivUsername = hardware.getAktivusername();
 			}
 		}
-		this.aktivDate = hardware.getAktivdate();
+		this.date = hardware.getDate();
 		this.lastLogin = hardware.getLastlogin();
 		this.model = hardware.getModel();
 		this.bs = hardware.getBs();
@@ -84,20 +132,31 @@ public class HardwareInformation implements Serializable {
 		this.setAktivUserPhone(hardware.getAktivuserphone());
 		this.setEncodingkey(hardware.getEncodingkey());
 		this.setEncodingname(hardware.getEncodingname());
-		
-		if (hardware.getLDAPUser() != null && hardware.getLDAPUser().size() > 0) {
-			this.setVerliehen(true);
-			this.setVerliehenAn(hardware.getLDAPUser().get(0).getUsername());
-			if (hardware.getVerliehenBis() != null) {
-				String pattern = "dd.MM.yyyy";
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-				String date = simpleDateFormat.format(new Date(hardware.getVerliehenBis()));
-				this.setVerliehenBis(date);
-			}
-		}else {
-			this.setVerliehen(false);
-		}
+		this.setOwnerPhone(hardware.getOwnerphone());
+		this.setVerliehen(hardware.getVerliehen());
+		if (hardware.getVerliehenAn() != null)
+			this.setVerliehenAn(hardware.getVerliehenAn().getUsername());
+		if (hardware.getVerliehenBis() != null)
+			this.setVerliehenBis(DateUtil.formatDate(hardware.getVerliehenBis()));
+	}
 
+	public void setRentDetails(){
+		if (this.getVerliehen()) {
+			ILDAPService ldapService = BeanUtil.getBean(ILDAPService.class);
+			ADUserData ldapUsername = ldapService.getLDAPUserByName(this.getVerliehenAn());
+			if (ldapUsername != null) {
+				this.setVerliehenMobile(ldapUsername.getMobile());
+				this.setVerliehenTel(ldapUsername.getTelephoneNumber());
+			}
+		}
+	}
+
+	public String getVerliehenAn() {
+		return verliehenAn;
+	}
+
+	public void setVerliehenAn(String verliehenAn) {
+		this.verliehenAn = verliehenAn;
 	}
 
 	public Long getHid() {
@@ -148,19 +207,19 @@ public class HardwareInformation implements Serializable {
 		this.aktivUsername = aktivUsername;
 	}
 
-	public String getAktivDate() {
-		return aktivDate;
+	public Long getDate() {
+		return date;
 	}
 
-	public void setAktivDate(String aktivDate) {
-		this.aktivDate = aktivDate;
+	public void setDate(Long date) {
+		this.date = date;
 	}
 
-	public String getLastLogin() {
+	public Long getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(String lastLogin) {
+	public void setLastLogin(Long lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
@@ -212,109 +271,6 @@ public class HardwareInformation implements Serializable {
 		this.categorie = categorie;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((aktivDate == null) ? 0 : aktivDate.hashCode());
-		result = prime * result + ((aktivUsername == null) ? 0 : aktivUsername.hashCode());
-		result = prime * result + ((bs == null) ? 0 : bs.hashCode());
-		result = prime * result + ((categorie == null) ? 0 : categorie.hashCode());
-		result = prime * result + ((cpu == null) ? 0 : cpu.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((hid == null) ? 0 : hid.hashCode());
-		result = prime * result + ((hostname == null) ? 0 : hostname.hashCode());
-		result = prime * result + ((ip == null) ? 0 : ip.hashCode());
-		result = prime * result + ((lastLogin == null) ? 0 : lastLogin.hashCode());
-		result = prime * result + ((model == null) ? 0 : model.hashCode());
-		result = prime * result + ((owner == null) ? 0 : owner.hashCode());
-		result = prime * result + ((ram == null) ? 0 : ram.hashCode());
-		result = prime * result + ((sn == null) ? 0 : sn.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		HardwareInformation other = (HardwareInformation) obj;
-		if (aktivDate == null) {
-			if (other.aktivDate != null)
-				return false;
-		} else if (!aktivDate.equals(other.aktivDate))
-			return false;
-		if (aktivUsername == null) {
-			if (other.aktivUsername != null)
-				return false;
-		} else if (!aktivUsername.equals(other.aktivUsername))
-			return false;
-		if (bs == null) {
-			if (other.bs != null)
-				return false;
-		} else if (!bs.equals(other.bs))
-			return false;
-		if (categorie == null) {
-			if (other.categorie != null)
-				return false;
-		} else if (!categorie.equals(other.categorie))
-			return false;
-		if (cpu == null) {
-			if (other.cpu != null)
-				return false;
-		} else if (!cpu.equals(other.cpu))
-			return false;
-		if (description == null) {
-			if (other.description != null)
-				return false;
-		} else if (!description.equals(other.description))
-			return false;
-		if (hid == null) {
-			if (other.hid != null)
-				return false;
-		} else if (!hid.equals(other.hid))
-			return false;
-		if (hostname == null) {
-			if (other.hostname != null)
-				return false;
-		} else if (!hostname.equals(other.hostname))
-			return false;
-		if (ip == null) {
-			if (other.ip != null)
-				return false;
-		} else if (!ip.equals(other.ip))
-			return false;
-		if (lastLogin == null) {
-			if (other.lastLogin != null)
-				return false;
-		} else if (!lastLogin.equals(other.lastLogin))
-			return false;
-		if (model == null) {
-			if (other.model != null)
-				return false;
-		} else if (!model.equals(other.model))
-			return false;
-		if (owner == null) {
-			if (other.owner != null)
-				return false;
-		} else if (!owner.equals(other.owner))
-			return false;
-		if (ram == null) {
-			if (other.ram != null)
-				return false;
-		} else if (!ram.equals(other.ram))
-			return false;
-		if (sn == null) {
-			if (other.sn != null)
-				return false;
-		} else if (!sn.equals(other.sn))
-			return false;
-		return true;
-	}
-
 	public String getDepartment() {
 		return department;
 	}
@@ -348,19 +304,11 @@ public class HardwareInformation implements Serializable {
 	}
 
 	public Boolean getVerliehen() {
-		return verliehen;
+		return verliehen == null ? false : verliehen;
 	}
 
 	public void setVerliehen(Boolean verliehen) {
 		this.verliehen = verliehen;
-	}
-
-	public String getVerliehenAn() {
-		return verliehenAn;
-	}
-
-	public void setVerliehenAn(String verliehenAn) {
-		this.verliehenAn = verliehenAn;
 	}
 
 	public String getEncodingname() {
@@ -379,4 +327,39 @@ public class HardwareInformation implements Serializable {
 		this.encodingkey = encodingkey;
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		HardwareInformation that = (HardwareInformation) o;
+		return ownerLocation == that.ownerLocation &&
+				aktivLocation == that.aktivLocation &&
+				Objects.equals(hid, that.hid) &&
+				Objects.equals(hostname, that.hostname) &&
+				Objects.equals(ip, that.ip) &&
+				Objects.equals(description, that.description) &&
+				Objects.equals(owner, that.owner) &&
+				Objects.equals(aktivUsername, that.aktivUsername) &&
+				Objects.equals(aktivUserPhone, that.aktivUserPhone) &&
+				Objects.equals(date, that.date) &&
+				Objects.equals(lastLogin, that.lastLogin) &&
+				Objects.equals(model, that.model) &&
+				Objects.equals(bs, that.bs) &&
+				Objects.equals(cpu, that.cpu) &&
+				Objects.equals(ram, that.ram) &&
+				Objects.equals(sn, that.sn) &&
+				Objects.equals(categorie, that.categorie) &&
+				Objects.equals(department, that.department) &&
+				Objects.equals(verliehen, that.verliehen) &&
+				Objects.equals(verliehenAn, that.verliehenAn) &&
+				Objects.equals(verliehenBis, that.verliehenBis) &&
+				Objects.equals(encodingkey, that.encodingkey) &&
+				Objects.equals(encodingname, that.encodingname) &&
+				status == that.status;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(hid, hostname, ip, description, owner, aktivUsername, aktivUserPhone, date, lastLogin, model, bs, cpu, ram, sn, categorie, ownerLocation, aktivLocation, department, verliehen, verliehenAn, verliehenBis, encodingkey, encodingname, status);
+	}
 }

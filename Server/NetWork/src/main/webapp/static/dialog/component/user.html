@@ -1,0 +1,72 @@
+<md-tabs>
+    <md-tab label="Details">
+        <div class="hardwareComponentPanel">
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>First name</label>
+                    <input readonly ng-model="userInformation.user.firstname">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Last name</label>
+                    <input readonly ng-model="userInformation.user.lastname">
+                </md-input-container>
+            </div>
+
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Department</label>
+                    <input readonly ng-model="userInformation.user.department">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Position</label>
+                    <input readonly ng-model="userInformation.user.title">
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row">
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Telefon</label>
+                    <input readonly ng-click="openTelefon(userInformation.user.telephoneNumber)" ng-model="userInformation.user.telephoneNumber">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Mobile</label>
+                    <input readonly ng-click="openTelefon(userInformation.user.mobile)" ng-model="userInformation.user.mobile">
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row" ng-if="false">
+                <md-input-container style="width: 100%">
+                    <label>Standort</label>
+                    <md-select ng-Model="userInformation.user.lid">
+                        <md-option ng-repeat="location in LocationList" value="{{ location.lid }}">{{location.displayname }}</md-option>
+                    </md-select>
+                </md-input-container>
+            </div>
+            <div layout-gt-sm="row">
+                <md-input-container  style="margin: 10">
+                    <label>Token</label>
+                    <input ng-model="userInformation.user.details.token">
+                </md-input-container>
+
+                <md-input-container  style="margin: 10">
+                    <label>Handy Pin</label>
+                    <input ng-model="userInformation.user.details.pin">
+                </md-input-container>
+
+                <md-input-container  style="margin: 10">
+                    <label>Handy Puk</label>
+                    <input ng-model="userInformation.user.details.puk">
+                </md-input-container>
+            </div>
+        </div>
+    </md-tab>
+    <md-tab label="Informationen">
+        <div class="hardwareComponentPanel">
+            <md-input-container class="md-block" style="margin: 10">
+                <label>Beschreibung</label>
+                <textarea ng-model="userInformation.user.details.description" rows="10" ></textarea>
+            </md-input-container>
+        </div>
+    </md-tab>
+</md-tabs>

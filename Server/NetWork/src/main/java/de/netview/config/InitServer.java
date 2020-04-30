@@ -4,16 +4,19 @@ import de.netview.config.BeanUtil;
 import de.netview.dao.IChangelogDao;
 import de.netview.dao.IHardwareDAO;
 import de.netview.dao.ILizenzDao;
+import de.netview.data.ADUserData;
 import de.netview.data.AllInformation;
 import de.netview.data.HardwareInformation;
 import de.netview.data.LizenzInformation;
 import de.netview.function.impl.IPSort;
 import de.netview.model.Hardware;
 import de.netview.model.Lizenz;
+import de.netview.service.ILDAPService;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.SessionHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
@@ -73,20 +76,21 @@ public class InitServer {
         List<HardwareInformation> hardwareList = new ArrayList<>();
         for (Hardware hardware : hardwareDao.getAllHardware("clients")) {
             HardwareInformation hardwareData = new HardwareInformation(hardware);
+            hardwareData.setRentDetails();
             hardwareList.add(hardwareData);
         }
-        hardwareList = IPSort.sortHardware(hardwareList);
 
-        AllInformation.setAllClientsHardwareInformation(hardwareList);
+        AllInformation.setClients(IPSort.sortHardware(hardwareList));
 
         hardwareList = new ArrayList<>();
         for (Hardware hardware : hardwareDao.getAllHardware("sonstiges")) {
             HardwareInformation hardwareData = new HardwareInformation(hardware);
+            hardwareData.setRentDetails();
             hardwareList.add(hardwareData);
         }
         hardwareList = IPSort.sortHardware(hardwareList);
 
-        AllInformation.setAllNetzHardwareInformation(hardwareList);
+        AllInformation.setServer(IPSort.sortHardware(hardwareList));
     }
 
     public void checkLizenz(List<Lizenz> lizenzen) {

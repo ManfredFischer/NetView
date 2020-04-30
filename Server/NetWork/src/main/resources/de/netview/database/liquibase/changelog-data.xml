@@ -20,7 +20,7 @@
             <column name="displayname" value="Freiburg im Breisgau" />
             <column name="street" value="Humboldtstraße 2" />
             <column name="plz" value="79098"/>
-            <column name="city" value="Freiburg im Breisbau"/>
+            <column name="city" value="Freiburg im Breisgau"/>
             <column name="country" value="Deutschland"/>
         </insert>
         

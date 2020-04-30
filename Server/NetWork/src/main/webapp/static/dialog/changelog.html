@@ -1,14 +1,39 @@
-<md-input-container class="md-block" flex-gt-sm>
-    <label>Titel</label>
-    <input ng-model="changelogInformation.title">
-</md-input-container>
+<div style="width:600px;padding: 20">
+    <div layout="row">
+        <md-input-container flex="60" style="margin: 0">
+            <label>Title</label>
+            <input ng-model="changelogInformation.data.title"/>
+        </md-input-container>
 
-<md-input-container class="md-block" flex-gt-sm>
-    <label>Hardware / Hostname</label>
-    <input ng-model="changelogInformation.system">
-</md-input-container>
+        <md-datepicker flex="40" ng-model="changelogInformation.data.date" style="margin: 0"></md-datepicker>
+    </div>
 
-<md-input-container class="md-block" flex-gt-sm>
-    <label>Changelog</label>
-    <textarea ng-model="changelogInformation.changelog" rows="5" md-select-on-focus></textarea>
-</md-input-container>
+    <div layout="column">
+        <md-input-container style="margin: 0">
+            <label>Hostname</label>
+            <input name="name" ng-model="changelogInformation.data.system"/>
+        </md-input-container>
+
+        <md-input-container style="margin: 0">
+            <label>User</label>
+            <input readonly ng-model="changelogInformation.data.username">
+        </md-input-container>
+    </div>
+
+    <md-tabs >
+        <md-tab label="Changlog" >
+            <md-input-container style="width:590px" >
+                <textarea ng-model="changelogInformation.data.changelog" rows="5" md-select-on-focus></textarea>
+            </md-input-container>
+        </md-tab>
+        <md-tab label="Auswirkung">
+            <md-input-container style="width:590px">
+                <textarea ng-model="changelogInformation.data.impact" rows="5" md-select-on-focus></textarea>
+            </md-input-container>
+        </md-tab>
+    </md-tabs>
+    <div layout="row" ng-show="changelogInformation.addChangelog">
+        <div flex></div>
+        <md-button class="md-raised" ng-click="changelogInformation.addChangelog(changelogInformation)" md-colors="{color: 'green'}" >Hinzufügen</md-button>
+    </div>
+</div>

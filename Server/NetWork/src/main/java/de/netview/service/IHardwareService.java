@@ -5,6 +5,7 @@ import java.util.Map;
 
 import de.netview.data.HardwareData;
 import de.netview.data.HardwareInformation;
+import de.netview.data.enums.HardwareStatus;
 import de.netview.model.Hardware;
 
 import javax.transaction.Transactional;
@@ -24,6 +25,9 @@ public interface IHardwareService {
 	void deleteHardwareLizenz(Long hid, Long lid);
 
 	void addHardwareLizenz(Long hid, Long lid);
+
+	@Transactional
+	void setHardwareStatus(long hid, HardwareStatus status);
 
 	Hardware getHardwareByHostname(String hostname);
 
@@ -47,6 +51,5 @@ public interface IHardwareService {
 
 	void changeHardwareOwner(Map value);
 
-	Hardware archivHardware(long hid);
 
 }

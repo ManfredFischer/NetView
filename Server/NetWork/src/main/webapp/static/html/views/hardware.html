@@ -1,0 +1,38 @@
+<div class="page" ng-controller="hardwareController as ctrl">
+    <div layout-gt-sm="row" class="mainPage" layout-align="space-between center">
+
+        <input flex-gt-sm class="css-input" placeholder="Suchen..."	ng-model="searchClientText" ng-change="setClientsPage()">
+
+        <md-input-container flex-gt-sm style="max-width:150px" >
+            <label>Status</label>
+            <md-select aria-label="ShowHideAccountant" ng-Model="clientsState">
+                <md-option ng-repeat="state in stateListClients" value="{{ state.value }}">
+                    {{state.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+
+    <div style="background: #084B8A; color:#ffffff; padding: 5px; margin: 0 0 15 0">
+        <div class="ng-scope layout-row " style="height: 23px">
+            <div style="padding-right: 10px; padding-left: 10px; font-size: 14px">Seite {{clientPage}} von {{clientMaxPage}} (Anzahl: {{clientsAmount}})</div>
+
+            <button ng-if="clientMaxPage > 1" class="buttonView buttonViewPrev" ng-click="prevPage()">Prev</button>
+            <button ng-if="clientMaxPage > 1" class="buttonView buttonViewNext" ng-click="nextPage()">Next</button>
+
+            <div flex></div>
+            <label ng-show="clientMaxPage > 1 && clientsRows < 14"	style="padding-right: 10px; padding-left: 10px; font-size: 14px">Seitenanzahl:
+                <select ng-Model="clientsRows">
+                    <option ng-repeat="rows in hardwareRowsList" value="{{rows.value}}">{{rows.value}}</option>
+                </select>
+            </label>
+        </div>
+    </div>
+
+    <div ng-show="showConfig.view.sonstigeHardware">
+        <sonstigehardware-component />
+    </div>
+    <div ng-show="showConfig.view.clientsHardware">
+        <clientshardware-component  />
+    </div>
+</div>

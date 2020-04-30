@@ -2,12 +2,16 @@ package de.netview.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import de.netview.config.BeanUtil;
 import de.netview.data.enums.HardwareStatus;
+import de.netview.function.impl.DateUtil;
 import de.netview.model.*;
+import de.netview.service.ILDAPService;
 
 public class HardwareData implements Serializable {
 
@@ -19,10 +23,7 @@ public class HardwareData implements Serializable {
 	private String hostname;
 	private String ip;
 	private String description;
-	private String owner;
-	private String aktivUsername;
-	private String aktivUserPhone;
-	private String aktivDate;
+	private String date;
 	private String lastLogin;
 	private String model;
 	private String bs;
@@ -38,6 +39,11 @@ public class HardwareData implements Serializable {
 	private String encodingname;
 	private ADUserData ownerInformation;
 	private ADUserData inUseInformation;
+	private Boolean verliehen;
+	private String verliehenAn;
+	private String verliehenBis;
+	private String verliehenTel;
+	private String verliehenMobile;
 
 	private List<Document> documents = new ArrayList<>();
 	private List<LizenzData> lizenz = new ArrayList<LizenzData>();
@@ -52,6 +58,50 @@ public class HardwareData implements Serializable {
 		this.documents = documents;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public Boolean getVerliehen() {
+		return verliehen;
+	}
+
+	public void setVerliehen(Boolean verliehen) {
+		this.verliehen = verliehen;
+	}
+
+	public String getVerliehenAn() {
+		return verliehenAn;
+	}
+
+	public void setVerliehenAn(String verliehenAn) {
+		this.verliehenAn = verliehenAn;
+	}
+
+	public String getVerliehenBis() {
+		return verliehenBis;
+	}
+
+	public void setVerliehenBis(String verliehenBis) {
+		this.verliehenBis = verliehenBis;
+	}
+
+	public String getVerliehenTel() {
+		return verliehenTel;
+	}
+
+	public void setVerliehenTel(String verliehenTel) {
+		this.verliehenTel = verliehenTel;
+	}
+
+	public String getVerliehenMobile() {
+		return verliehenMobile;
+	}
+
+	public void setVerliehenMobile(String verliehenMobile) {
+		this.verliehenMobile = verliehenMobile;
+	}
+
 	public HardwareStatus getStatus() {
 		return status;
 	}
@@ -63,7 +113,7 @@ public class HardwareData implements Serializable {
 	public HardwareData() {
 		super();
 	}
-	
+
 	public HardwareData(ADUserData ownerInformation, ADUserData inUseInformation) {
 		super();
 		this.ownerInformation = ownerInformation;
@@ -76,22 +126,6 @@ public class HardwareData implements Serializable {
 
 	public void setChangelogList(List<Changelog> changelogList) {
 		this.changelogList = changelogList;
-	}
-
-	public String getOwner() {
-		return owner;
-	}
-
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
-
-	public String getAktivUsername() {
-		return aktivUsername;
-	}
-
-	public void setAktivUsername(String aktivUsername) {
-		this.aktivUsername = aktivUsername;
 	}
 
 	public String getHostname() {
@@ -171,14 +205,6 @@ public class HardwareData implements Serializable {
 		}
 	}
 
-	public String getAktivDate() {
-		return aktivDate;
-	}
-
-	public void setAktivDate(String aktivDate) {
-		this.aktivDate = aktivDate;
-	}
-	
 	public String getIp() {
 		return ip;
 	}
@@ -204,21 +230,39 @@ public class HardwareData implements Serializable {
 		this.setModel(hardware.getModel());
 		this.setRam(hardware.getRam());
 		this.setSn(hardware.getSn());
-		this.setAktivUsername(hardware.getAktivusername());
-		this.setAktivDate(hardware.getAktivdate());
-		this.setOwner(hardware.getOwner());
+		this.setDate(DateUtil.formatDate(hardware.getDate() == null ? 0 :hardware.getDate()));
 		this.setLizenz(hardware.getLizenz());
 		this.setSoftware(hardware.getSoftware());
-		this.setLastLogin(hardware.getLastlogin());
+		this.setLastLogin(DateUtil.formatDate(hardware.getLastlogin()));
 		this.setDescription(hardware.getDescription());
 		this.setIp(hardware.getIp());
 		this.setCategorie(hardware.getCategorie());
 		this.setOwnerLocation(hardware.getOwnerlocation());
 		this.setAktivLocation(hardware.getAktivlocation());
 		this.setDepartment(hardware.getDepartment());
-		this.setAktivUserPhone(hardware.getAktivuserphone());
 		this.setEncodingkey(hardware.getEncodingkey());
 		this.setEncodingname(hardware.getEncodingname());
+		if (hardware.getDate() != null)
+			this.setDate(DateUtil.formatDate(hardware.getDate()));
+		this.setVerliehen(hardware.getVerliehen());
+		if (hardware.getVerliehenAn() != null)
+			this.setVerliehenAn(hardware.getVerliehenAn().getUsername());
+		if (hardware.getVerliehenBis() != null)
+			this.setVerliehenBis(DateUtil.formatDate(hardware.getVerliehenBis()));
+
+		if (hardware.getVerliehen()) {
+			ILDAPService ldapService = BeanUtil.getBean(ILDAPService.class);
+			ADUserData ldapUsername = ldapService.getLDAPUserByName(hardware.getVerliehenAn().getUsername());
+			if (ldapUsername != null) {
+				this.setVerliehenMobile(ldapUsername.getMobile());
+				this.setVerliehenTel(ldapUsername.getTelephoneNumber());
+			}
+		}
+
+	}
+
+	public void setDate(String date) {
+		this.date = date;
 	}
 
 	public String getLastLogin() {
@@ -283,14 +327,6 @@ public class HardwareData implements Serializable {
 
 	public void setDepartment(String department) {
 		this.department = department;
-	}
-
-	public String getAktivUserPhone() {
-		return aktivUserPhone;
-	}
-
-	public void setAktivUserPhone(String aktivUserPhone) {
-		this.aktivUserPhone = aktivUserPhone;
 	}
 
 	public String getEncodingname() {

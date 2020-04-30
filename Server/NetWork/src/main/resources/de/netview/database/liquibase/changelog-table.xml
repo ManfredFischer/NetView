@@ -217,8 +217,9 @@
 			</column>
             <column name="username" type="VARCHAR(1020)" />
 			<column name="token" type="VARCHAR(1020)" />
-			<column name="description" type="VARCHAR(1020)" />	
-			<column name="phone" type="VARCHAR(1020)" />
+			<column name="pin" type="VARCHAR(1020)" />
+			<column name="puk" type="VARCHAR(1020)" />
+			<column name="description" type="VARCHAR(1020)" />
 		</createTable>
 	</changeSet>
     
@@ -417,6 +418,25 @@
 			<column name="date" type="BIGINT"/>
 			<column name="file" type="BLOB"/>
 		</createTable>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="17">
+		<renameColumn newColumnName="date"
+					  oldColumnName="aktivdate"
+					  schemaName="public"
+					  tableName="HARDWARE"/>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="18">
+		<addColumn tableName="HARDWARE">
+			<column name="ownerphone" type="VARCHAR(1020)"/>
+		</addColumn>
+	</changeSet>
+
+	<changeSet author="MaFischer" id="19">
+		<addColumn tableName="CHANGELOG">
+			<column name="impact" type="VARCHAR(1020)"/>
+		</addColumn>
 	</changeSet>
 
 </databaseChangeLog>

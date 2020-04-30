@@ -1,0 +1,40 @@
+<div style="width:400px">
+    <md-tabs>
+        <md-tab label="Search">
+            <div layout-gt-sm="row" layout-align="space-between center" style="padding: 10">
+                <md-autocomplete flex md-search-text-change="selectMessagLizenz(searchMessageLizenzText)"
+                                 md-selected-item-change="selectMessagLizenz(searchMessageLizenzText)"
+                                 md-item-text="item.name" md-search-text="searchMessageLizenzText"
+                                 md-items="item in querySearchLizenz(searchMessageLizenzText)"
+                                 placeholder="Lizenz...">
+                    <md-item-template >
+                        <span md-highlight-text="searchMessageLizenzText"  md-highlight-flags="^i">{{item.name}}</span>
+                    </md-item-template>
+                </md-autocomplete>
+
+                <md-button class="md-raised" ng-click="insertSelectedLizenz(searchMessageLizenzText,true)" style="height:20px" md-colors="{color: 'green'}">>></md-button>
+            </div>
+            <div layout-gt-sm="row" layout-align="space-between center"  style="margin:15px" ng-repeat="freeLizenz in selectedSearchLizenzList">
+                <div flex="40">{{freeLizenz.name}}</div>
+                <div flex="60">{{freeLizenz.key}}</div>
+            </div>
+        </md-tab>
+        <md-tab label="Auswählen">
+            <div class="virtualRepeatdemoDeferredLoading">
+                <md-virtual-repeat-container id="vertical-container">
+                    <div md-virtual-repeat="item in dynamicLizenzList" md-on-demand="" class="repeated-item">
+                        <div style="padding: 10">
+                            <md-checkbox md-no-ink ng-model="selected" class="md-primary" ng-click="insertSelectedLizenz(item, !selected)">
+                                {{item.name}} - {{item.key}}
+                            </md-checkbox>
+                        </div>
+                    </div>
+                </md-virtual-repeat-container>
+            </div>
+        </md-tab>
+    </md-tabs>
+    <div layout-gt-sm="row" layout-align="space-between center">
+        <div flex></div>
+        <md-button class="md-raised" ng-click="addHardwareLizenz()" style="height:20px" md-colors="{color: 'green'}">Hinzufügen</md-button>
+    </div>
+</div>

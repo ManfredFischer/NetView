@@ -3,17 +3,9 @@ package de.netview.model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,7 +17,8 @@ public class LDAPUser {
 	private String username;
 	private String token;
 	private String description;
-	private String phone;
+	private String pin;
+	private String puk;
 	private List<Hardware> hardwarerent = new ArrayList<>();
 	private List<Lizenz> lizenz = new ArrayList<>();
 
@@ -39,7 +32,23 @@ public class LDAPUser {
 	public void setLuid(Long luid) {
 		this.luid = luid;
 	}
-	
+
+	public String getPin() {
+		return pin;
+	}
+
+	public void setPin(String pin) {
+		this.pin = pin;
+	}
+
+	public String getPuk() {
+		return puk;
+	}
+
+	public void setPuk(String puk) {
+		this.puk = puk;
+	}
+
 	public String getUsername() {
 		return username;
 	}
@@ -64,17 +73,11 @@ public class LDAPUser {
 		this.description = description;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
 
 	@ManyToMany(cascade = CascadeType.REFRESH)
 	@JoinTable(name = "ldapuser_lizenz", joinColumns = { @JoinColumn(name = "luid") }, inverseJoinColumns = {
 			@JoinColumn(name = "lid") })
+	@JsonIgnore
 	public List<Lizenz> getLizenz() {
 		return lizenz;
 	}
@@ -83,14 +86,15 @@ public class LDAPUser {
 		this.lizenz = lizenz;
 	}
 	
-	@ManyToMany(cascade = CascadeType.REFRESH)
+	@OneToMany(cascade = CascadeType.REFRESH)
 	@JoinTable(name = "ldapuser_hardware", joinColumns = { @JoinColumn(name = "luid") }, inverseJoinColumns = {
 			@JoinColumn(name = "hid") })
+	@JsonIgnore
 	public List<Hardware> getHardwarerent() {
 		return hardwarerent;
 	}
 
-	@JsonIgnore
+
 	public void setHardwarerent(List<Hardware> hardwarerent) {
 		this.hardwarerent = hardwarerent;
 	}
@@ -103,7 +107,6 @@ public class LDAPUser {
 		result = prime * result + ((hardwarerent == null) ? 0 : hardwarerent.hashCode());
 		result = prime * result + ((lizenz == null) ? 0 : lizenz.hashCode());
 		result = prime * result + ((luid == null) ? 0 : luid.hashCode());
-		result = prime * result + ((phone == null) ? 0 : phone.hashCode());
 		result = prime * result + ((token == null) ? 0 : token.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
@@ -138,11 +141,6 @@ public class LDAPUser {
 				return false;
 		} else if (!luid.equals(other.luid))
 			return false;
-		if (phone == null) {
-			if (other.phone != null)
-				return false;
-		} else if (!phone.equals(other.phone))
-			return false;
 		if (token == null) {
 			if (other.token != null)
 				return false;
@@ -155,10 +153,4 @@ public class LDAPUser {
 			return false;
 		return true;
 	}
-	
-	
-
-	
-
-
 }

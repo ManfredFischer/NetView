@@ -35,7 +35,6 @@ public class ChangelogService implements IChangelogService {
         }
 
         changelog.setUsername(SecurityContextHolder.getContext().getAuthentication().getName());
-        changelog.setDate(new Date().getTime());
         return changelogDao.addChangelog(changelog);
     }
 

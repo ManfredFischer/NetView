@@ -65,7 +65,6 @@ public class LizenzService implements ILizenzService {
     @Override
     @Transactional
     public List<LizenzInformation> getLizenz(String state) {
-        if (AllInformation.getLizenz().isEmpty()) {
             List result = new ArrayList<>();
 
             List<Lizenz> lizenzen = lizenzDao.getLizenz(state);
@@ -73,9 +72,8 @@ public class LizenzService implements ILizenzService {
             for (Lizenz lizenz : lizenzen) {
                 result.add(new LizenzInformation(lizenz));
             }
-            AllInformation.setLizenz(result);
-        }
-        return AllInformation.getLizenz();
+
+        return result;
     }
 
     public void checkLizenz(List<Lizenz> lizenzen) {

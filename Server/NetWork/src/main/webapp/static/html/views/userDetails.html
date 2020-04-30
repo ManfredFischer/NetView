@@ -1,0 +1,72 @@
+<div layout="row">
+    <div flex></div>
+    <div class="page"   ng-controller="userController as ctrl" ng-show="showConfig.view.user">
+        <div layout-gt-xs="row">
+            <md-button ng-show="showConfig.user.details" class="md-raised" ng-click="showUserInformation(userInformation.uid)" md-colors="{color: 'green'}">Details</md-button>
+            <div flex=""></div>
+            <md-button  ng-show="showConfig.user.austritt" ng-disabled="true" ng-click="disableUser(false)" class="md-raised">Austritt</md-button>
+            <md-button  ng-show="showConfig.user.teamviewer" class="md-icon-button"  ng-click="openTeamViewer()" ><img  width="25" height="25" src="static/img/Teamviewer.png" style="border-radius: 15px;"></img> </md-button>
+            <md-button  ng-show="showConfig.user.telefon" class="md-icon-button"  ng-click="openTelefon(userInformation.telephoneNumber)" ><img  width="25" height="25" src="static/img/telefon.png"></img> </md-button>
+        </div>
+        <md-divider ng-show="showConfig.user.details"></md-divider>
+        <div style="padding: 10px">
+            <form ng-submit="selectUpdateUser(searchUserText)" >
+                <md-autocomplete md-item-text="item.displayName"
+                                 md-search-text="searchUserText"
+                                 md-items="item in querySearch(searchUserText)"
+                                 md-selected-item-change="selectUpdateUser(searchUserText)"
+                                 placeholder="Username...">
+
+
+                    <md-item-template>
+                        <span md-highlight-text="searchUserText" md-highlight-flags="^i">{{item.displayName}}</span>
+                    </md-item-template>
+                </md-autocomplete>
+            </form>
+
+            <div layout-gt-xs="row" >
+                <md-input-container class="md-block" style="margin: 0;margin-top: 10px">
+                    <label>Vorname</label>
+                    <input readonly ng-model="userInformation.firstname">
+                </md-input-container>
+                <md-input-container class="md-block" style="margin: 0;margin-top: 10px">
+                    <label>Nachname</label>
+                    <input readonly ng-model="userInformation.lastname">
+                </md-input-container>
+            </div>
+
+            <div layout-gt-xs="row">
+                <md-input-container class="md-block" style="margin: 0">
+                    <label>Telefon</label>
+                    <input readonly ng-click="openTelefon(userInformation.telephoneNumber)" ng-model="userInformation.telephoneNumber">
+                </md-input-container>
+
+                <md-input-container class="md-block" style="margin: 0">
+                    <label>Mobile</label>
+                    <input readonly ng-click="openTelefon(userInformation.mobile)"  ng-model="userInformation.mobile">
+                </md-input-container>
+            </div>
+
+            <div layout-gt-xs="row" >
+                <md-input-container class="md-block" style="margin: 0">
+                    <label>Abteilung</label>
+                    <input readonly  ng-model="userInformation.department">
+                </md-input-container>
+
+                <md-input-container class="md-block" style="margin: 0">
+                    <label>Position</label>
+                    <input readonly  ng-model="userInformation.title">
+                </md-input-container>
+            </div>
+
+            <div layout-gt-xs="row" style="margin: 0;width: 100%">
+                <md-input-container class="md-block" style="margin: 0;width: 100%">
+                    <label>Standort</label>
+                    <input readonly ng-model="userInformation.city">
+                </md-input-container>
+            </div>
+        </div>
+    </div>
+
+    <div flex></div>
+</div>

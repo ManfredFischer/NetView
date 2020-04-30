@@ -14,8 +14,17 @@ public class Changelog {
     private long date;
     private String title;
     private String changelog;
+    private String impact;
     private Long hid;
     private String system;
+
+    public String getImpact() {
+        return impact;
+    }
+
+    public void setImpact(String impact) {
+        this.impact = impact;
+    }
 
     public String getTitle() {
         return title;

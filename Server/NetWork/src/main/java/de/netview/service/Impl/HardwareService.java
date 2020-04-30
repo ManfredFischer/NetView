@@ -6,6 +6,7 @@ import de.netview.data.ADUserData;
 import de.netview.data.AllInformation;
 import de.netview.data.HardwareData;
 import de.netview.data.HardwareInformation;
+import de.netview.data.enums.HardwareStatus;
 import de.netview.function.impl.DateUtil;
 import de.netview.function.impl.IPSort;
 import de.netview.model.Hardware;
@@ -18,9 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +90,7 @@ public class HardwareService implements IHardwareService {
                     && checkAdminLogin(userData)){
                 hardware.setOwnerlocation(location.getLid().intValue());
                 hardware.setOwner(hardware.getAktivusername());
+                hardware.setOwnerphone("");
             }
         }
 
@@ -213,20 +213,31 @@ public class HardwareService implements IHardwareService {
     @Override
     @Transactional
     public List<HardwareInformation> getAllHardware(String categorie) {
-        if ((AllInformation.getAllHardwareInformation().isEmpty() && categorie.equalsIgnoreCase("clients"))
-				|| (AllInformation.getAllNetzHardwareInformation().isEmpty() && !categorie.equalsIgnoreCase("clients"))) {
+
+
+        List<HardwareInformation> getCachedHardware = new ArrayList<>();
+
+        if (categorie.equalsIgnoreCase("clients")){
+            getCachedHardware = AllInformation.getClients();
+        }else {
+            getCachedHardware = AllInformation.getServer();
+        }
+
+        if (getCachedHardware.isEmpty()) {
             List<HardwareInformation> hardwareList = new ArrayList<>();
             for (Hardware hardware : hardwareDao.getAllHardware(categorie)) {
                 HardwareInformation hardwareData = new HardwareInformation(hardware);
                 hardwareList.add(hardwareData);
             }
-            hardwareList = IPSort.sortHardware(hardwareList);
 
-            if ("clients".equalsIgnoreCase(categorie)) AllInformation.setAllClientsHardwareInformation(hardwareList);
-            else AllInformation.setAllNetzHardwareInformation(hardwareList);
+            if (categorie.equalsIgnoreCase("clients")){
+                return AllInformation.setClients(IPSort.sortHardware(hardwareList));
+            }else {
+                return AllInformation.setServer(IPSort.sortHardware(hardwareList));
+            }
         }
 
-        return categorie.equalsIgnoreCase("clients") ? AllInformation.getAllHardwareInformation() : AllInformation.getAllNetzHardwareInformation();
+        return getCachedHardware;
     }
 
     @Override
@@ -269,9 +280,7 @@ public class HardwareService implements IHardwareService {
     public void loginHardware(String hostname, String username) {
         Hardware hardware = hardwareDao.getHardwareByName(hostname);
         hardware.setAktivusername(username);
-        Date date = java.util.Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd.MM.yyyy - HH:mm:ss");
-        hardware.setAktivdate(dateFormatter.format(date));
+        hardware.setLastlogin(DateUtil.getDateNow());
         hardwareDao.saveOrUpdateHardware(hardware);
     }
 
@@ -280,7 +289,7 @@ public class HardwareService implements IHardwareService {
     public void logoutHardware(String hostname) {
         Hardware hardware = hardwareDao.getHardwareByName(hostname);
         hardware.setAktivusername("");
-        hardware.setAktivdate("");
+        hardware.setLastlogin(0L);
         hardwareDao.saveOrUpdateHardware(hardware);
 
     }
@@ -289,10 +298,12 @@ public class HardwareService implements IHardwareService {
     @Transactional
     public void deleteHardware(Long hid) {
         Hardware hardware = hardwareDao.getHardwareById(hid);
-        for (Lizenz lizenz : hardware.getLizenz()) {
-            checkLizenz(lizenz, 1);
+        if (hardware != null) {
+            for (Lizenz lizenz : hardware.getLizenz()) {
+                checkLizenz(lizenz, 1);
+            }
+            hardwareDao.deleteHardware(hardware);
         }
-        hardwareDao.deleteHardware(hardware);
     }
 
     public void checkLizenz(Lizenz lizenz, int mod) {
@@ -331,22 +342,30 @@ public class HardwareService implements IHardwareService {
     public void changeHardwareOwner(Map value) {
         Hardware hardware = getHardwareById(Long.parseLong(value.get("hid").toString()));
         hardware.setOwner(value.get("uid").toString());
+        if (!hardware.getAktivusername().equalsIgnoreCase(value.get("uid").toString())) {
+            ADUserData user = ldapService.getLDAPUserByName(value.get("uid").toString());
+            hardware.setOwnerphone(user.getTelephoneNumber());
+        }
         saveHardware(hardware);
     }
 
     @Override
     @Transactional
-    public Hardware archivHardware(long hid) {
+    public void setHardwareStatus(long hid, HardwareStatus status) {
         Hardware hardware = getHardwareById(hid);
 
-        if (hardware.getStatus() == null || hardware.getStatus() == AKTIV) {
-            hardware.setStatus(ARCHIV);
+        if (status == ARCHIV) {
+            hardware.setStatus(status);
+            hardware.setLastlogin(0L);
+            hardware.setAktivusername("");
+            hardware.setAktivlocation(-1);
+            hardware.setAktivuserphone("");
         } else {
-            hardware.setStatus(AKTIV);
+            hardware.setStatus(status);
         }
 
         saveHardware(hardware);
-        return hardware;
+
     }
 
     @Override

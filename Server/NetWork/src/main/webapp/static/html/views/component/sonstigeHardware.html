@@ -1,0 +1,89 @@
+<div class="ng-scope layout-row " style="padding-left:10px;border-bottom: 5px solid #E6E6E6;">
+    <div flex layout="row">
+        <div flex="15" style="font-size:14px">Hostname</div>
+        <div flex="15" style="font-size:14px">Betriebsystem</div>
+        <div flex="15" style="font-size:14px">IP/Gateway</div>
+        <div flex="15" style="font-size:14px">Model/SN</div>
+        <div flex="15" style="font-size:14px">Mac</div>
+        <div flex style="font-size:14px">Kathegorie</div>
+    </div>
+
+    <div style="width: 156px"></div>
+
+</div>
+
+<div class="clientsHardwareList" style="background-color: {{hw.status == 'PRUEFEN' ? '#f7ba0b' : '#FFFFFF'}}"	ng-repeat="hw in ctrl.getHostList()"	flex="100" layout="row" >
+   <div flex layout="row" ng-click="showHardwareInformation(hw.hid,false)" class="clientsInfo">
+       <div flex="15" class="clientsContainer">
+           <p class="clientsTitle">{{ hw.hostname }}</p>
+           <p class="clientsSubTitle">{{ hw.owner }}</p>
+       </div>
+       <div flex="15" class="clientsContainer">
+           <p class="clientsTitle">{{ hw.bs }}</p>
+           <p class="clientsSubTitle">{{ hw.domain }}</p>
+       </div>
+       <div flex="15" class="clientsContainer">
+           <p class="clientsTitle">{{ hw.ip }}</p>
+           <p class="clientsSubTitle">{{ hw.gateway }}</p>
+       </div>
+       <div flex="15" class="clientsContainer">
+           <p class="clientsTitle">{{ hw.model }}</p>
+           <p class="clientsSubTitle">{{ hw.sn }}</p>
+       </div>
+       <div flex="15" class="clientsContainer">
+           <p class="clientsTitle">{{ hw.mac }}</p>
+       </div>
+       <div flex class="clientsContainer">
+           <p class="clientsTitle">{{ hw.cathegorie }}</p>
+       </div>
+       <div flex></div>
+       <div ng-if="hw.verliehen" class="clientsContainer">
+           <p class="clientsTitle" style="color: red">{{ hw.verliehenAn }}</p>
+           <p class="clientsSubTitle">{{ hw.verliehenBis }}</p>
+       </div>
+   </div>
+   <div flex="none" style="width: 156px" layout="row">
+
+       <md-button class="md-icon-button" ng-click="openTeamViewer(hw.hostname)" ng-show="hw.status != 'ARCHIV'">
+           <md-tooltip>
+               Remotezugriff starten
+           </md-tooltip>
+           <img width="20px" heigth="20px"	src="/NetView/static/img/Teamviewer.png"> </md-icon>
+       </md-button>
+
+       <md-button class="md-icon-button" ng-click="openTelefon(hw.ownerPhone)" ng-if="hw.ownerPhone != ''">
+           <md-tooltip>
+               Verantwortlicher anrufen
+           </md-tooltip>
+           <img width="20px" heigth="20px"	src="/NetView/static/img/telefon-schwarz.png"> </md-icon>
+       </md-button>
+
+       <md-menu>
+           <md-button aria-label="Open demo menu" class="md-icon-button" ng-click="$mdMenu.open()">
+               <md-tooltip>
+                   Erweiterte Funktionen
+               </md-tooltip>
+               <img  width="20" height="20" src="static/img/punkte-schwarz.png" style="border-radius: 15px;"></img>
+           </md-button>
+
+           <md-menu-content>
+               <md-menu-item ng-show="showAction(shortAction, hw)" ng-repeat="shortAction in shortActionList">
+                   <md-button  ng-click="openShortActions(shortAction,hw)"> {{shortAction.name}} </md-button>
+               </md-menu-item>
+               <md-menu-divider></md-menu-divider>
+               <md-menu >
+                   <md-button ng-click="$mdMenu.open()" style="width: 85%;">
+                       Status
+                   </md-button>
+
+                   <md-menu-content>
+                       <md-menu-item ng-show="hw.status.toLowerCase() != 'aktiv'"><md-button  ng-click="setStatusHardware(hw,'AKTIV')">Aktiv</md-button></md-menu-item>
+                       <md-menu-item ng-show="hw.status.toLowerCase() != 'pruefen'"><md-button  ng-click="setStatusHardware(hw,'PRUEFEN')">Prüfen</md-button></md-menu-item>
+                       <md-menu-item ng-show="hw.status.toLowerCase() != 'lager'"><md-button ng-click="setStatusHardware(hw,'LAGER')">Lagern</md-button></md-menu-item>
+                       <md-menu-item ng-show="hw.status.toLowerCase() != 'archiv'"><md-button ng-click="setStatusHardware(hw,'ARCHIV')">Archivieren</md-button></md-menu-item>
+                   </md-menu-content>
+               </md-menu>
+           </md-menu-content>
+       </md-menu>
+   </div>
+</div>

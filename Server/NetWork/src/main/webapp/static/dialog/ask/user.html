@@ -1,0 +1,14 @@
+<div style="padding: 10">
+     <md-datepicker ng-model="ctrl.messageUserDate" ng-if="configMessageDialog.dialogUserMessage.setDate"  md-placeholder="Verliehen bis"></md-datepicker>
+
+    <div layout-gt-sm="row" layout-align="space-between center">
+        <md-autocomplete md-search-text-change="selectMessagUser(searchMessageUserText)" md-selected-item-change="selectMessagUser(searchMessageUserText)" md-item-text="item.displayName" md-search-text="searchMessageUserText"
+                         md-items="item in querySearch(searchMessageUserText)" placeholder="Username...">
+            <md-item-template >
+                <span md-highlight-text="searchMessageUserText"  md-highlight-flags="^i">{{item.displayName}}</span>
+            </md-item-template>
+        </md-autocomplete>
+
+        <md-button class="md-raised" ng-click="configMessageDialog.dialogUserMessage.action(ctrl.messageUserDate)" style="height:20px" md-colors="{color: 'green'}">OK</md-button>
+    </div>
+</div>

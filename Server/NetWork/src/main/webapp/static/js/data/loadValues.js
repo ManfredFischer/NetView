@@ -1,9 +1,4 @@
-app.service('data', function($http,initService) {
-	this.initService = initService;
-	this.clientsHardware = {
-		lastUpdate : '',
-		result : []
-	};
+app.service('data', function($http) {
 
     this.loadLocation = function ($scope) {
     	$http({
@@ -13,9 +8,8 @@ app.service('data', function($http,initService) {
 			url: 'location'
 		}).then(function successCallback(response) {
 			response.data.forEach(function (data) {
-				response.config.scope.LocationList.push(data);
+				response.config.scope.locationList.push(data);
 			});
-			response.config.this.initService.finishTransaction("location",response);
 		 }
 		);
     };
@@ -34,10 +28,9 @@ app.service('data', function($http,initService) {
 						data.lid = 1;
 					}
 
-					response.config.scope.people.push(data);
+					response.config.scope.ldapUser.push(data);
 
 				});
-				response.config.this.initService.finishTransaction("users",response);
 			});
     };
 
@@ -54,7 +47,6 @@ app.service('data', function($http,initService) {
 					data.date = dateInfo.getDay() +"."+dateInfo.getMonth()+"."+dateInfo.getFullYear()+" "+dateInfo.getHours()+":"+dateInfo.getSeconds();
 					response.config.scope.changelogList.push(data);
 				});
-				response.config.this.initService.finishTransaction("changelog",response);
 			});
 	}
     this.loadLizenz = function($scope, $state){
@@ -90,85 +82,8 @@ app.service('data', function($http,initService) {
 				});
 				
 				$scope.setLizenzViewPages(response.config.scope.lizenzen);
-				response.config.this.initService.finishTransaction("lizenz",response);
 			}
 		 );
 	}
 
-	this.loadHardware = function($scope, categorie){
-		if ($scope == undefined){
-			$http({
-				method: 'GET',
-				scope : this,
-				sync: false,
-				params : {
-					"categorie" : categorie
-				},
-				url: 'hardware'
-			}).then(function successCallback(response) {
-				response.data.forEach(function (data) {
-					response.config.scope.clientsHardware.result.push(data);
-				});
-			});
-		}else {
-			if (this.clientsHardware.result.length != 0) {
-				$scope.hardware = this.clientsHardware.result;
-			} else {
-				$http({
-					method: 'GET',
-					scope: $scope,
-					params: {
-						"categorie": categorie
-					},
-					url: 'hardware'
-				}).then(function successCallback(response) {
-					response.config.scope.hardware = [];
-					response.data.forEach(function (data) {
-						response.config.scope.hardware.push(data);
-					});
-
-					response.config.scope.setHardwareViewPages(response.data);
-				});
-			}
-		}
-	};
-
-	this.loadClientsHardware = function($scope){
-		$http({
-			method: 'GET',
-			scope: $scope,
-			this : this,
-			params : {
-				"categorie" : "clients"
-			},
-			url: 'hardware'
-		}).then(function successCallback(response) {
-			response.config.scope.hardware = [];
-			response.data.forEach(function (data) {
-				response.config.scope.hardware.push(data);
-			});
-
-			response.config.this.initService.finishTransaction("clientsHardware",response);
-		});
-	};
-
-	this.loadNetzHardware = function($scope){
-		$http({
-			method: 'GET',
-			scope: $scope,
-			this : this,
-			params : {
-				"categorie" : "sonstiges"
-			},
-			url: 'hardware'
-		}).then(function successCallback(response) {
-			response.config.scope.hardware = [];
-			response.data.forEach(function (data) {
-				response.config.scope.hardware.push(data);
-			});
-
-			response.config.this.initService.finishTransaction("netzHardware",response);
-		});
-	};
-	
 });

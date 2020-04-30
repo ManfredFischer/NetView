@@ -64,7 +64,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     	http.csrf().disable();
     	http.headers().addHeaderWriter(new XFrameOptionsHeaderWriter(XFrameOptionsMode.SAMEORIGIN));
     	http.authorizeRequests().antMatchers("/static/img/**").permitAll();
-    	http.authorizeRequests().antMatchers("/static/js/login.js").permitAll();
     	http.authorizeRequests().antMatchers("/static/css/login.css").permitAll();
     	http.authorizeRequests().antMatchers("/static/framework/**").permitAll();
         http.authorizeRequests().antMatchers("/login").permitAll();

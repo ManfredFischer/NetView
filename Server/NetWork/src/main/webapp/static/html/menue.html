@@ -1,185 +1,120 @@
-        
-        <div layout="row" layout-wrap >
-        
-           <md-menu-bar flex class="menueLeiste">
-        	 
-                <img src="/NetView/static/img/reservix.jpg" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img>        
-                <md-menu>
-                    <div ng-click="$mdMenu.open()" class="menue" >
-                        {{translation.menue.go}}
-                    </div>
-                    <md-menu-content>
-                        <md-menu-item ng-if="security.settings" >
-                            <md-button ng-click="selectMenu('showSettings')">
-                                <img src="/NetView/static/img/setting.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.settings}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="showImport()">
-                                <img src="/NetView/static/img/Upload.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.import}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-divider></md-menu-divider>
-                        <md-menu-item>
-                            <md-button ng-click="logout()">
-                            <img src="/NetView/static/img/logout.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.logout}}
-                            </md-button> 
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-                <md-menu ng-if="security.verwaltung">
-                    <div ng-click="$mdMenu.open()" class="menue">
-                        {{translation.menue.org}}
-                    </div>
-                    <md-menu-content>
-
-                    	<md-menu-item ng-if="security.verwaltungConfig.clients">
-                            <md-button ng-click="selectMenu('showClients')">
-                                <img src="/NetView/static/img/clients.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.clients}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item ng-if="security.verwaltungConfig.netz">
-                            <md-button ng-click="selectMenu('showServer')">
-                                <img src="/NetView/static/img/infrastruktur.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.netz}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item ng-if="security.verwaltungConfig.changelog">
-                         <md-button ng-click="selectMenu('showChangeLogView')">
-                            <img src="/NetView/static/img/Changelog.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Changelog Liste
-                         </md-button>
-                        </md-menu-item>
-                        <md-menu-item ng-if="security.verwaltungConfig.mobile">
-                            <md-button ng-click="selectMenu('showMobile')">
-                                <img src="/NetView/static/img/Hardware.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> Mobilefunk liste
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item ng-if="security.verwaltungConfig.lizenz">
-                            <md-button ng-click="selectMenu('showLizenz')">
-                                <img src="/NetView/static/img/lizenz.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.shortcurt.lizenz}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-divider></md-menu-divider>
-                        <md-menu-item ng-if="security.verwaltungConfig.addHardware">
-                            <md-button ng-click="selectMenu('serverAdd')">
-                                <img src="/NetView/static/img/addHardware.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addHardware}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item ng-if="security.verwaltungConfig.addLizenz">
-                            <md-button ng-click="selectMenu('lizenzAdd')">
-                                <img src="/NetView/static/img/addLizenz.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addLizenze}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item ng-if="false">
-                            <md-button ng-click="selectMenu('mobileUserAdd')">
-                                <img src="/NetView/static/img/addLizenz.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> Mobile User hinzufügen
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item ng-if="security.verwaltungConfig.changelog">
-                            <md-button ng-click="selectMenu('addChangeLog')">
-                                <img src="/NetView/static/img/Changelog.png" width="20px" height="20px"  style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addChangelog}}
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-                <md-menu ng-if="security.user">
-                    <div ng-click="$mdMenu.open()" class="menue">
-                        {{translation.menue.user}}
-                    </div>
-                    <md-menu-content>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('showUser')">
-                                <img src="/NetView/static/img/user.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.showUser}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-divider ng-if="false"></md-menu-divider>
-                        <md-menu-item  ng-if="security.userConfig.addUser">
-                            <md-button ng-click="selectMenu('showCreateUser')">
-                                <img src="/NetView/static/img/AddUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.addUser}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item  ng-if="security.userConfig.deleteUser">
-                            <md-button ng-click="selectMenu('showUpdateUser')">
-                                <img src="/NetView/static/img/UpdateUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.refreshUser}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item   ng-if="security.userConfig.updateUser">
-                            <md-button ng-click="selectMenu('showDeleteUser')">
-                                <img src="/NetView/static/img/DellUserIcon.png" width="20px" height="20px" style="vertical-align:middle;margin-right:10px"></img> {{translation.menue.delUser}}
-                            </md-button>
-                        </md-menu-item>
-                      </md-menu-content>
-                </md-menu>
-                <md-menu class="menue" ng-if="false">
-                    <div ng-click="$mdMenu.open()" >
-                        {{translation.menue.data}}
-                    </div>
-                    <md-menu-content>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('showVorlagen')">
-                                {{translation.menue.controlSubmittals}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('showLaptops')">
-                                {{translation.menue.controlLaptops}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('schowLocation')">
-                                {{translation.menue.controlLocation}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('showHandy')">
-                                {{translation.menue.controlHandy}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('showDepartment')">
-                                {{translation.menue.controlDepartement}}
-                            </md-button>
-                        </md-menu-item>
-                       </md-menu-content>
-                  </md-menu>
-                  <md-menu  ng-if="security.software">
-                    <div ng-click="$mdMenu.open()" class="menue">
-                        {{translation.menue.software}}
-                    </div>
-                    <md-menu-content>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('showSoftware')">
-                                Software Verwaltung
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('showLaptops')">
-                                {{translation.menue.addSoftware}}
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="selectMenu('schowLocation')">
-                                {{translation.menue.delSoftware}}
-                            </md-button>
-                        </md-menu-item>
-                       </md-menu-content>
-                </md-menu>
-            </md-menu-bar>
-            <md-menu-bar flex class="menueLeiste">
-
-            </md-menu-bar>
-
-            <md-menu-bar class="menueLeiste">
-                <md-menu ng-if="security.settings">
-                    <div  class="menue">
-                        <img src="/NetView/static/img/setting-white.png" width="15px" height="15px" style="vertical-align:middle;margin-right:5px" ng-click="selectMenu('showSettings')"></img>
-                    </div>
-                </md-menu>
-                <md-menu>
-                    <div class="menue" ng-click="logout()">
-                        <img src="/NetView/static/img/logout-white.png" width="15px" height="15px" style="border-radius:5px 15%;vertical-align:middle;margin-right:5px"></img>
-                    </div>
-                </md-menu>
-                
-            </md-menu-bar>
-            
+<div layout="row" layout-wrap >
+   <md-menu-bar flex class="menueLeiste">
+       <md-menu  ng-if="showConfig.menue.datei.show">
+            <div ng-click="$mdMenu.open()" class="menue" >
+                {{translation.menue.go}}
             </div>
+            <md-menu-content>
+                <md-menu-item ng-if="showConfig.menue.datei.setting" >
+                    <md-button ng-click="selectMenu('showSettings')">
+                        <img src="/NetView/static/img/setting.png" id="imgMenue" ></img> {{translation.menue.settings}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.datei.upload">
+                    <md-button ng-click="showImport()">
+                        <img src="/NetView/static/img/Upload.png" id="imgMenue"></img> {{translation.menue.import}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider ng-if="showConfig.menue.datei.logout"></md-menu-divider>
+                <md-menu-item ng-if="showConfig.menue.datei.logout">
+                    <md-button ng-click="menue.logout()">
+                        <img src="/NetView/static/img/logout.png" id="imgMenue"></img> {{translation.menue.logout}}
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+        <md-menu ng-if="showConfig.menue.system.show">
+            <div ng-click="$mdMenu.open()" class="menue">
+                {{translation.menue.org}}
+            </div>
+            <md-menu-content>
+                <md-menu-item  ng-if="showConfig.menue.system.client">
+                    <md-button ng-click="selectMenu('showClients')">
+                        <img src="/NetView/static/img/clients.png" id="imgMenue"></img> {{translation.shortcurt.clients}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.system.netz">
+                    <md-button ng-click="selectMenu('showNetz')">
+                        <img src="/NetView/static/img/infrastruktur.png" id="imgMenue"></img> {{translation.shortcurt.netz}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.system.changelog">
+                 <md-button ng-click="selectMenu('showChangelog')">
+                    <img src="/NetView/static/img/Changelog.png" id="imgMenue"></img> Changelog Liste
+                 </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.system.lizenz">
+                    <md-button ng-click="selectMenu('showLizenz')">
+                        <img src="/NetView/static/img/lizenz.png" id="imgMenue"></img> {{translation.shortcurt.lizenz}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-divider></md-menu-divider>
+                <md-menu-item ng-if="showConfig.menue.system.addHardware">
+                    <md-button ng-click="selectMenu('addHardware')">
+                        <img src="/NetView/static/img/addHardware.png" id="imgMenue"></img> {{translation.menue.addHardware}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.system.addLizenz">
+                    <md-button ng-click="selectMenu('lizenzAdd')">
+                        <img src="/NetView/static/img/addLizenz.png" id="imgMenue"></img> {{translation.menue.addLizenze}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.system.addChangelog">
+                    <md-button ng-click="selectMenu('addChangeLog')">
+                        <img src="/NetView/static/img/Changelog.png" id="imgMenue"></img> {{translation.menue.addChangelog}}
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+        <md-menu ng-if="showConfig.menue.user.show">
+            <div ng-click="$mdMenu.open()" class="menue">
+                {{translation.menue.user}}
+            </div>
+            <md-menu-content>
+                <md-menu-item ng-if="showConfig.menue.user.user">
+                    <md-button ng-click="selectMenu('showUser')">
+                        <img src="/NetView/static/img/user.png" id="imgMenue"></img> {{translation.menue.showUser}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.user.user">
+                    <md-button ng-click="selectMenu('addUser')">
+                        <img src="/NetView/static/img/wizard-512.png" id="imgMenue"></img> User Wizard
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+
+
+        <md-menu  ng-if="showConfig.menue.software.show">
+            <div ng-click="$mdMenu.open()" class="menue">
+                {{translation.menue.software}}
+            </div>
+            <md-menu-content>
+                <md-menu-item ng-if="showConfig.menue.software.software">
+                    <md-button ng-click="menue.selectMenu('showSoftware')">
+                        Software Verwaltung
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.software.addSoftware">
+                    <md-button ng-click="menue.selectMenu('showLaptops')">
+                        {{translation.menue.addSoftware}}
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item ng-if="showConfig.menue.software.delSoftware">
+                    <md-button ng-click="menue.selectMenu('schowLocation')">
+                        {{translation.menue.delSoftware}}
+                    </md-button>
+                </md-menu-item>
+               </md-menu-content>
+        </md-menu>
+    </md-menu-bar>
+
+    <md-menu-bar flex class="menueLeiste">
+    </md-menu-bar>
+    <md-menu-bar class="menueLeiste" >
+        <div class="menue" ng-click="logout()">
+            <img src="/NetView/static/img/logout-white.png" width="15px" height="15px" style="border-radius:5px 15%;vertical-align:middle;margin-right:5px"></img>
+        </div>
+    </md-menu-bar>
+
+</div>
