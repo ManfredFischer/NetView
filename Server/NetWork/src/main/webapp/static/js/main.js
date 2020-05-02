@@ -22,10 +22,7 @@ app.controller('ListCtrl', function ($scope,$mdDialog, $http,data, lizenzService
 		hardware : undefined,
 		lizenz : undefined,
 		changelog : undefined,
-		selectedHW : undefined,
-		selectedlizenz : undefined,
-		selectedChangelog : undefined,
-		selectedSoftware : undefined
+		software : undefined
 	};
 
 	$scope.hardwareActivDetails = {
@@ -35,10 +32,7 @@ app.controller('ListCtrl', function ($scope,$mdDialog, $http,data, lizenzService
 		hardware : undefined,
 		lizenz : undefined,
 		changelog : undefined,
-		selectedHW : undefined,
-		selectedlizenz : undefined,
-		selectedChangelog : undefined,
-		selectedSoftware : undefined
+		software : undefined
 	};
 
 	$scope.hardwareRentDetails = {
@@ -48,13 +42,11 @@ app.controller('ListCtrl', function ($scope,$mdDialog, $http,data, lizenzService
 		hardware : undefined,
 		lizenz : undefined,
 		changelog : undefined,
-		selectedHW : undefined,
-		selectedlizenz : undefined,
-		selectedChangelog : undefined,
-		selectedSoftware : undefined
+		software : undefined
 	};
 
 	$scope.hardwareList = [];
+
 	$scope.ownerDetails = {
 		view : false,
 		tabTitle : '',

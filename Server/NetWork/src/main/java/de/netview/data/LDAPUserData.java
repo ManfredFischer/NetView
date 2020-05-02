@@ -10,7 +10,6 @@ public class LDAPUserData implements Serializable {
 	private List aktivHardware;
 	private List ownerHardware;
 	private List lizenz;
-	private UserDetails ldapUser;
 		
 	public ADUserData getUserData() {
 		return userData;
@@ -35,12 +34,6 @@ public class LDAPUserData implements Serializable {
 	}
 	public void setLizenz(List lizenz) {
 		this.lizenz = lizenz;
-	}
-	public UserDetails getLdapUser() {
-		return ldapUser;
-	}
-	public void setLdapUser(UserDetails ldapUser) {
-		this.ldapUser = ldapUser;
 	}
 
 }

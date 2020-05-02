@@ -179,7 +179,6 @@ app.controller('hardwareController', function ($scope, $http,$mdDialog, hardware
     };
 
     $scope.showHardwareInformation = function (hid, editable) {
-
         hardwareService.showHardware(hid,editable,$scope);
     };
 

@@ -180,7 +180,6 @@ app.service('hardwareService', function($http, $mdDialog,viewService,userService
             sync: true,
             url: 'hardware/'+hid
         }).then(function successCallback(response) {
-            debugger;
             scope.activUserDetails.view = false;
             scope.activUserDetails.user = {};
 
@@ -190,54 +189,43 @@ app.service('hardwareService', function($http, $mdDialog,viewService,userService
             scope.hardwareDetails.view = true;
             scope.hardwareDetails.tabTitle = 'Hardware';
             scope.hardwareDetails.title = 'Details';
-            scope.hardwareDetails.hardware = [response.data];
+            scope.hardwareDetails.hardware = response.data;
             scope.hardwareDetails.scope = scope;
-            scope.hardwareDetails.hardwareService = response.config.this;;
+            scope.hardwareDetails.hardwareService = response.config.this;
 
-            scope.hardwareDetails.lizenz = [];
-            scope.hardwareDetails.changelog = [];
-            scope.hardwareDetails.software = [];
 
-            if (scope.hardwareDetails.hardware.length > 0) {
-                for (var index = 0; index < scope.hardwareDetails.hardware.length; index++) {
-                    scope.hardwareDetails.lizenz.push(viewService.getNewDynamicItems(scope.hardwareDetails.hardware[index].lizenz));
+            scope.hardwareDetails.lizenz = viewService.getNewDynamicItems(scope.hardwareDetails.hardware.lizenz);
 
-                    scope.hardwareDetails.hardware[index].changelogList.forEach(data => {
-                        data.date = new Date(data.date).toDateString();
-                    });
+            scope.hardwareDetails.hardware.changelogList.forEach(data => {
+                data.date = new Date(data.date).toDateString();
+            });
 
-                    scope.hardwareDetails.changelog.push(viewService.getNewDynamicItems(scope.hardwareDetails.hardware[index].changelogList));
-                    scope.hardwareDetails.software.push(viewService.getNewDynamicItems(scope.hardwareDetails.hardware[index].software));
-                    //scope.hardwareDetails.document.push(viewService.getNewDynamicItems(scope.hardwareDetails.hardware[index].document));
-                }
+            scope.hardwareDetails.changelog = viewService.getNewDynamicItems(scope.hardwareDetails.hardware.changelogList);
+            scope.hardwareDetails.software = viewService.getNewDynamicItems(scope.hardwareDetails.hardware.software);
+            //scope.hardwareDetails.document.push(viewService.getNewDynamicItems(scope.hardwareDetails.hardware[index].document));
 
-                scope.hardwareDetails.selectedHW = scope.hardwareDetails.hardware[0];
-                scope.hardwareDetails.selectedlizenz = scope.hardwareDetails.lizenz[0];
-                scope.hardwareDetails.selectedChangelog = scope.hardwareDetails.changelog[0];
-                scope.hardwareDetails.selectedSoftware = scope.hardwareDetails.software[0];
-            }
 
 
             scope.hardwareDetails.help = scope.help;
 
             scope.hardwareDetails.hardwareService.resetUserDetails(scope);
             var same = false;
-            if (scope.hardwareDetails.hardware[0] != undefined && scope.hardwareDetails.hardware[0].ownerInformation != undefined && scope.hardwareDetails.hardware[0].ownerInformation.displayName != undefined){
-                if (scope.hardwareDetails.hardware[0].inUseInformation == undefined ||
-                    scope.hardwareDetails.hardware[0].inUseInformation.displayName != scope.hardwareDetails.hardware[0].ownerInformation.displayName)
-                    scope.hardwareDetails.hardwareService.setUserDetails(scope.hardwareDetails.hardware[0].ownerInformation,scope.ownerDetails, scope.dialogAction,'Owner' );
+            if (scope.hardwareDetails.hardware != undefined && scope.hardwareDetails.hardware.ownerInformation != undefined && scope.hardwareDetails.hardware.ownerInformation.displayName != undefined){
+                if (scope.hardwareDetails.hardware.inUseInformation == undefined ||
+                    scope.hardwareDetails.hardware.inUseInformation.displayName != scope.hardwareDetails.hardware.ownerInformation.displayName)
+                    scope.hardwareDetails.hardwareService.setUserDetails(scope.hardwareDetails.hardware.ownerInformation,scope.ownerDetails, scope.dialogAction,'Owner' );
                 else
                   same = true
             }
 
-            if (scope.hardwareDetails.hardware[0] != undefined && scope.hardwareDetails.hardware[0].inUseInformation != undefined &&
-                scope.hardwareDetails.hardware[0].inUseInformation.displayName != undefined){
-                scope.hardwareDetails.hardwareService.setUserDetails(scope.hardwareDetails.hardware[0].inUseInformation,scope.activUserDetails, scope.dialogAction,same ? 'User' : 'Aktiv User' );
+            if (scope.hardwareDetails.hardware != undefined && scope.hardwareDetails.hardware.inUseInformation != undefined &&
+                scope.hardwareDetails.hardware.inUseInformation.displayName != undefined){
+                scope.hardwareDetails.hardwareService.setUserDetails(scope.hardwareDetails.hardware.inUseInformation,scope.activUserDetails, scope.dialogAction,same ? 'User' : 'Aktiv User' );
             }
 
             if (scope.dialogAction.telefon != undefined && scope.dialogAction.telefon.value.length == 1){
                 scope.dialogAction.telefon.show = false;
-                scope.dialogAction.telefon.number = scope.dialogAction.telefon.value[0].value;
+                scope.dialogAction.telefon.number = scope.dialogAction.telefon.value.value;
             }
 
             scope.showConfig.details.hardware = true;
@@ -258,7 +246,7 @@ app.service('hardwareService', function($http, $mdDialog,viewService,userService
 
             scope.dialogAction.openHardware = true;
 
-            scope.showAbstractInformation(scope.hardwareDetails.hardware[0].hostname,scope.hardwareDetails.hardware[0].lastLogin,"hardware-weis.png");
+            scope.showAbstractInformation(scope.hardwareDetails.hardware.hostname,scope.hardwareDetails.hardware.lastLogin,"hardware-weis.png");
         });
     };
 

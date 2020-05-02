@@ -460,7 +460,6 @@ public class LDAPService implements ILDAPService {
         userdata.setOwnerHardware(hardwareOwnerList);
         userdata.setAktivHardware(hardwareAktivList);
         userdata.setLizenz(hardwareAktivLizenzList);
-        userdata.setLdapUser(new UserDetails(ldapUserDao.getLDAPUserByName(username)));
         userdata.setUserData(adUser);
 
         return userdata;

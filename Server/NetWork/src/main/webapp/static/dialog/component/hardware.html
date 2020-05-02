@@ -1,67 +1,72 @@
 
-<md-input-container class="md-block" style="padding: 5px" ng-show="hardwareInformation.hardware.length > 1">
-    <md-select ng-model="selectedHW">
-        <md-option ng-repeat="selectedHW in hardwareInformation.hardware" value="selectedHW">
-            {{selectedHW.hostname}}
-        </md-option>
-    </md-select>
+<md-input-container class="md-block" style="padding: 5px" ng-show="hardwareInformation.more">
+
+    <div class="virtualRepeatdemoDeferredLoading">
+        <md-virtual-repeat-container id="vertical-container">
+            <div md-virtual-repeat="item in hardwareInformation.hardware" md-on-demand="" class="repeated-item" >
+                <div class="hardwareChangelog" ng-click="hardwareInformation.scope.showHardwareInformation(item, false)">
+                    <div flex="30">{{item.hostname}}</div>
+                </div>
+            </div>
+        </md-virtual-repeat-container>
+    </div>
 </md-input-container>
 
-<md-tabs>
+<md-tabs ng-show="!hardwareInformation.more">
     <md-tab label="Details" style="margin: 0;padding: 0">
         <div class="hardwareComponentPanel">
             <div layout-gt-sm="row" style="margin: 0">
                 <md-input-container flex style="margin: 10;margin-top: 15px;">
                     <label>Hostname</label>
-                    <input ng-model="hardwareInformation.selectedHW.hostname">
+                    <input ng-model="hardwareInformation.hardware.hostname">
                 </md-input-container>
 
                 <md-input-container flex style="margin: 10;margin-top: 15px">
                     <label>IP</label>
-                    <input ng-model="hardwareInformation.selectedHW.ip">
+                    <input ng-model="hardwareInformation.hardware.ip">
                 </md-input-container>
             </div>
 
             <div layout-gt-sm="row" style="margin: 0">
                 <md-input-container flex style="margin: 10">
                     <label>Model</label>
-                    <input ng-model="hardwareInformation.selectedHW.model">
+                    <input ng-model="hardwareInformation.hardware.model">
                 </md-input-container>
 
                 <md-input-container flex style="margin: 10">
                     <label>Seriennummer</label>
-                    <input ng-model="hardwareInformation.selectedHW.sn">
+                    <input ng-model="hardwareInformation.hardware.sn">
                 </md-input-container>
             </div>
 
             <div layout-gt-sm="row" style="margin: 0">
                 <md-input-container flex="70" style="margin: 10">
                     <label>CPU</label>
-                    <input ng-model="hardwareInformation.selectedHW.cpu">
+                    <input ng-model="hardwareInformation.hardware.cpu">
                 </md-input-container>
 
                 <md-input-container flex="30" style="margin: 10">
                     <label>RAM</label>
-                    <input ng-model="hardwareInformation.selectedHW.ram">
+                    <input ng-model="hardwareInformation.hardware.ram">
                 </md-input-container>
             </div>
 
             <div layout-gt-sm="row" style="margin: 0">
                 <md-input-container flex style="margin: 10">
                     <label>Betriebsystem</label>
-                    <input ng-model="hardwareInformation.selectedHW.bs">
+                    <input ng-model="hardwareInformation.hardware.bs">
                 </md-input-container>
             </div>
 
             <div layout-gt-sm="row" style="margin: 0">
                 <md-input-container flex style="margin: 0;margin-left: 10">
                     <label>Verschluesselung Name</label>
-                    <input ng-model="hardwareInformation.selectedHW.encodingname">
+                    <input ng-model="hardwareInformation.hardware.encodingname">
                 </md-input-container>
 
                 <md-input-container flex style="margin: 0;margin-left: 10">
                     <label>Verschluesselung Key</label>
-                    <input ng-model="hardwareInformation.selectedHW.encodingkey">
+                    <input ng-model="hardwareInformation.hardware.encodingkey">
                 </md-input-container>
             </div>
         </div>
@@ -71,7 +76,7 @@
         <div class="hardwareComponentPanel">
             <div class="virtualRepeatdemoDeferredLoading">
                 <md-virtual-repeat-container id="vertical-container">
-                    <div md-virtual-repeat="lizenzData in hardwareInformation.selectedlizenz" md-on-demand="" class="repeated-item">
+                    <div md-virtual-repeat="lizenzData in hardwareInformation.lizenz" class="repeated-item">
                         <md-button  class="md-icon-button" ng-click="hardwareInformation.hardwareService.delHardwareLizenz(lizenzData, hardwareInformation,this)" >
                             <img width="10px" heigth="10px" src="/NetView/static/img/papierkorb.png"></md-icon>
                         </md-button>{{lizenzData.name}} - {{lizenzData.key}}
@@ -82,10 +87,11 @@
     </md-tab>
 
     <md-tab label="Changelog">
+
         <div class="hardwareComponentPanel">
             <div class="virtualRepeatdemoDeferredLoading">
                 <md-virtual-repeat-container id="vertical-container">
-                    <div md-virtual-repeat="item in hardwareInformation.selectedChangelog" md-on-demand="" class="repeated-item" >
+                    <div md-virtual-repeat="item in hardwareInformation.changelog" class="repeated-item" >
                         <div layout-gt-sm="row" class="hardwareChangelog" ng-click="hardwareInformation.scope.openChangelog(item)">
                             <div flex="30">{{item.date}}</div>
                             <div flex>{{item.title}}</div>
@@ -100,7 +106,7 @@
         <div class="hardwareComponentPanel">
             <div class="virtualRepeatdemoDeferredLoading">
                 <md-virtual-repeat-container id="vertical-container">
-                    <div md-virtual-repeat="item in hardwareInformation.selectedSoftware" md-on-demand="" class="repeated-item">
+                    <div md-virtual-repeat="item in hardwareInformation.software" class="repeated-item">
                         <div style="padding: 10">{{item.name}}</div>
                     </div>
                 </md-virtual-repeat-container>

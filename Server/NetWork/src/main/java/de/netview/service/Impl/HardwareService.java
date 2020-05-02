@@ -342,10 +342,9 @@ public class HardwareService implements IHardwareService {
     public void changeHardwareOwner(Map value) {
         Hardware hardware = getHardwareById(Long.parseLong(value.get("hid").toString()));
         hardware.setOwner(value.get("uid").toString());
-        if (!hardware.getAktivusername().equalsIgnoreCase(value.get("uid").toString())) {
-            ADUserData user = ldapService.getLDAPUserByName(value.get("uid").toString());
-            hardware.setOwnerphone(user.getTelephoneNumber());
-        }
+        ADUserData user = ldapService.getLDAPUserByName(value.get("uid").toString());
+        hardware.setOwnerphone(user.getTelephoneNumber());
+
         saveHardware(hardware);
     }
 

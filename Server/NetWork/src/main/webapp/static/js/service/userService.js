@@ -26,14 +26,15 @@ app.service('userService', function($http,$timeout,viewService) {
             $scope.userDetails.view = true;
             $scope.userDetails.user = response.data.userData;
 
-            $scope.hardwareDetails.hardware = response.data.aktivHardware;
-            $scope.hardwareActivDetails.hardware = response.data.ownerHardware;
+            var aktivHardware = response.data.aktivHardware;
+            var ownerHardware = response.data.ownerHardware;
 
-            var same = true;
-            if ($scope.hardwareDetails.hardware.length == $scope.hardwareActivDetails.hardware.length){
-                for (var index=0;index<$scope.hardwareDetails.hardware.length;index++){
-                    for (var index=0;index<$scope.hardwareActivDetails.hardware.length;index++){
-                        if ($scope.hardwareActivDetails.hardware[index].hid != $scope.hardwareDetails.hardware[index].hid){
+            var same = false;
+            if (ownerHardware.length === aktivHardware.length){
+                same = true;
+                for (var index=0;index<ownerHardware.length;index++){
+                    for (var index=0;index<aktivHardware.length;index++){
+                        if (aktivHardware[index].hid !== ownerHardware[index].hid){
                            same = false;
                            break;
                         }
@@ -44,56 +45,47 @@ app.service('userService', function($http,$timeout,viewService) {
                 }
             }
 
-            if (same){
-                if ($scope.hardwareDetails.hardware.length > 0) {
+            if (aktivHardware.length > 0 || ownerHardware.length > 0) {
+
+                if (ownerHardware.length > 0) {
                     $scope.hardwareDetails.view = true;
+                    $scope.hardwareDetails.title = 'Details';
+                    $scope.hardwareDetails.scope = $scope;
+                    $scope.hardwareDetails.hardwareService = hardwareService;
+                }
+
+                if (ownerHardware.length > 1) {
+                    $scope.hardwareDetails.more = true;
+                    $scope.hardwareDetails.hardware = viewService.getNewDynamicItems(ownerHardware);
+                }else if (ownerHardware.length == 1){
+                    $scope.hardwareDetails.hardware = ownerHardware[0]
+                }
+
+                if (same) {
                     $scope.hardwareDetails.tabTitle = "Hardware (Aktiv/Owner)";
-                    $scope.hardwareDetails.title = 'Details';
-                    $scope.hardwareDetails.hardware = response.data.aktivHardware;
-                    $scope.hardwareDetails.scope = $scope;
-                    $scope.hardwareDetails.hardwareService = hardwareService;
-                    $scope.hardwareDetails.lizenz = [];
-                    if (response.data.aktivHardware.length > 0) {
-                        $scope.hardwareDetails.selectedHW = response.data.aktivHardware[0]
-                        for (var index = 0; index < response.data.aktivHardware.length; index++) {
-                            $scope.hardwareDetails.lizenz.push(viewService.getNewDynamicItems(response.data.aktivHardware[index].lizenz));
-                        }
-                    }
-                }
-            }else {
-                if ($scope.hardwareDetails.hardware.length > 0) {
-                    $scope.hardwareDetails.view = true;
-                    $scope.hardwareDetails.tabTitle = "Aktive Hardware";
-                    $scope.hardwareDetails.title = 'Details';
-                    $scope.hardwareDetails.hardware = response.data.aktivHardware;
-                    $scope.hardwareDetails.scope = $scope;
-                    $scope.hardwareDetails.hardwareService = hardwareService;
-                    $scope.hardwareDetails.lizenz = [];
-                    if (response.data.aktivHardware.length > 0) {
-                        $scope.hardwareDetails.selectedHW = response.data.aktivHardware[0]
-                        for (var index = 0; index < response.data.aktivHardware.length; index++) {
-                            $scope.hardwareDetails.lizenz.push(viewService.getNewDynamicItems(response.data.aktivHardware[index].lizenz));
-                        }
-                    }
-                }
+                } else {
 
+                    if (ownerHardware.length > 0) {
+                        $scope.hardwareDetails.tabTitle = "Aktive Hardware";
+                    }
 
-                if ($scope.hardwareActivDetails.hardware.length > 0) {
-                    $scope.hardwareActivDetails.view = true;
-                    $scope.hardwareActivDetails.tabTitle = "Owner Hardware";
-                    $scope.hardwareActivDetails.title = 'Details';
-                    $scope.hardwareActivDetails.scope = $scope;
-                    $scope.hardwareActivDetails.hardwareService = hardwareService;
-                    $scope.hardwareActivDetails.lizenz = [];
-                    if (response.data.aktivHardware.length > 0) {
-                        $scope.hardwareActivDetails.selectedHW = response.data.aktivHardware[0]
-                        for (var index = 0; index < $scope.hardwareActivDetails.hardware.length; index++) {
-                            $scope.hardwareActivDetails.lizenz.push(viewService.getNewDynamicItems($scope.hardwareActivDetails.hardware[index].lizenz));
+                    if (aktivHardware.length > 0) {
+                        $scope.hardwareActivDetails.view = true;
+                        $scope.hardwareActivDetails.tabTitle = "Owner Hardware";
+                        $scope.hardwareActivDetails.title = 'Details';
+                        $scope.hardwareActivDetails.scope = $scope;
+                        $scope.hardwareActivDetails.hardwareService = hardwareService;
+
+                        if (aktivHardware.length > 1) {
+                            $scope.hardwareActivDetails.more = true;
+                            $scope.hardwareActivDetails.hardware = viewService.getNewDynamicItems(aktivHardware);
+                        }else if (aktivHardware.length == 1){
+                            $scope.hardwareActivDetails.hardware = aktivHardware[0]
                         }
+
                     }
                 }
             }
-
             $scope.showAbstractInformation($scope.userDetails.user.displayName,$scope.userDetails.user.title,"user-white.png");
 
         });

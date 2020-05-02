@@ -52,8 +52,8 @@ public class LDAPUserController {
 		LDAPService.createLDAPNewUser(wizardUser);
 	}
 	
-	@GetMapping("/details")
-	public @ResponseBody LDAPUserData getUser(@RequestBody String uid) {
+	@GetMapping("/{uid}")
+	public @ResponseBody LDAPUserData getUser(@PathVariable String uid) {
 		return LDAPService.getLDAPUserData(uid);
 	}
 
